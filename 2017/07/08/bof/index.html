@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pwnable bof | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/07/08/bof/">Pwnable bof</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">July 08 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>bof.c<br><img src="http://osuzegp2h.bkt.clouddn.com/1.jpg" alt=""><br>在<code>gets</code>函数那行给了<code>smash me</code>，那肯定是从<code>gets</code>函数入手。<code>gets</code>函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。    </p>
+<p>源码里可以看到只要<code>key==0xcafebabe</code>就可以shell，<code>key</code>对于<code>func</code>函数来说是一个参数，而<code>overflowme</code>是一个局部变量。通过栈的结构我们可以知道，在栈上<code>key</code>比<code>overflowme</code>的地址高，所以我们通过<code>gets</code>输入的时候就可以输入一长串字符串去覆盖<code>key</code>地址上原来的东西从而执行<code>/bin/sh</code>。    </p>
+<p>所以我们需要知道<code>key</code>的位置和<code>overflowme</code>被写在哪里。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/2.jpg" alt="image"><br>可以看到<code>key</code>的地址就是<code>0xbffff070</code>。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.jpg" alt="image"><br>其实这里的<code>0x8(%ebp)</code>就是<code>key</code>的地址（因为<code>key</code>是参数，所以刚好在ebp和返回地址上面），再根据这个断点上面<code>lea -0x2c(%ebp),%eax</code>然后进入gets函数就可以判断出我们输入的<code>aaaa</code>写在<code>-0x2c(%ebp)</code>的位置。<br><img src="http://osuzegp2h.bkt.clouddn.com/4.jpg" alt="image"><br>看一下<code>eax</code>上的值就可以发现确实写在了<code>0xbffff03c</code>的位置。<br>所以就知道了两个位置，相减一下发现相差52个字节，所以需要填充的字符串长度是52个字节。也就是说我们输入的字符串的起始地址是<code>0xbffff03c</code>的位置，但是我们目标<code>key</code>的位置是<code>0xbffff070</code>，我们需要在中间填充52个字节的长度然后才能到达这个目标位置修改这个位置上的数据。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/5.jpg" alt="image"></p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
