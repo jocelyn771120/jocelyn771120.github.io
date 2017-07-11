@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pwnable flag | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/07/11/flag/">Pwnable flag</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">July 11 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>这是一道逆向不是pwn。下载之后先用PEiD看了一下并不是有效文件就直接用IDA打开了，发现，感觉这根本没法逆啊，不会做看了别人的writeup后发现这是用upx加壳过的。然后用<code>strings</code>查看了一下确实在最后两行有UPX。    </p>
+<p>用<code>upx -d flag</code>解压后拖进了IDA。<br><img src="http://osuzegp2h.bkt.clouddn.com/6.png" alt="images">    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/7.png" alt="images">    </p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
