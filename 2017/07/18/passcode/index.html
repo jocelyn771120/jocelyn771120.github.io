@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pwnable Passcode | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/07/18/passcode/">Pwnable Passcode</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">July 18 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line"></div><div class="line">void login()&#123;</div><div class="line">	int passcode1;</div><div class="line">	int passcode2;</div><div class="line"></div><div class="line">	printf(&quot;enter passcode1 : &quot;);</div><div class="line">	scanf(&quot;%d&quot;, passcode1);		//没有&amp;</div><div class="line">	fflush(stdin);</div><div class="line"></div><div class="line">	// ha! mommy told me that 32bit is vulnerable to bruteforcing :)</div><div class="line">	printf(&quot;enter passcode2 : &quot;);</div><div class="line">        scanf(&quot;%d&quot;, passcode2);		//没有&amp;</div><div class="line"></div><div class="line">	printf(&quot;checking...\n&quot;);</div><div class="line">	if(passcode1==338150 &amp;&amp; passcode2==13371337)&#123;</div><div class="line">                printf(&quot;Login OK!\n&quot;);</div><div class="line">                system(&quot;/bin/cat flag&quot;);</div><div class="line">        &#125;</div><div class="line">        else&#123;</div><div class="line">                printf(&quot;Login Failed!\n&quot;);</div><div class="line">		exit(0);</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void welcome()&#123;</div><div class="line">	char name[100];</div><div class="line">	printf(&quot;enter you name : &quot;);</div><div class="line">	scanf(&quot;%100s&quot;, name);	//输入name长度有100这么长</div><div class="line">	printf(&quot;Welcome %s!\n&quot;, name);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()&#123;</div><div class="line">	printf(&quot;Toddler&apos;s Secure Login System 1.0 beta.\n&quot;);</div><div class="line"></div><div class="line">	welcome();</div><div class="line">	login();</div><div class="line"></div><div class="line">	// something after login...</div><div class="line">	printf(&quot;Now I can safely trust you that you have credential :)\n&quot;);</div><div class="line">	return 0;	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>给了源代码如上，涉及到的漏洞就是<code>scanf</code>没有加”&amp;”。    </p>
+<p>涉及到的知识点：①<code>scanf</code>如果没有加”&amp;”的话，默认会取栈上的数据当作是地址。②got表可以修改的，got表上某函数的地址上的内容可以修改成别的内容。    </p>
+<p>这题的解题思路大致是：<code>name</code>长度为100，<code>name</code>和<code>passcode</code>都在同一个栈上，而且<code>passcode1</code>的地址刚好在<code>name</code>的最后4个字节上面，所以可以把<code>passcode1</code>的地址改写成got表内某个函数地址，并且向<code>scanf</code>的另一个参数”%d”打入<code>system(&quot;/bin/cat flag&quot;)</code>的地址，从而得到flag。    </p>
+<p>分析：    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.1.png" alt="images"><br><code>welcome</code>里面<code>name</code>在栈上地址是<code>ebp-0x70</code>的位置    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.2.png" alt="images"><br><code>login</code>里面<code>passcode1</code>在栈上地址是<code>ebp-0x10</code>(之后都用intel语体）    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.5.png" alt="images">    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.6.png" alt="images"><br>可以看到<code>welcome</code>和<code>login</code>是共同用一个栈的。所以<code>name</code>和<code>passcode1</code>之间的距离是0x60，也就是96个字节，<code>name</code>的标准长度是100，也就是说<code>name</code>的最后四个字节刚好是<code>passcode1</code>的地址。这样就可以利用第二个知识点，把got表内任意的函数地址找出来修改此地址上的内容，这里我选择的是<code>printf</code>函数。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.4.png" alt="images">    </p>
+<p>接下来就是要修改到哪里的问题。从代码中我们可以看到我们需要跳到<code>system</code>里面去执行，所以我们找到这个函数的地址。<br><img src="http://osuzegp2h.bkt.clouddn.com/3.7.png" alt="images"><br>这样我们把这个地址当作”%d”，把<code>printf</code>函数在got表内的地址当作&amp;passcode1，从而修改了got表上原本<code>printf</code>函数地址上的内容，转去执行<code>system</code>。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.8.png" alt="images">    </p>
+<p>参考资料：<br><a href="http://blog.csdn.net/linyt/article/details/51635768" target="_blank" rel="external">http://blog.csdn.net/linyt/article/details/51635768</a><br><a href="https://hacpai.com/article/1484036087308" target="_blank" rel="external">https://hacpai.com/article/1484036087308</a><br><a href="http://blog.csdn.net/smalosnail/article/details/53247502?_t_t_t=0.050024056468489064" target="_blank" rel="external">http://blog.csdn.net/smalosnail/article/details/53247502?_t_t_t=0.050024056468489064</a><br><a href="http://blog.csdn.net/qq_20307987/article/details/51303824" target="_blank" rel="external">http://blog.csdn.net/qq_20307987/article/details/51303824</a>    </p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
