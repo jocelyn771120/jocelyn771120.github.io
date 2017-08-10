@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pwnable Leg | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/08/10/leg/">Pwnable Leg</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">August 10 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <h4 id="关于ARM"><a href="#关于ARM" class="headerlink" title="关于ARM"></a>关于ARM</h4><p>ARM与x86有所不同，有arm模式和thumb模式，这两种模式下分别有不同的指令集，arm指令长度为32位，thumb指令长度为16位。    </p>
+<p>两种模式之间切换是通过bx Rn指令。若Rn的最低位是1，切换到thumb状态；若Rn的最低位是0，切换到arm状态。    </p>
+<p>对于x86来说，pc始终指向正在执行的指令，因为只有完成万一条指令的读取执行之后才会执行下一条指令。但是，arm处理器采用的是流水线机制，处理的时候pc寄存器永远指向当前执行的指令后的第二条指令（arm下的每条指令都是4个字节，thumb下每条指令都是2个字节）。    </p>
+<h4 id="leg"><a href="#leg" class="headerlink" title="leg"></a>leg</h4><p>了解完以上关于ARM的知识之后就可以来做这题。给了源码和反汇编代码。考察的是arm模式下函数调用。    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">(gdb) disass key1</div><div class="line">Dump of assembler code for function key1:</div><div class="line">   0x00008cd4 &lt;+0&gt;:	push	&#123;r11&#125;		; (str r11, [sp, #-4]!)</div><div class="line">   0x00008cd8 &lt;+4&gt;:	add	r11, sp, #0</div><div class="line">   0x00008cdc &lt;+8&gt;:	mov	r3, pc</div><div class="line">   0x00008ce0 &lt;+12&gt;:	mov	r0, r3</div><div class="line">   0x00008ce4 &lt;+16&gt;:	sub	sp, r11, #0</div><div class="line">   0x00008ce8 &lt;+20&gt;:	pop	&#123;r11&#125;		; (ldr r11, [sp], #4)</div><div class="line">   0x00008cec &lt;+24&gt;:	bx	lr</div><div class="line">End of assembler dump.</div><div class="line">```    </div><div class="line">一般arm模式下是以r0存放函数的返回值的。所以key1的返回值r0=0x00008cdc+8。</div></pre></td></tr></table></figure>
+<p>(gdb) disass key2<br>Dump of assembler code for function key2:<br>   0x00008cf0 &lt;+0&gt;:    push    {r11}        ; (str r11, [sp, #-4]!)<br>   0x00008cf4 &lt;+4&gt;:    add    r11, sp, #0<br>   0x00008cf8 &lt;+8&gt;:    push    {r6}        ; (str r6, [sp, #-4]!)<br>   0x00008cfc &lt;+12&gt;:    add    r6, pc, #1<br>   0x00008d00 &lt;+16&gt;:    bx    r6<br>   0x00008d04 &lt;+20&gt;:    mov    r3, pc<br>   0x00008d06 &lt;+22&gt;:    adds    r3, #4<br>   0x00008d08 &lt;+24&gt;:    push    {r3}<br>   0x00008d0a &lt;+26&gt;:    pop    {pc}<br>   0x00008d0c &lt;+28&gt;:    pop    {r6}        ; (ldr r6, [sp], #4)<br>   0x00008d10 &lt;+32&gt;:    mov    r0, r3<br>   0x00008d14 &lt;+36&gt;:    sub    sp, r11, #0<br>   0x00008d18 &lt;+40&gt;:    pop    {r11}        ; (ldr r11, [sp], #4)<br>   0x00008d1c &lt;+44&gt;:    bx    lr<br>End of assembler dump.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">可以看到`0x00008d00`处的指令是`bx r6`,此时r6的最低位是1，所以工作状态转换为thumb模式。r0=r3=0x00008d04+4+4。</div></pre></td></tr></table></figure></p>
+<p>(gdb) disass key3<br>Dump of assembler code for function key3:<br>   0x00008d20 &lt;+0&gt;:    push    {r11}        ; (str r11, [sp, #-4]!)<br>   0x00008d24 &lt;+4&gt;:    add    r11, sp, #0<br>   0x00008d28 &lt;+8&gt;:    mov    r3, lr<br>   0x00008d2c &lt;+12&gt;:    mov    r0, r3<br>   0x00008d30 &lt;+16&gt;:    sub    sp, r11, #0<br>   0x00008d34 &lt;+20&gt;:    pop    {r11}        ; (ldr r11, [sp], #4)<br>   0x00008d38 &lt;+24&gt;:    bx    lr<br>End of assembler dump.<br><code>``    
+key3的返回值r0=lr,</code>bx lr<code>的作用是跳转到返回地址，即返回到调用者函数，然后继续执行调用体的后续指令，所以我们跳回到main函数执行调用key3后的下一条指令，地址为</code>0x00008d80`。</p>
+<p>所以key=0x00008cdc+8+0x00008d04+4+4+0x00008d80。    </p>
+<p>参考资料:<br><a href="http://blog.dbgtech.net/blog/?tag=thumb" target="_blank" rel="external">http://blog.dbgtech.net/blog/?tag=thumb</a><br><a href="http://blog.csdn.net/cfy_phonex/article/details/18667299" target="_blank" rel="external">http://blog.csdn.net/cfy_phonex/article/details/18667299</a>    </p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
