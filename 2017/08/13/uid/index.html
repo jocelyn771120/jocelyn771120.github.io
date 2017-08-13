@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>关于uid,euid,gid,egid的理解 | Limpidity</title>
+    <title>关于Uid,Euid,Gid,Egid的理解 | Limpidity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="stylesheet" href="/css/style.css">
@@ -28,7 +28,7 @@
 <main class="post">
     <article>
     <h1 class="article-title">
-        <a href="/2017/08/13/uid/">关于uid,euid,gid,egid的理解</a>
+        <a href="/2017/08/13/uid/">关于Uid,Euid,Gid,Egid的理解</a>
     </h1>
 
     <section class="article-meta">
@@ -38,7 +38,7 @@
     <section class="article-entry">
         <p><img src="http://osuzegp2h.bkt.clouddn.com/4.1.jpg" alt="images">     </p>
 <h4 id="关于uid-gid"><a href="#关于uid-gid" class="headerlink" title="关于uid,gid"></a>关于uid,gid</h4><p>uid就是文件所有者的用户ID，gid就是文件所有者的组ID。<br>上图中的文件夹们的所有者的用户ID是one，组ID是one。    </p>
-<h4 id="关于euid-egid"><a href="#关于euid-egid" class="headerlink" title="关于euid,egid"></a>关于euid,egid</h4><p>文件一定有一个所有者，但拥有打开这个文件的权限并不仅仅只有拥有者。    </p>
+<h4 id="关于euid-egid"><a href="#关于euid-egid" class="headerlink" title="关于euid,egid"></a>关于euid,egid</h4><p>文件一定有一个所有者，但拥有打开这个文件的权限并不仅仅只有拥有者，只要是有效的uid或者是有效的gid就可以打开这个文件。    </p>
 <p><img src="http://osuzegp2h.bkt.clouddn.com/4.2.jpg" alt="images">    </p>
 <h4 id="关于suid，sgid"><a href="#关于suid，sgid" class="headerlink" title="关于suid，sgid"></a>关于suid，sgid</h4><p>suid==set uid==set user id，sgid同理。这两个的作用就是设置有效的uid和gid。    </p>
 <p>栗子：<br><img src="http://osuzegp2h.bkt.clouddn.com/4.3.jpg" alt="images"><br>用户one试图打开limpidity用户的test.txt文件，但是权限不够，用ls -l查看发现test.txt只能被limpidity用户读写。此时uid=limpidity，gid=limpidity。    </p>
