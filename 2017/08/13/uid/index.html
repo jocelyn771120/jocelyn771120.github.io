@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>关于uid,euid,gid,egid的理解 | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/08/13/uid/">关于uid,euid,gid,egid的理解</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">August 13 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p><img src="http://osuzegp2h.bkt.clouddn.com/4.1.jpg" alt="images">     </p>
+<h4 id="关于uid-gid"><a href="#关于uid-gid" class="headerlink" title="关于uid,gid"></a>关于uid,gid</h4><p>uid就是文件所有者的用户ID，gid就是文件所有者的组ID。<br>上图中的文件夹们的所有者的用户ID是one，组ID是one。    </p>
+<h4 id="关于euid-egid"><a href="#关于euid-egid" class="headerlink" title="关于euid,egid"></a>关于euid,egid</h4><p>文件一定有一个所有者，但拥有打开这个文件的权限并不仅仅只有拥有者。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/4.2.jpg" alt="images">    </p>
+<h4 id="关于suid，sgid"><a href="#关于suid，sgid" class="headerlink" title="关于suid，sgid"></a>关于suid，sgid</h4><p>suid==set uid==set user id，sgid同理。这两个的作用就是设置有效的uid和gid。    </p>
+<p>栗子：<br><img src="http://osuzegp2h.bkt.clouddn.com/4.3.jpg" alt="images"><br>用户one试图打开limpidity用户的test.txt文件，但是权限不够，用ls -l查看发现test.txt只能被limpidity用户读写。此时uid=limpidity，gid=limpidity。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/4.4.jpg" alt="images"><br>通过sgid后把权限改了，可以看到此时只要是同组的都可以访问此文件，此时egid=limpidity（那是因为我把one用户和limpidity用户都放到了limpidity组里面去，如果你换一个组的话只要是同组的仍然都是egid），所以one仍然可以访问此文件。    </p>
+<p>通过这个栗子我想说的是，文件的拥有者并不是文件的唯一访问者，只要通过设置uid和gid，其他用户还是可以访问该文件的。    </p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
