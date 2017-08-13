@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Limpidity</title>
+    <title>Pwnable Shellshock | Limpidity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="stylesheet" href="/css/style.css">
@@ -28,7 +28,7 @@
 <main class="post">
     <article>
     <h1 class="article-title">
-        <a href="/2017/08/13/shellshock/"></a>
+        <a href="/2017/08/13/shellshock/">Pwnable Shellshock</a>
     </h1>
 
     <section class="article-meta">
@@ -36,8 +36,7 @@
     </section>
 
     <section class="article-entry">
-        <hr>
-<h2 id="title-Pwnable-Shellshock"><a href="#title-Pwnable-Shellshock" class="headerlink" title="title: Pwnable Shellshock"></a>title: Pwnable Shellshock</h2><p>一开始思路错了一直往uid，gid那里钻，后来搜索“shellshock”发现这是个漏洞（哦这是我人生第一次接触漏洞，amaziiiiiiing）。    </p>
+        <p>一开始思路错了一直往uid，gid那里钻，后来搜索“shellshock”发现这是个漏洞（哦这是我人生第一次接触漏洞，amaziiiiiiing）。    </p>
 <h4 id="关于Shellshock"><a href="#关于Shellshock" class="headerlink" title="关于Shellshock"></a>关于Shellshock</h4><p>验证此漏洞存在是源于一条命令：<br><code>env x =&#39;() { :;}; echo vulnerable&#39; bash -c echo &quot;this is a test&quot;</code><br>若出现vulnerable则表示该漏洞存在。具体跟env命令无关，而是bash在处理函数定义比如<code>&#39;() { :;};</code>的环境变量赋值代码上存在设计缺陷，把函数定义后的字符，也就是<code>{</code>后的全部字符串都当做命令执行。只要让系统接受一个含有函数定义+任意命令的环境变量赋值则可让任意命令执行。<br>具体参考:<a href="http://fish.ijinshan.com/cgibincheck" target="_blank" rel="external">http://fish.ijinshan.com/cgibincheck</a> ；<br><a href="http://blog.csdn.net/u011721501/article/details/39558303" target="_blank" rel="external">http://blog.csdn.net/u011721501/article/details/39558303</a> 。</p>
 <h4 id="shellshock"><a href="#shellshock" class="headerlink" title="shellshock"></a>shellshock</h4><p>所以此题可以测试下是否存在此漏洞，结果发现，是存在的。<br><img src="http://osuzegp2h.bkt.clouddn.com/5.1.jpg" alt="images"><br>那么就可以利用<code>env x=&#39;() { :;}; bash -c &quot;cat flag&quot;&#39; bash -c &quot;./shellshock&quot;</code>拿到flag。<br><img src="http://osuzegp2h.bkt.clouddn.com/5.2.jpg" alt="images">    </p>
 <p>That’s all。</p>
