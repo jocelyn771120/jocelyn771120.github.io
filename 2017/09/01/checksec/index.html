@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>缓冲区溢出的保护机制 | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/09/01/checksec/">缓冲区溢出的保护机制</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">September 01 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>上周HITB GSEC CTF结束，自己在比赛中pwn只看了一道1000levels没做出来（第一次在比赛中做pwn嘻嘻嘻嘻），后来这几天去深圳参加2017TenSec今天刚回来，找了下wp看，对于小白来说还是挺难的，之后可能会把心得放上来。    </p>
+<p>今天要更新的是缓冲区溢出的保护机制，之前下了peda插件里面自带checksec功能，比赛的时候也有观察一波<br><img src="http://osuzegp2h.bkt.clouddn.com/6.1.jpg" alt="images">    </p>
+<ul>
+<li>CANARY：栈保护<br>  这个选项表示栈保护功能是否开启，如果没有开启，可能就会发生缓冲区溢出等漏洞，我们就可以通过覆盖栈上返回地址让shellcode得到执行。所以当此功能没有开启的时候，要注意可能会发生缓冲区溢出。    </li>
+<li>NX：NO-EXECUTE<br>  基本原理就是让数据所在内存页标识为no execute。如果开启了之后，若发生溢出执行shellcode的话cpu会抛出异常从而使得shellcode无法执行。</li>
+<li>PIE：内存空间随机化<br>  如果开启此保护的话就会随机化处理栈上的地址使得攻击者难以确认地址。</li>
+<li>RELRO<br>  设置符号重定向表格为只读或是在程序启动时就解析并绑定所有动态符号，这样可以防止GOT攻击。</li>
+</ul>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
