@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>极路由的锐捷认证配置 | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/09/24/wifi/">极路由的锐捷认证配置</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">September 24 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>新学妹住进来了之后因为是数学的妹子，没有开锐捷，宿舍买了极路由学着配置了一下发一波网络设置。    </p>
+<p>进入<a href="http://hiwifi.com" target="_blank" rel="external">hiwifi.com</a>之后登陆到后台在互联网中选锐捷认证。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.1.png" alt="images">         </p>
+<p>因为我们学校的ip分配是动态分配，所以在设置的时候IP网关之类的都默认0.0.0.0，如果说是静态分配的话需要填写正确参数，组播方式选择锐捷，DHCP脚本选择标准，DHCP方式选择认证后。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.2.png" alt="images">         </p>
+<p>因为是动态IP分配，所以还要克隆下mac地址。先把路由器上的网线拔了插到电脑上，把无线的选项关了，连接成功之后再把网线拔了重新插回路由器上，进入后台。高级设置中MAC地址克隆点击进去，在第二个选项中选择就会自动复制物理地址，然后拷贝到手动输入中，保存。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.3.png" alt="images">    </p>
+<p>在互联网中选择自动上网方式，点击进去，保存。此时就应该能连通互联网了。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.4.png" alt="images"></p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
