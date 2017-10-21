@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JarvisOJ Re FindKey | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/09/30/Jarvisoj-re-findkey/">JarvisOJ Re FindKey</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">September 30 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>下载下来的文件不知道是啥格式的，用file查看发现是pyc。<br><img src="http://osuzegp2h.bkt.clouddn.com/9.1.jpg" alt="images"></p>
+<p>用python在线反编译工具：<a href="http://tool.lu/pyc/反编译一下得到以下代码：" target="_blank" rel="external">http://tool.lu/pyc/反编译一下得到以下代码：</a><br><figure class="highlight plain"><figcaption><span>python</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># encoding: utf-8</div><div class="line"># 访问 http://tool.lu/pyc/ 查看更多信息</div><div class="line">import sys</div><div class="line">lookup=[196,153,149,206,17,221,10,217,167,18,36,135,103,61,111,31,92,152,21,228,105,191,173,41,2,245,23,144,1,246,89,178,182,119,38,85,48,226,165,241,166,214,71,90,151,3,109,169,150,224,69,156,158,57,181,29,200,37,51,252,227,93,65,82,66,80,170,77,49,177,81,94,202,107,25,73,148,98,129,231,212,14,84,121,174,171,64,180,233,74,140,242,75,104,253,44,39,87,86,27,68,22,55,76,35,248,96,5,56,20,161,213,238,220,72,100,247,8,63,249,145,243,155,222,122,32,43,186,0,102,216,126,15,42,115,138,240,147,229,204,117,223,141,159,131,232,124,254,60,116,46,113,79,16,128,6,251,40,205,137,199,83,54,188,19,184,201,110,255,26,91,211,132,160,168,154,185,183,244,78,33,123,28,59,12,210,218,47,163,215,209,108,235,237,118,101,24,234,106,143,88,9,136,95,30,193,176,225,198,197,194,239,134,162,192,11,70,58,187,50,67,236,230,13,99,190,208,207,7,53,219,203,62,114,127,125,164,179,175,112,172,250,133,130,52,189,97,146,34,157,120,195,45,4,142,139]</div><div class="line">pwda = [188,155,11,58,251,208,204,202,150,120,206,237,114,92,126,6,42]</div><div class="line">pwdb = [53,222,230,35,67,248,226,216,17,209,32,2,181,200,171,60,108]</div><div class="line">flag = raw_input(&apos;Input your Key:&apos;).strip()</div><div class="line">if len(flag) != 17:</div><div class="line">    print &apos;Wrong Key!!&apos;</div><div class="line">    sys.exit(1)</div><div class="line">flag = flag[::-1]</div><div class="line">for i in range(0, len(flag)):</div><div class="line">    if ord(flag[i]) + pwda[i] &amp; 255 != lookup[i + pwdb[i]]:</div><div class="line">        print &apos;Wrong Key!!&apos;</div><div class="line">        sys.exit(1)</div><div class="line"></div><div class="line">print &apos;Congratulations!!&apos;</div><div class="line">    </div><div class="line">爆破一下得到flag。    </div><div class="line">lookup=[196,153,149,206,17,221,10,217,167,18,36,135,103,61,111,31,92,152,21,228,105,191,173,41,2,245,23,144,1,246,89,178,182,119,38,85,48,226,165,241,166,214,71,90,151,3,109,169,150,224,69,156,158,57,181,29,200,37,51,252,227,93,65,82,66,80,170,77,49,177,81,94,202,107,25,73,148,98,129,231,212,14,84,121,174,171,64,180,233,74,140,242,75,104,253,44,39,87,86,27,68,22,55,76,35,248,96,5,56,20,161,213,238,220,72,100,247,8,63,249,145,243,155,222,122,32,43,186,0,102,216,126,15,42,115,138,240,147,229,204,117,223,141,159,131,232,124,254,60,116,46,113,79,16,128,6,251,40,205,137,199,83,54,188,19,184,201,110,255,26,91,211,132,160,168,154,185,183,244,78,33,123,28,59,12,210,218,47,163,215,209,108,235,237,118,101,24,234,106,143,88,9,136,95,30,193,176,225,198,197,194,239,134,162,192,11,70,58,187,50,67,236,230,13,99,190,208,207,7,53,219,203,62,114,127,125,164,179,175,112,172,250,133,130,52,189,97,146,34,157,120,195,45,4,142,139]</div><div class="line">pwda = [188,155,11,58,251,208,204,202,150,120,206,237,114,92,126,6,42]</div><div class="line">pwdb = [53,222,230,35,67,248,226,216,17,209,32,2,181,200,171,60,108]</div><div class="line">import re</div><div class="line">import string </div><div class="line">x=string.printable</div><div class="line">flag=&apos;&apos;</div><div class="line">for i in range(17):</div><div class="line">	for j in x:</div><div class="line">		if ord(j)+pwda[i]&amp;255==lookup[i+pwdb[i]]:</div><div class="line">			flag+=j</div><div class="line">			break</div><div class="line">print flag[::-1]</div></pre></td></tr></table></figure></p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
