@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>关于Win10下安装docker遇到的问题解决 | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/10/24/install-docker/">关于Win10下安装docker遇到的问题解决</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">October 24 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>2017/10/24 20:55:32<br>直到刚才顺利在win10上安装了docker，之前遇到了一系列困难。从大二的时候就想安装docker因为下载一系列镜像太麻烦了但是失败了。不知道为啥就是各种失败，安装了好久都没有成功就给弃了。换了新电脑之后看到小伙伴说安装完docker去把虚拟机环境都删了贼爽又想要重新在新电脑上安装，但是还是很慌怕安装不成功，安装了两天终于把问题解决了。（但是都没有截图所以都网上找了一下图和链接）    </p>
+<h3 id="Q1：安装完之后打开boot2docker闪退"><a href="#Q1：安装完之后打开boot2docker闪退" class="headerlink" title="Q1：安装完之后打开boot2docker闪退"></a>Q1：安装完之后打开boot2docker闪退</h3><p>照理说下载完安装包之后直接运行boot2docker Start就可以进行配置，配置成功就可以正常ssh连接。但是我安装成功之后打开boot2docker Start直接给我闪退出来。<br><img src="http://osuzegp2h.bkt.clouddn.com/13.1.jpg" alt="images">    </p>
+<p>我的解决方案：把virtualbox卸载去官网下载最新版本的。<br>官网：<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="external">https://www.virtualbox.org/wiki/Downloads</a>    </p>
+<h3 id="Q2：Error-exit-status-255"><a href="#Q2：Error-exit-status-255" class="headerlink" title="Q2：Error:exit status 255"></a>Q2：Error:exit status 255</h3><p>上个问题解决了之后又有了新的问题，Boot2Docker Start点开之后加载了很久很久都没有加载成功，感觉半个世纪都过去了还没开始，就用了<code>docker up</code>发现提示了这个错误。于是就参考了<a href="http://cnodejs.org/topic/55a24267419f1e8a23a64367" target="_blank" rel="external">http://cnodejs.org/topic/55a24267419f1e8a23a64367</a>把当前的boot2docker vm删了又重装，成功了。（这篇文章就写的很详细基本解决了我所有问题但是真的找了好久啊）</p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
