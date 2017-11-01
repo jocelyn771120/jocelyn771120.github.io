@@ -36,24 +36,7 @@
     </section>
 
     <section class="article-entry">
-        <pre><code>#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-
-int filter(char* cmd){
-    int r=0;
-    r += strstr(cmd, &quot;flag&quot;)!=0;
-    r += strstr(cmd, &quot;sh&quot;)!=0;
-    r += strstr(cmd, &quot;tmp&quot;)!=0;
-    return r;
-}
-int main(int argc, char* argv[], char** envp){
-    putenv(&quot;PATH=/fuckyouverymuch&quot;);
-    if(filter(argv[1])) return 0;
-    system( argv[1] );
-    return 0;
-}
-</code></pre><p>源码是这样，<code>filter</code>函数中有个<code>strstr</code>函数，这个函数搜索一个字符串在另一个字符串中的第一次出现，若存在，则返回子串在字符串中首次出现的位置，若不存在返回NULL。所以只要<code>argv</code>中不出现<code>flag</code>,<code>sh</code>,<code>tmp</code>字符串则会执行<code>system</code>,所以构造命令：<code>./cmd1 &quot;/bin/cat ?lag</code></p>
-
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">filter</span><span class="params">(<span class="keyword">char</span>* cmd)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> r=<span class="number">0</span>;</div><div class="line">	r += <span class="built_in">strstr</span>(cmd, <span class="string">"flag"</span>)!=<span class="number">0</span>;</div><div class="line">	r += <span class="built_in">strstr</span>(cmd, <span class="string">"sh"</span>)!=<span class="number">0</span>;</div><div class="line">	r += <span class="built_in">strstr</span>(cmd, <span class="string">"tmp"</span>)!=<span class="number">0</span>;</div><div class="line">	<span class="keyword">return</span> r;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[], <span class="keyword">char</span>** envp)</span></span>&#123;</div><div class="line">	putenv(<span class="string">"PATH=/fuckyouverymuch"</span>);</div><div class="line">	<span class="keyword">if</span>(filter(argv[<span class="number">1</span>])) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	system( argv[<span class="number">1</span>] );</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line">```    </div><div class="line">    </div><div class="line">源码是这样，`filter`函数中有个`<span class="built_in">strstr</span>`函数，这个函数搜索一个字符串在另一个字符串中的第一次出现，若存在，则返回子串在字符串中首次出现的位置，若不存在返回<span class="literal">NULL</span>。所以只要`argv`中不出现`flag`,`sh`,`tmp`字符串则会执行`system`,所以构造命令：</div><div class="line">```.sh</div><div class="line">./cmd1 <span class="string">"/bin/cat ?lag</span></div></pre></td></tr></table></figure>
     </section>
 </article>
 
