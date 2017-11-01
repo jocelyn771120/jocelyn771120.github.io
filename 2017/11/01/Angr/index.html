@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Angr二进制分析框架 | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/11/01/Angr/">Angr二进制分析框架</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">November 01 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <p>Angr是一个二进制程序分析框架，python写的。可以利用这个工具对一些逆向的题目进行符号执行从而找到flag。符号执行就是在程序运行的时候用符号来代替真实值，符号是可变的，所以就可以尽可能的遍历程序的每一条路径然后使用约束求解引擎分析出正确结果。  </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/11.6.png" alt="images">  </p>
+<h3 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h3><p>Linux</p>
+<pre><code>sudo apt-get install python-dev libffi-dev build-essential virtualenvwrapper    
+find / -name virtualenvwrapper.sh
+cd findpath/
+source virtualenvwrapper.sh
+mkvirtualenv angr
+sudo pip install angr
+</code></pre><p>Windows</p>
+<pre><code>git clone https://github.com/Owlz/angr-Windows.git
+cd angr-Windows
+pip install virtualenv
+virtualenv --python=C:\Python2.7-64bit\python.exe angr
+angr\Scripts\activate
+pip install &lt;capstone&gt;
+pip install &lt;z3&gt;
+pip install &lt;pyvex&gt;
+pip install angr
+</code></pre><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在github上找了一个简单的例子说明下angr的用法。<a href="https://github.com/angr/angr-doc/blob/master/examples/codegate_2017-angrybird/angrybird" target="_blank" rel="external">https://github.com/angr/angr-doc/blob/master/examples/codegate_2017-angrybird/angrybird</a><br><img src="http://osuzegp2h.bkt.clouddn.com/11.7.png" alt="images"><br><img src="http://osuzegp2h.bkt.clouddn.com/11.9.png" alt="images">    </p>
+<p>脚本如下：</p>
+<pre><code>import angr
+
+begin=0x4007C2
+end=0x404FC1
+
+#先为程序创建一个工程
+p=angr.Project(&apos;angrybird&apos;)
+
+#将程序运行到程序入口处 
+#factory是好多函数的集合，可以在里面调用各种函数来进行符号执行
+#entry_state()可以将程序运行到指定的程序入口处
+state=p.factory.entry_state(addr=begin)
+
+#利用SimulationManger进行符号执行
+sm=p.factory.simgr(state)
+
+#遍历路径找到到达end的路径
+sm.explore(find=end)
+
+#获取程序输出状态
+print sm.found[-1].posix.dumps(1)
+</code></pre><p>有兴趣的话可以读一下angr的官方文档，我还在阅读中，觉得很棒。    </p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
