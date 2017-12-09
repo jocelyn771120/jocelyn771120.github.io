@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>极路由的锐捷认证配置 | Limpidity</title>
+  <title>Archives: 2017 | Limpidity</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -230,7 +230,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">极路由的锐捷认证配置</a></li>
+                        <li id="navbar-title"><a href="#">undefined</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -249,51 +249,48 @@
 
 
 <!-- -->
-<!--<body class="post-template">-->
+<!--<body class="home-template">-->
 <!---->
   
-
 <main class="content" role="main">
-    <article class="post" >
-    <span class="post-meta">
-                  <div class="tag-tile">
-                      
-                  </div>
-                <h1 class="post-title" style="margin: 14px 0;color:#50585D">极路由的锐捷认证配置</h1>
 
-                    <div class="post-meta">
-                        Post on<span class="fa fa-clock-o"></span>
-                        <time datetime="2017-09-24T09:01:21.901Z"
-                              itemprop="datePublished">2017-09-24</time>
-                    </div>
-    </span>
+    
+    <article class="post">
 
-        <section class="post-content">
-            <p>新学妹住进来了之后因为是数学的妹子，没有开锐捷，宿舍买了极路由学着配置了一下发一波网络设置。    </p>
-<p>进入<a href="http://hiwifi.com" target="_blank" rel="external">hiwifi.com</a>之后登陆到后台在互联网中选锐捷认证。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.1.png" alt="images">         </p>
-<p>因为我们学校的ip分配是动态分配，所以在设置的时候IP网关之类的都默认0.0.0.0，如果说是静态分配的话需要填写正确参数，组播方式选择锐捷，DHCP脚本选择标准，DHCP方式选择认证后。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.2.png" alt="images">         </p>
-<p>因为是动态IP分配，所以还要克隆下mac地址。先把路由器上的网线拔了插到电脑上，把无线的选项关了，连接成功之后再把网线拔了重新插回路由器上，进入后台。高级设置中MAC地址克隆点击进去，在第二个选项中选择就会自动复制物理地址，然后拷贝到手动输入中，保存。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.3.png" alt="images">    </p>
-<p>在互联网中选择自动上网方式，点击进去，保存。此时就应该能连通互联网了。<br><img src="http://osuzegp2h.bkt.clouddn.com/7.4.png" alt="images"></p>
+        <header class="post-header">
+            <div class="tag-tile">
+                
+                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
+            </div>
+            <h1 class="post-title"><a data-pjax href="/2017/07/11/flag/">Pwnable flag</a>
+            </h1>
 
+            <div class="post-meta">
+                Post on<span class="fa fa-clock-o"></span>
+                <time datetime="2017-07-11T02:29:16.000Z"
+                      itemprop="datePublished">2017-07-11</time>
+            </div>
+        </header>
+        <section class="post-excerpt">
+            <p>
+                
+                这是一道逆向不是pwn。下载之后先用PEiD看了一下并不是有效文件就直接用IDA打开了，发现，感觉这根本没法逆啊，不会做看了别人的writeup后发现这是用upx加壳过的。然后用strings查看了一下确实在最后两行有UPX。    
+用upx -d flag解压后拖进了IDA。    
+    
+
+                
+            </p>
+            
         </section>
-        <hr/>
-        <nav class="pagination" style="width:auto" role="pagination">
-            
-            <a data-pjax class="newer-posts" href="/2017/09/24/whctf-re-easyhook/">← Prev Post</a>
-            
-            <a class="share-button" data-original-title title>Share this Post</a>
-            
-            <a data-pjax class="older-posts" href="/2017/09/23/cmd1/">Next Post →</a>
-            
-        </nav>
-        <br/>
-        <br/>
-        <section id="comment">
-            <div id="comment-box"></div>
-        </section>
-
-
     </article>
+    
+    <nav class="pagination" role="pagination">
+        
+        <a data-pjax class="newer-posts" href="/archives/2017/page/4/">← Newer Posts</a>
+        
+        <span class="page-number">Page 5 of 5</span>
+        
+    </nav>
 </main>
 
 

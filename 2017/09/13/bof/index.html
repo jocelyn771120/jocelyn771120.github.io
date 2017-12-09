@@ -1,55 +1,346 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <title>Pwnable bof | Limpidity</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.png">
-    <link rel="stylesheet" href="/css/style.css">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Pwnable bof | Limpidity</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/component.css" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <meta name="generator" content="Limpidity">
+  <script src="http://static.duoshuo.com/embed.js"></script>
+  
+  
+  
+
+  
+
 </head>
-
 <body>
-<nav class="navbar">
-    <div class="layout">
-        <div class="content ">
-            
-            
-            <a href="/.">Home</a>
-            
-            
-            
-            <a href="/archives">Archive</a>
-            
-            
-        </div>
-    </div>
-</nav>
+<div class="container">
+    <div class="mp-pusher" id="mp-pusher">
+        <i id="scroll-up" class="fa fa-angle-up"></i>
+        <nav id="mp-menu" class="mp-menu">
+            <div class="mp-level">
+                <a data-pjax class="back-home" style="font-size: 20px" href="/"><h2 ><i class="fa fa-home"></i>
+                        Home</h2></a>
+                <ul class="first-level">
+                    <li>
+                        <a class="fa fa-archive" href="#"><i class="fa fa-angle-left">
+                            </i>&nbsp;&nbsp;Archive</a>
+                        <div class="mp-level page-list">
+                            <h2 ><i class="fa fa-archive"></i>
+                                Archive</h2>
+                            <a class="mp-back" href="#">back</a>
+                            <form id="search-form" action="">
+                                <input type="text" class="search search-archive" placeholder="Search.."/>
+                            </form>
+                            <ul>
+                                <div class="mp-scroll">
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/12/10/face/"></a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/12/07/CVE11882/"></a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/12/07/11882/"></a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/12/06/IOTsercuirty/">物联网安全现状分析</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/11/03/EIS2017/">EIS2017 ReverseMe</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/11/01/Angr/">Angr二进制分析框架</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/10/24/install-docker/">关于Win10下安装docker遇到的问题解决</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/10/22/rctf-babyflash/">RCTF Re babyflash</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/10/11/jarvisoj-re-softwaredecode/">JarvisOJ 软件密码破解</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/30/Jarvisoj-re-findkey/">JarvisOJ Re FindKey</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/24/whctf-re-easyhook/">WHCTF Easyhook</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/24/wifi/">极路由的锐捷认证配置</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/23/cmd1/">Pwnable Cmd1</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/uid/">关于Uid,Euid,Gid,Egid的理解</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/shellshock/">Pwnable Shellshock</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/passcode/">Pwnable Passcode</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/leg/">Pwnable Leg</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/jsstudy/">jsstudy</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/checksec/">缓冲区溢出的保护机制</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/09/13/bof/">Pwnable bof</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2017/07/11/flag/">Pwnable flag</a>
+                                </li>
+                                
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="fa fa-copy" href="#"><i class="fa fa-angle-left">
+                            </i>&nbsp;&nbsp;Categories</a>
 
-<main class="post">
-    <article>
-    <h1 class="article-title">
-        <a href="/2017/09/13/bof/">Pwnable bof</a>
-    </h1>
+                        <div class="mp-level page-list">
+                            <h2 ><i class="fa fa-copy"></i>
+                                Categories</h2>
+                            <a class="mp-back" href="#">back</a>
+                            <form id="search-form" action="">
+                                <input type="text" class="search search-category" placeholder="Search.."/>
+                            </form>
+                            <ul>
+                                <div class="mp-scroll">
+                                
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="fa fa-tags" href="#"><i class="fa fa-angle-left">
+                            </i>&nbsp;&nbsp;Tags</a>
+                        <div class="mp-level page-list">
+                            <h2 ><i class="fa fa-tags"></i>
+                                Tags</h2>
+                            <a class="mp-back" href="#">back</a>
+                            <form id="search-form" action="">
+                                <input type="text" class="search search-tag" placeholder="Search.."/>
+                            </form>
+                            <ul>
+                                <div class="mp-scroll">
+                                
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <li class="mp-pjax"><a class="fa fa-user" href="/about">&nbsp;&nbsp;&nbsp;About me</a></li>
+                    <li><a class="fa fa-github" href="#">&nbsp;&nbsp;&nbsp;Github</a></li>
 
-    <section class="article-meta">
-        <p class="article-date">September 13 2017</p>
-    </section>
+                </ul>
 
-    <section class="article-entry">
-        <p>bof.c<br><img src="http://osuzegp2h.bkt.clouddn.com/1.jpg" alt=""><br>在<code>gets</code>函数那行给了<code>smash me</code>，那肯定是从<code>gets</code>函数入手。<code>gets</code>函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。    </p>
+            </div>
+        </nav>
+        <div id="pjax">
+            <div class="pjax-hidden" style="display: none">
+                
+                    <a  data-pjax href="/2017/12/10/face/"></a>
+                
+                    <a  data-pjax href="/2017/12/07/CVE11882/"></a>
+                
+                    <a  data-pjax href="/2017/12/07/11882/"></a>
+                
+                    <a  data-pjax href="/2017/12/06/IOTsercuirty/">物联网安全现状分析</a>
+                
+                    <a  data-pjax href="/2017/11/03/EIS2017/">EIS2017 ReverseMe</a>
+                
+                    <a  data-pjax href="/2017/11/01/Angr/">Angr二进制分析框架</a>
+                
+                    <a  data-pjax href="/2017/10/24/install-docker/">关于Win10下安装docker遇到的问题解决</a>
+                
+                    <a  data-pjax href="/2017/10/22/rctf-babyflash/">RCTF Re babyflash</a>
+                
+                    <a  data-pjax href="/2017/10/11/jarvisoj-re-softwaredecode/">JarvisOJ 软件密码破解</a>
+                
+                    <a  data-pjax href="/2017/09/30/Jarvisoj-re-findkey/">JarvisOJ Re FindKey</a>
+                
+                    <a  data-pjax href="/2017/09/24/whctf-re-easyhook/">WHCTF Easyhook</a>
+                
+                    <a  data-pjax href="/2017/09/24/wifi/">极路由的锐捷认证配置</a>
+                
+                    <a  data-pjax href="/2017/09/23/cmd1/">Pwnable Cmd1</a>
+                
+                    <a  data-pjax href="/2017/09/13/uid/">关于Uid,Euid,Gid,Egid的理解</a>
+                
+                    <a  data-pjax href="/2017/09/13/shellshock/">Pwnable Shellshock</a>
+                
+                    <a  data-pjax href="/2017/09/13/passcode/">Pwnable Passcode</a>
+                
+                    <a  data-pjax href="/2017/09/13/leg/">Pwnable Leg</a>
+                
+                    <a  data-pjax href="/2017/09/13/jsstudy/">jsstudy</a>
+                
+                    <a  data-pjax href="/2017/09/13/checksec/">缓冲区溢出的保护机制</a>
+                
+                    <a  data-pjax href="/2017/09/13/bof/">Pwnable bof</a>
+                
+                    <a  data-pjax href="/2017/07/11/flag/">Pwnable flag</a>
+                
+                
+                
+                <a data-pjax class="fa fa-user" href="/about">&nbsp;&nbsp;&nbsp;About me</a>
+            </div>
+            <nav class="nexus">
+                <li  style="border-left: 1px solid #c6d0da;">
+                    <a id="trigger" href="#"><i class="fa fa-bars"></i></a>
+                </li>
+                <li ><a id="nexus-back" data-pjax href="/">Limpidity</a></li>
+                
+                <div id="nav-container">
+                    <div class="post-navbar" style="line-height: 63px;display:none">
+                        <li id="navbar-title"><a href="#">Pwnable bof</a></li>
+                        <li id="navbar-toc" style="border-left: none">
+                            <a style="padding-right: 15px">
+                                <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
+                            </a>
+                            <div class="hidden-box">
+                                <ul id="toc"></ul>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+                
+            </nav>
+
+            <div class="scroller">
+            <div class="scroller-inner">
+
+
+<!-- -->
+<!--<body class="post-template">-->
+<!---->
+  
+
+<main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">Pwnable bof</h1>
+
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2017-09-13T13:45:50.735Z"
+                              itemprop="datePublished">2017-09-13</time>
+                    </div>
+    </span>
+
+        <section class="post-content">
+            <p>bof.c<br><img src="http://osuzegp2h.bkt.clouddn.com/1.jpg" alt=""><br>在<code>gets</code>函数那行给了<code>smash me</code>，那肯定是从<code>gets</code>函数入手。<code>gets</code>函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。    </p>
 <p>源码里可以看到只要<code>key==0xcafebabe</code>就可以shell，<code>key</code>对于<code>func</code>函数来说是一个参数，而<code>overflowme</code>是一个局部变量。通过栈的结构我们可以知道，在栈上<code>key</code>比<code>overflowme</code>的地址高，所以我们通过<code>gets</code>输入的时候就可以输入一长串字符串去覆盖<code>key</code>地址上原来的东西从而执行<code>/bin/sh</code>。    </p>
 <p>所以我们需要知道<code>key</code>的位置和<code>overflowme</code>被写在哪里。    </p>
 <p><img src="http://osuzegp2h.bkt.clouddn.com/2.jpg" alt="image"><br>可以看到<code>key</code>的地址就是<code>0xbffff070</code>。    </p>
 <p><img src="http://osuzegp2h.bkt.clouddn.com/3.jpg" alt="image"><br>其实这里的<code>0x8(%ebp)</code>就是<code>key</code>的地址（因为<code>key</code>是参数，所以刚好在ebp和返回地址上面），再根据这个断点上面<code>lea -0x2c(%ebp),%eax</code>然后进入gets函数就可以判断出我们输入的<code>aaaa</code>写在<code>-0x2c(%ebp)</code>的位置。<br><img src="http://osuzegp2h.bkt.clouddn.com/4.jpg" alt="image"><br>看一下<code>eax</code>上的值就可以发现确实写在了<code>0xbffff03c</code>的位置。<br>所以就知道了两个位置，相减一下发现相差52个字节，所以需要填充的字符串长度是52个字节。也就是说我们输入的字符串的起始地址是<code>0xbffff03c</code>的位置，但是我们目标<code>key</code>的位置是<code>0xbffff070</code>，我们需要在中间填充52个字节的长度然后才能到达这个目标位置修改这个位置上的数据。    </p>
 <p><img src="http://osuzegp2h.bkt.clouddn.com/5.jpg" alt="image"></p>
 
-    </section>
-</article>
+        </section>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
+            
+            <a data-pjax class="newer-posts" href="/2017/09/13/checksec/">← Prev Post</a>
+            
+            <a class="share-button" data-original-title title>Share this Post</a>
+            
+            <a data-pjax class="older-posts" href="/2017/07/11/flag/">Next Post →</a>
+            
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
+        </section>
 
+
+    </article>
 </main>
-<footer class="footer">
-    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+
+
+  
+<footer class="site-footer">
+    
+    <div class="inner">
+        <section class="copyright"><a href="/"></a> &copy; Limpidity 2014</section>
+        <section class="poweredby">Published with <a target="_blank" href="http://hexo.io/">Hexo   </a> and Theme by <a target="_blank" href="https://github.com/yuche/hexo-theme-kael">Kael</a></section>
+    </div>
 </footer>
+</div>
+</div><!-- /scroller -->
+
+</div><!-- /pusher -->
+</div><!-- /container -->
+</div>
+
+<!-- Easter eggs -->
+
+<div class="egg animated">
+    <a id="close-button" href="#">X</a>
+    <div class="block">
+        <div class="loading">
+            <span class="ball1"></span>
+            <span class="ball2"></span>
+        </div>
+    </div>
+</div>
+  
+<script src="//cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    if (!window.jQuery) {
+        var script = document.createElement('script');
+        script.src = "/js/jquery.min.js";
+        document.body.appendChild(script);
+    }
+</script>
+<script type="text/javascript" src="/js/lib.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+
+
+
 
 </body>
 </html>
