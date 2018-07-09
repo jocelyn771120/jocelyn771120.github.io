@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2018/07/09/sctf/"></a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">July 09 2018</p>
+    </section>
+
+    <section class="article-entry">
+        <h1 id="2018SCTF"><a href="#2018SCTF" class="headerlink" title="2018SCTF"></a>2018SCTF</h1><h2 id="re-crackme"><a href="#re-crackme" class="headerlink" title="re_crackme"></a>re_crackme</h2><p><img src="./images/sctf01.png" alt="images">   </p>
+<p>tryit是一个natvie函数，native函数只要打开so文件查看函数名，就能定位出对应Java函数的具体位置。</p>
+<p>函数体为乱码，通过init动态调试。</p>
+<p>###调试过程###</p>
+<p>调试工具：gdbserver（因为android_server在x86模拟器上不能用）</p>
+<p>搭建环境：</p>
+<ul>
+<li>下载ndk之后将找到gdbserver之后push到/system/bin中，修改权限777</li>
+<li>实现端口转发    </li>
+<li>运行./gdbserver监听成功之后</li>
+<li>在cmd下运行gdb（ndk中自带gdb.exe)</li>
+</ul>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
