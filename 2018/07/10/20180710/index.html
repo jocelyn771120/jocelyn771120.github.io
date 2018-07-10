@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Angr学习 （二） | Limpidity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="layout">
+        <div class="content ">
+            
+            
+            <a href="/.">Home</a>
+            
+            
+            
+            <a href="/archives">Archive</a>
+            
+            
+        </div>
+    </div>
+</nav>
+
+<main class="post">
+    <article>
+    <h1 class="article-title">
+        <a href="/2018/07/10/20180710/">Angr学习 （二）</a>
+    </h1>
+
+    <section class="article-meta">
+        <p class="article-date">July 10 2018</p>
+    </section>
+
+    <section class="article-entry">
+        <h1 id="0x1-01-angr-avoid"><a href="#0x1-01-angr-avoid" class="headerlink" title="0x1 01_angr_avoid"></a>0x1 01_angr_avoid</h1><p>昨天做了第一题练手之后今天这题就可以照搬了。<br>刚开始可能空格出不来视图会提示太大，只要在options-&gt;general-&gt;graph中把nodes的行数往大里设置。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> angr,sys</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line"></div><div class="line">	pro=angr.Project(<span class="string">"./01_angr_avoid"</span>)</div><div class="line">	</div><div class="line">	entry_addr=pro.factory.entry_state()</div><div class="line">	</div><div class="line">	simulation=pro.factory.simgr(entry_addr)</div><div class="line">	</div><div class="line">	simulation.explore(find=<span class="number">0x080485E0</span>)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> simulation.found:</div><div class="line">		solution=simulation.found[<span class="number">0</span>]</div><div class="line">		<span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())</div><div class="line">		</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">print</span> <span class="string">"Error"</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">	</div><div class="line">	main()</div></pre></td></tr></table></figure>
+<p>跑一下就出来了，这逻辑都不用分析。    </p>
+<h1 id="0x2-02-angr-find-condition"><a href="#0x2-02-angr-find-condition" class="headerlink" title="0x2 02_angr_find_condition"></a>0x2 02_angr_find_condition</h1><p>explore()的参数相当于对到达路径起了约束作用。<br>find参数：程序会在找到对应find条件的states放在一个found list里面<br>avoid参数：与find类似，找到相应的states之后放在avoided lisit里面</p>
+<pre><code class="py"><span class="keyword">import</span> angr,sys
+
+<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>
+
+    pro=angr.Project(<span class="string">"./02_angr_find_condition"</span>)
+
+    entry_addr=pro.factory.entry_state()
+
+    simulation=pro.factory.simgr(entry_addr)
+
+    <span class="keyword">print</span> <span class="string">"!"</span>
+
+    <span class="function"><span class="keyword">def</span> <span class="title">success</span><span class="params">(state)</span>:</span>
+        stdout_res=state.posix.dumps(sys.stdout.fileno())
+        <span class="keyword">return</span> <span class="string">'Good Job.'</span> <span class="keyword">in</span> stdout_res
+
+    <span class="function"><span class="keyword">def</span> <span class="title">fail</span><span class="params">(state)</span>:</span>
+        stdout_res=state.posix.dumps(sys.stdout.fileno())
+        <span class="keyword">return</span> <span class="string">'Try again.'</span> <span class="keyword">in</span> stdout_res
+
+    simulation.explore(find=success,avoid=fail)
+
+    <span class="keyword">if</span> simulation.found:
+        solution=simulation.found[<span class="number">0</span>]
+        <span class="keyword">print</span> <span class="string">"1"</span>
+        <span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())
+
+    <span class="keyword">else</span>:
+        <span class="keyword">print</span> <span class="string">"Error"</span>
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+
+    main()
+</code></pre>
+
+    </section>
+</article>
+
+</main>
+<footer class="footer">
+    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
+</footer>
+
+</body>
+</html>
