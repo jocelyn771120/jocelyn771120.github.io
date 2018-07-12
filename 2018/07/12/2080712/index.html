@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Limpidity</title>
+    <title>Angr学习（三） | Limpidity</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="stylesheet" href="/css/style.css">
@@ -28,16 +28,15 @@
 <main class="post">
     <article>
     <h1 class="article-title">
-        <a href="/2018/07/11/20180711/"></a>
+        <a href="/2018/07/12/2080712/">Angr学习（三）</a>
     </h1>
 
     <section class="article-meta">
-        <p class="article-date">July 11 2018</p>
+        <p class="article-date">July 12 2018</p>
     </section>
 
     <section class="article-entry">
-        <hr>
-<h2 id="title-Angr学习（三）"><a href="#title-Angr学习（三）" class="headerlink" title="title: Angr学习（三）"></a>title: Angr学习（三）</h2><h1 id="0x4-04-angr-symbolic-stack"><a href="#0x4-04-angr-symbolic-stack" class="headerlink" title="0x4 04_angr_symbolic_stack"></a>0x4 04_angr_symbolic_stack</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807115.jpg" alt="images">     </p>
+        <h1 id="0x4-04-angr-symbolic-stack"><a href="#0x4-04-angr-symbolic-stack" class="headerlink" title="0x4 04_angr_symbolic_stack"></a>0x4 04_angr_symbolic_stack</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807115.jpg" alt="images">     </p>
 <p>这题和03不一样的地方是把输入放在了栈上。    </p>
 <p>分析一下这栈上的变化：</p>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="number">0x08048679</span> &lt;+<span class="number">0</span>&gt;:     <span class="keyword">push</span>   <span class="built_in">ebp</span></div><div class="line">   <span class="number">0x0804867a</span> &lt;+<span class="number">1</span>&gt;:     <span class="keyword">mov</span>    <span class="built_in">ebp</span>,<span class="built_in">esp</span></div><div class="line">   <span class="number">0x0804867c</span> &lt;+<span class="number">3</span>&gt;:     <span class="keyword">sub</span>    <span class="built_in">esp</span>,<span class="number">0x18</span></div><div class="line">   <span class="number">0x0804867f</span> &lt;+<span class="number">6</span>&gt;:     <span class="keyword">sub</span>    <span class="built_in">esp</span>,<span class="number">0x4</span></div><div class="line">   <span class="number">0x08048682</span> &lt;+<span class="number">9</span>&gt;:     <span class="keyword">lea</span>    <span class="built_in">eax</span>,[<span class="built_in">ebp</span>-<span class="number">0x10</span>]</div><div class="line">   <span class="number">0x08048685</span> &lt;+<span class="number">12</span>&gt;:    <span class="keyword">push</span>   <span class="built_in">eax</span></div><div class="line">   <span class="number">0x08048686</span> &lt;+<span class="number">13</span>&gt;:    <span class="keyword">lea</span>    <span class="built_in">eax</span>,[<span class="built_in">ebp</span>-<span class="number">0xc</span>]</div><div class="line">   <span class="number">0x08048689</span> &lt;+<span class="number">16</span>&gt;:    <span class="keyword">push</span>   <span class="built_in">eax</span></div><div class="line">   <span class="number">0x0804868a</span> &lt;+<span class="number">17</span>&gt;:    <span class="keyword">push</span>   <span class="number">0x80487b3</span></div><div class="line">   <span class="number">0x0804868f</span> &lt;+<span class="number">22</span>&gt;:    <span class="keyword">call</span>   <span class="number">0x8048370</span> &lt;__isoc99_scanf@plt&gt;</div></pre></td></tr></table></figure>
