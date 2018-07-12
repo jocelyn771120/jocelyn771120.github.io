@@ -1,41 +1,307 @@
 <!DOCTYPE html>
-<html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
 <head>
-    <meta charset="utf-8">
-    <title>WHCTF Easyhook | Limpidity</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.png">
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="做到一半没做出来的题目，看了下writeup，发现掉进坑里了，重做了一遍。     输入长度为19，开始随便输入19位字符串进行调试,本来以为是在sub_401240处但是调试的时候发现到此函数的时候输入的字符串已经经过加密了，就往上找断点。     发现经过WriteFile函数之后字符串已经经过加密了，跟进去进入00401000，再跟进去就是加密算法了。当时调试了下以为只要经过这个加密然后把加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WHCTF Easyhook">
+<meta property="og:url" content="http://yoursite.com/2017/09/24/whctf-re-easyhook/index.html">
+<meta property="og:site_name" content="Limpidity">
+<meta property="og:description" content="做到一半没做出来的题目，看了下writeup，发现掉进坑里了，重做了一遍。     输入长度为19，开始随便输入19位字符串进行调试,本来以为是在sub_401240处但是调试的时候发现到此函数的时候输入的字符串已经经过加密了，就往上找断点。     发现经过WriteFile函数之后字符串已经经过加密了，跟进去进入00401000，再跟进去就是加密算法了。当时调试了下以为只要经过这个加密然后把加">
+<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/8.1.png">
+<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/8.2.png">
+<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/8.3.png">
+<meta property="og:updated_time" content="2017-11-01T06:46:37.639Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WHCTF Easyhook">
+<meta name="twitter:description" content="做到一半没做出来的题目，看了下writeup，发现掉进坑里了，重做了一遍。     输入长度为19，开始随便输入19位字符串进行调试,本来以为是在sub_401240处但是调试的时候发现到此函数的时候输入的字符串已经经过加密了，就往上找断点。     发现经过WriteFile函数之后字符串已经经过加密了，跟进去进入00401000，再跟进去就是加密算法了。当时调试了下以为只要经过这个加密然后把加">
+<meta name="twitter:image" content="http://osuzegp2h.bkt.clouddn.com/8.1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/24/whctf-re-easyhook/"/>
+
+
+
+
+
+  <title>WHCTF Easyhook | Limpidity</title>
+  
+
+
+
+
+
+
+
+
 </head>
 
-<body>
-<nav class="navbar">
-    <div class="layout">
-        <div class="content ">
-            
-            
-            <a href="/.">Home</a>
-            
-            
-            
-            <a href="/archives">Archive</a>
-            
-            
-        </div>
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Limpidity</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
 </nav>
 
-<main class="post">
-    <article>
-    <h1 class="article-title">
-        <a href="/2017/09/24/whctf-re-easyhook/">WHCTF Easyhook</a>
-    </h1>
 
-    <section class="article-meta">
-        <p class="article-date">September 24 2017</p>
-    </section>
 
-    <section class="article-entry">
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/whctf-re-easyhook/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Limpidty He">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Limpidity">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">WHCTF Easyhook</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-24T20:40:54+08:00">
+                2017-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         <p>做到一半没做出来的题目，看了下writeup，发现掉进坑里了，重做了一遍。    </p>
 <p>输入长度为19，开始随便输入19位字符串进行调试,本来以为是在sub_401240处但是调试的时候发现到此函数的时候输入的字符串已经经过加密了，就往上找断点。<br><img src="http://osuzegp2h.bkt.clouddn.com/8.1.png" alt="images">    </p>
 <p>发现经过WriteFile函数之后字符串已经经过加密了，跟进去进入00401000，再跟进去就是加密算法了。<br><img src="http://osuzegp2h.bkt.clouddn.com/8.2.png" alt="images"><br>当时调试了下以为只要经过这个加密然后把加密后的字符串和sub_401240处”this_is_not_the_flag”进行比较就能得到flag，但是当时也很奇怪为啥sub_401240处的字符串是20位的，于是就去掉最后一个g去写脚本发现跑出来根本不是，就一直卡在这里，今天看了wp之后发现其实这个加密算法后面还有一个函数，当时根本没注意。<br><img src="http://osuzegp2h.bkt.clouddn.com/8.3.png" alt="images"><br>这个循环是用来检测加密之后的字符串和0040A030处的字符串是否一样，所以说其实真正要进行对比的是0040A030处的字符串而不是”this_is_not_the_fla”。所以脚本如下：    </p>
@@ -53,13 +319,334 @@ print &apos;&apos;.join(flag)
 </code></pre>
 <p>但是还要注意的是，第一个算法是从第二位开始的，第一位就是下面0040A030数据段中的第一个字母也就是a，所以合起来得到flag。</p>
 
-    </section>
-</article>
+      
+    </div>
+    
+    
+    
 
-</main>
-<footer class="footer">
-    <p>Powered by Moren YANG&nbsp;&nbsp;-&nbsp;&nbsp;ackn. <a href="https://hexo.io"> Hexo </a></p>
-</footer>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/24/wifi/" rel="next" title="极路由的锐捷认证配置">
+                <i class="fa fa-chevron-left"></i> 极路由的锐捷认证配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/30/Jarvisoj-re-findkey/" rel="prev" title="JarvisOJ Re FindKey">
+                JarvisOJ Re FindKey <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Limpidty He</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Limpidty He</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
 
 </body>
 </html>
