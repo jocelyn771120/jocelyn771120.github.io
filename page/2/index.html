@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -79,12 +79,15 @@
 
 
 
+<meta name="description" content="Working hard never goes wrong.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Limpidity">
+<meta property="og:title" content="洋葱">
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
-<meta property="og:site_name" content="Limpidity">
+<meta property="og:site_name" content="洋葱">
+<meta property="og:description" content="Working hard never goes wrong.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Limpidity">
+<meta name="twitter:title" content="洋葱">
+<meta name="twitter:description" content="Working hard never goes wrong.">
 
 
 
@@ -100,7 +103,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -120,7 +123,7 @@
 
 
 
-  <title>Limpidity</title>
+  <title>洋葱</title>
   
 
 
@@ -132,7 +135,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -151,12 +154,12 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Limpidity</span>
+        <span class="site-title">洋葱</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <p class="site-subtitle">A girl who likes to eat onions.</p>
       
   </div>
 
@@ -181,7 +184,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -191,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -228,16 +231,275 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/EIS2017/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/07/CVE11882/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
+      <meta itemprop="name" content="洋葱">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/07/CVE11882/" itemprop="url">关于Office漏洞小技巧</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T01:17:54+08:00">
+                Dec 7 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>CVE-2017-11882 exp小技巧</li>
+<li>CVE-2017-11882 尝试绕过杀软</li>
+</ul>
+<h3 id="CVE-2017-11882-小技巧"><a href="#CVE-2017-11882-小技巧" class="headerlink" title="CVE-2017-11882 小技巧"></a>CVE-2017-11882 小技巧</h3><p>最近一直在看这个洞，上周说要修改一下exp让它能够自定义编辑，后来发现github上有大佬已经更新了新的exp扩充了命令字节长度，并且可以做到自定义编辑。    </p>
+<pre><code class="py">objdata_hex_stream = OBJDATA_TEMPLATE.translate(<span class="keyword">None</span>, <span class="string">"\r\n"</span>)
+ole_data = objdata_hex_stream[:COMMAND_OFFSET] + hex_command + objdata_hex_stream[COMMAND_OFFSET + len(hex_command):]
+</code></pre>
+<p>exp中给定了OBJDATA_TEMPLATE这个固定的，然后在固定偏移插入payload。很早之前这个office自定义内容好像就已经被写成脚本了，只要用文本编辑器打开正常的rtf文档，复制{*\datastore之前的所有内容，替换到恶意文档里面{\object\objautlink\objupdate之前的内容就可以了。<br>所以我修改在exp上的内容如下：    </p>
+<pre><code class="py">rtf_content=rtf_content.split(<span class="string">"{\object\objemb\objupdate"</span>)[<span class="number">1</span>]+<span class="string">"{\object\objemb\objupdate"</span>
+x=f1.read()
+rtf_content=rtf_content+x.split(<span class="string">"{\*\datastore"</span>)[<span class="number">0</span>]
+output_file = open(args.output, <span class="string">"w"</span>)
+output_file.write(rtf_content)
+</code></pre>
+<p>所以只要根据这个技巧去修改任意相关exp就可以实现自定义编辑文档内容（什么内容吸引人就写什么内容）</p>
+<h3 id="CVE-2017-11882尝试绕过杀软姿势"><a href="#CVE-2017-11882尝试绕过杀软姿势" class="headerlink" title="CVE-2017-11882尝试绕过杀软姿势"></a>CVE-2017-11882尝试绕过杀软姿势</h3><p>因为这个洞的复现和利用都是用mshta，这个利用太多了所以被各大杀软重点关注了，基本上都会被拦截。网上看到的一种方法是替换注入字符，周末试了一下这种方法可以绕过腾讯的电脑管家，但是绕不过360。<br><a href="https://delcoding.github.io/2017/11/office-2017-11882-bypass/" target="_blank" rel="external">https://delcoding.github.io/2017/11/office-2017-11882-bypass/</a>    </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/06/IOTsercuirty/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/06/IOTsercuirty/" itemprop="url">物联网安全现状分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-06T01:42:34+08:00">
+                Dec 6 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="物联网安全现状"><a href="#物联网安全现状" class="headerlink" title="物联网安全现状"></a>物联网安全现状</h2><p>惠普安全研究院调查的10个最流行的物联网智能设备后发现几乎所有设备都存在高危漏洞，主要有五大安全隐患，一些关键数据如下：<br>80%的IOT设备存在隐私泄露或滥用风险；<br>80%的IOT设备允许使用弱密码；<br>70%的IOT设备与互联网或局域网的通讯没有加密；<br>60%的IOT设备的web 界面存在安全漏洞；<br>60%的IOT设备下载软件更新时没有使用加密；<br>读一下网上关于物联网安全的报道，我们会发现很多与安全相关的骇人听闻的事件，例如：汽车被黑客远程操纵而失控；摄像头被入侵而遭偷窥；联网的烤箱被恶意控制干烧；洗衣机空转；美国制造零日漏洞病毒，利用 “震网”攻入伊朗核电站，破坏伊朗核实施计划等，这些信息安全问题已经影响到了我们的人身、财产、生命安全乃至国家安全。<br>典型的物联网项目，从组成上来讲，至少有三部分：一是设备端，二是云端，三是监控端。三者之间遵照通信协议完成消息传输，物联网安全的威胁风险也主要来自这四部分。（摘自Freebuf物联网安全风险威胁报告）<br><strong>个人分析</strong>：我认为现在物联网安全问题或者说信息安全问题是非常严峻的。由于近几年来物联网才真正进入高速发展阶段，所以设备厂商本身对产品安全考虑和投入就是不足的；其次是技术结构自身弱点，虽然出现了越来越多针对物联网环境专用的芯片、协议等等，但是仍然存在大量联网设备采用传统IT架构作为技术框架；还有就是设备软件更新之后也会导致安全问题。从企业来说，一个企业放在第一位的绝对不是安全，业务远比安全重要得多，如果当一个企业赚得远比亏得多得时候，他们绝对会选择放弃考虑因为安全问题而亏损掉的那一部分。不仅企业没有重视，普通消费者对于安全这个概念也有欠缺。企业没有即使更新固件或者消费者没有即使更新补丁都有可能导致黑客有可乘之机，所以不仅消费者要培养这个意识，还需要企业尽可能降低因为网络攻击或者其他安全因素而造成业务受影响的安全风险。    </p>
+<h2 id="收集并分析物联网漏洞"><a href="#收集并分析物联网漏洞" class="headerlink" title="收集并分析物联网漏洞"></a>收集并分析物联网漏洞</h2><p>防火墙：<br>CNVD-2017-34919：Cisco Umbrella Insights Virtual Appliances本地权限提升漏洞<br>CNVD-2016-00170：Fortigate防火墙存在ssh认证“后门”漏洞<br>CNVD-2016-00929：Cisco ASA Software IKE密钥交换协议缓冲区溢出漏洞<br>网关设备：<br>CNVD-2016-05257：Pulse Secure Desktop Client权限提升漏洞<br>CNVD-2016-09983：格尔安全认证网关系统存在多处命令执行漏洞<br>路由器设备：<br>CNVD-2016-12093：网件Netgear多款路由器存在任意命令注入漏洞<br>网络摄像头：<br>CNVD-2017-02778：Wireless IP Camera (P2P) WIFICAM ‘Cloud’功能设计缺陷漏洞<br>CNVD-2017-34270：Foscam IP Video Camera缓冲区溢出漏洞<br>CNVD-2016-11973：多款Sony IPELA ENGINE IP Cameras存在后门漏洞<br>CNVD-2016-09382：Android NVIDIA摄像头驱动程序权限获取漏洞<br>手机设备：<br>CNVD-2017-34931：Cisco IP Phone 8800系列debug界面命令注入漏洞<br>CNVD-2017-34798：Huawei Nova 2 Bastet驱动权限提升漏洞<br>CNVD-2016-04723：Android MediaTek GPS驱动提权漏洞<br>CNVD-2016-11347：多款mtk平台手机广升FOTA服务存在system权限提升漏洞（魅魔漏洞）<br>其他设备：<br>CNVD-2016-00801：Lexmark打印机竞争条件漏洞    </p>
+<h2 id="物联网的攻击面"><a href="#物联网的攻击面" class="headerlink" title="物联网的攻击面"></a>物联网的攻击面</h2><p>可以把物联网的攻击面分成四类：移动端、云端、通信层面、设备层面。<br><strong>1、    移动端攻击面:</strong><br>a)    存储介质<br>b)    认证方式<br>c)    加密手段<br>d)    通信方式<br>e)    原生移动端系统漏洞<br><strong>2、    云端攻击面</strong><br>a)    存储介质<br>b)    认证方式<br>c)    加密手段<br>d)    通信方式<br>e)    APIs接口<br>f)    原生Web端和云端架构漏洞<br><strong>3、    通信方式攻击面</strong><br>a)    认证方式<br>b)    加密手段<br>c)    偏离协议标准<br>d)    协议实现异常<br><strong>4、    硬件设备攻击面</strong><br>a)    存储介质<br>b)    认证方式<br>c)    加密手段<br>d)    通信方式<br>e)    感应接口<br>f)    外设接口<br>g)    硬件接口<br>h)    人机交互接口    </p>
+<h2 id="物联网设备的攻击手段"><a href="#物联网设备的攻击手段" class="headerlink" title="物联网设备的攻击手段"></a>物联网设备的攻击手段</h2><p>1、僵尸网络：很多设备由于缺乏自我安全保护能力而成为僵尸网络，由物联网设备打造的僵尸网络被叫做ThingBots，他们通常在互联网上被激活，授权之后可以自由发送可识别的数据。<br>2、中间人攻击：中间人的概念是攻击者（黑客）在两个独立系统中间，进行安全数据（密钥）窃取与破坏的过程。这是一个十分危险的攻击，主要是因为在两个独立终端之间，分别对两个终端进行证书欺骗，让通信终端认为他们的交流是直接并且安全的。IOT行业中有多个中间人攻击的案例，从工业工控、机器人到车联网，只要存在互联互通都有相应的中间人攻击的风险的存在。<br>3、身份认证： 身份窃取的主要方式就是收集数据——只要足够耐心，就会有很多发现。互联网上的一些数据，系统内部的探针，甚至一些健身、跑步、健康数据，如果有的话，智能电表、冰箱、电视包括品牌、芯片等数据都可以拿来运用。会有数据分析人员对这个人的身份做一次全方面的评测。所以说，关于用户身份的数据越多，身份盗窃就越容易。<br>4、社会工程学：攻击者（黑客）寻求的信息可能会有所不同，但当某个人成为目标，攻击者通常会主动针对此人寻找其公开或被泄露在互联网上的关键信息，他们会通过获取到的个人密码与银行信息，去测试个人其他账户的密码是否相同。有时，黑客甚至与黑产人员勾结，通过量商与黑产渠道，下发恶意应用到用户主机上去收集关键信息。一般来说，社会工程学的黑客行为是通过网络与钓鱼等媒介完成的，但是事实上近几年的社会工程学中社工库（一种收集用户隐私的数据库），更多的是公司内部数据运维人员的泄露造成的。<br>5、拒绝服务：拒绝服务（DoS）攻击发生后IOT设备会停止或部分停止运作。虽然设备停止工作的原因有很多，但是如果是恶意行为造成的话，一般都是指的设备的工作量过载而无法应付正常工作行为的情况。    </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/03/EIS2017/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
     </span>
 
     
@@ -257,10 +519,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-03T00:58:49+08:00">
-                2017-11-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T00:58:49+08:00">
+                Nov 3 2017
               </time>
             
 
@@ -351,13 +613,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/01/Angr/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
+      <meta itemprop="name" content="洋葱">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
+      <meta itemprop="name" content="洋葱">
     </span>
 
     
@@ -377,10 +639,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-01T14:32:51+08:00">
-                2017-11-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-01T14:32:51+08:00">
+                Nov 1 2017
               </time>
             
 
@@ -502,13 +764,13 @@ print sm.found[-1].posix.dumps(1)
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/24/install-docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
+      <meta itemprop="name" content="洋葱">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
+      <meta itemprop="name" content="洋葱">
     </span>
 
     
@@ -528,10 +790,10 @@ print sm.found[-1].posix.dumps(1)
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-24T20:52:21+08:00">
-                2017-10-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T20:52:21+08:00">
+                Oct 24 2017
               </time>
             
 
@@ -625,13 +887,13 @@ print sm.found[-1].posix.dumps(1)
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/22/rctf-babyflash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
+      <meta itemprop="name" content="洋葱">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
+      <meta itemprop="name" content="洋葱">
     </span>
 
     
@@ -651,10 +913,10 @@ print sm.found[-1].posix.dumps(1)
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-22T15:15:29+08:00">
-                2017-10-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T15:15:29+08:00">
+                Oct 22 2017
               </time>
             
 
@@ -750,13 +1012,13 @@ print sm.found[-1].posix.dumps(1)
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/11/jarvisoj-re-softwaredecode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
+      <meta itemprop="name" content="洋葱">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
+      <meta itemprop="name" content="洋葱">
     </span>
 
     
@@ -776,10 +1038,10 @@ print sm.found[-1].posix.dumps(1)
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-11T11:02:46+08:00">
-                2017-10-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-11T11:02:46+08:00">
+                Oct 11 2017
               </time>
             
 
@@ -860,263 +1122,6 @@ print sm.found[-1].posix.dumps(1)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/30/Jarvisoj-re-findkey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/30/Jarvisoj-re-findkey/" itemprop="url">JarvisOJ Re FindKey</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-30T19:47:55+08:00">
-                2017-09-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>下载下来的文件不知道是啥格式的，用file查看发现是pyc。<br><img src="http://osuzegp2h.bkt.clouddn.com/9.1.jpg" alt="images"></p>
-<p>用python在线反编译工具：<a href="http://tool.lu/pyc/反编译一下得到以下代码：" target="_blank" rel="external">http://tool.lu/pyc/反编译一下得到以下代码：</a><br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># encoding: utf-8</span></div><div class="line"><span class="comment"># 访问 http://tool.lu/pyc/ 查看更多信息</span></div><div class="line"><span class="keyword">import</span> sys</div><div class="line">lookup=[<span class="number">196</span>,<span class="number">153</span>,<span class="number">149</span>,<span class="number">206</span>,<span class="number">17</span>,<span class="number">221</span>,<span class="number">10</span>,<span class="number">217</span>,<span class="number">167</span>,<span class="number">18</span>,<span class="number">36</span>,<span class="number">135</span>,<span class="number">103</span>,<span class="number">61</span>,<span class="number">111</span>,<span class="number">31</span>,<span class="number">92</span>,<span class="number">152</span>,<span class="number">21</span>,<span class="number">228</span>,<span class="number">105</span>,<span class="number">191</span>,<span class="number">173</span>,<span class="number">41</span>,<span class="number">2</span>,<span class="number">245</span>,<span class="number">23</span>,<span class="number">144</span>,<span class="number">1</span>,<span class="number">246</span>,<span class="number">89</span>,<span class="number">178</span>,<span class="number">182</span>,<span class="number">119</span>,<span class="number">38</span>,<span class="number">85</span>,<span class="number">48</span>,<span class="number">226</span>,<span class="number">165</span>,<span class="number">241</span>,<span class="number">166</span>,<span class="number">214</span>,<span class="number">71</span>,<span class="number">90</span>,<span class="number">151</span>,<span class="number">3</span>,<span class="number">109</span>,<span class="number">169</span>,<span class="number">150</span>,<span class="number">224</span>,<span class="number">69</span>,<span class="number">156</span>,<span class="number">158</span>,<span class="number">57</span>,<span class="number">181</span>,<span class="number">29</span>,<span class="number">200</span>,<span class="number">37</span>,<span class="number">51</span>,<span class="number">252</span>,<span class="number">227</span>,<span class="number">93</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">66</span>,<span class="number">80</span>,<span class="number">170</span>,<span class="number">77</span>,<span class="number">49</span>,<span class="number">177</span>,<span class="number">81</span>,<span class="number">94</span>,<span class="number">202</span>,<span class="number">107</span>,<span class="number">25</span>,<span class="number">73</span>,<span class="number">148</span>,<span class="number">98</span>,<span class="number">129</span>,<span class="number">231</span>,<span class="number">212</span>,<span class="number">14</span>,<span class="number">84</span>,<span class="number">121</span>,<span class="number">174</span>,<span class="number">171</span>,<span class="number">64</span>,<span class="number">180</span>,<span class="number">233</span>,<span class="number">74</span>,<span class="number">140</span>,<span class="number">242</span>,<span class="number">75</span>,<span class="number">104</span>,<span class="number">253</span>,<span class="number">44</span>,<span class="number">39</span>,<span class="number">87</span>,<span class="number">86</span>,<span class="number">27</span>,<span class="number">68</span>,<span class="number">22</span>,<span class="number">55</span>,<span class="number">76</span>,<span class="number">35</span>,<span class="number">248</span>,<span class="number">96</span>,<span class="number">5</span>,<span class="number">56</span>,<span class="number">20</span>,<span class="number">161</span>,<span class="number">213</span>,<span class="number">238</span>,<span class="number">220</span>,<span class="number">72</span>,<span class="number">100</span>,<span class="number">247</span>,<span class="number">8</span>,<span class="number">63</span>,<span class="number">249</span>,<span class="number">145</span>,<span class="number">243</span>,<span class="number">155</span>,<span class="number">222</span>,<span class="number">122</span>,<span class="number">32</span>,<span class="number">43</span>,<span class="number">186</span>,<span class="number">0</span>,<span class="number">102</span>,<span class="number">216</span>,<span class="number">126</span>,<span class="number">15</span>,<span class="number">42</span>,<span class="number">115</span>,<span class="number">138</span>,<span class="number">240</span>,<span class="number">147</span>,<span class="number">229</span>,<span class="number">204</span>,<span class="number">117</span>,<span class="number">223</span>,<span class="number">141</span>,<span class="number">159</span>,<span class="number">131</span>,<span class="number">232</span>,<span class="number">124</span>,<span class="number">254</span>,<span class="number">60</span>,<span class="number">116</span>,<span class="number">46</span>,<span class="number">113</span>,<span class="number">79</span>,<span class="number">16</span>,<span class="number">128</span>,<span class="number">6</span>,<span class="number">251</span>,<span class="number">40</span>,<span class="number">205</span>,<span class="number">137</span>,<span class="number">199</span>,<span class="number">83</span>,<span class="number">54</span>,<span class="number">188</span>,<span class="number">19</span>,<span class="number">184</span>,<span class="number">201</span>,<span class="number">110</span>,<span class="number">255</span>,<span class="number">26</span>,<span class="number">91</span>,<span class="number">211</span>,<span class="number">132</span>,<span class="number">160</span>,<span class="number">168</span>,<span class="number">154</span>,<span class="number">185</span>,<span class="number">183</span>,<span class="number">244</span>,<span class="number">78</span>,<span class="number">33</span>,<span class="number">123</span>,<span class="number">28</span>,<span class="number">59</span>,<span class="number">12</span>,<span class="number">210</span>,<span class="number">218</span>,<span class="number">47</span>,<span class="number">163</span>,<span class="number">215</span>,<span class="number">209</span>,<span class="number">108</span>,<span class="number">235</span>,<span class="number">237</span>,<span class="number">118</span>,<span class="number">101</span>,<span class="number">24</span>,<span class="number">234</span>,<span class="number">106</span>,<span class="number">143</span>,<span class="number">88</span>,<span class="number">9</span>,<span class="number">136</span>,<span class="number">95</span>,<span class="number">30</span>,<span class="number">193</span>,<span class="number">176</span>,<span class="number">225</span>,<span class="number">198</span>,<span class="number">197</span>,<span class="number">194</span>,<span class="number">239</span>,<span class="number">134</span>,<span class="number">162</span>,<span class="number">192</span>,<span class="number">11</span>,<span class="number">70</span>,<span class="number">58</span>,<span class="number">187</span>,<span class="number">50</span>,<span class="number">67</span>,<span class="number">236</span>,<span class="number">230</span>,<span class="number">13</span>,<span class="number">99</span>,<span class="number">190</span>,<span class="number">208</span>,<span class="number">207</span>,<span class="number">7</span>,<span class="number">53</span>,<span class="number">219</span>,<span class="number">203</span>,<span class="number">62</span>,<span class="number">114</span>,<span class="number">127</span>,<span class="number">125</span>,<span class="number">164</span>,<span class="number">179</span>,<span class="number">175</span>,<span class="number">112</span>,<span class="number">172</span>,<span class="number">250</span>,<span class="number">133</span>,<span class="number">130</span>,<span class="number">52</span>,<span class="number">189</span>,<span class="number">97</span>,<span class="number">146</span>,<span class="number">34</span>,<span class="number">157</span>,<span class="number">120</span>,<span class="number">195</span>,<span class="number">45</span>,<span class="number">4</span>,<span class="number">142</span>,<span class="number">139</span>]</div><div class="line">pwda = [<span class="number">188</span>,<span class="number">155</span>,<span class="number">11</span>,<span class="number">58</span>,<span class="number">251</span>,<span class="number">208</span>,<span class="number">204</span>,<span class="number">202</span>,<span class="number">150</span>,<span class="number">120</span>,<span class="number">206</span>,<span class="number">237</span>,<span class="number">114</span>,<span class="number">92</span>,<span class="number">126</span>,<span class="number">6</span>,<span class="number">42</span>]</div><div class="line">pwdb = [<span class="number">53</span>,<span class="number">222</span>,<span class="number">230</span>,<span class="number">35</span>,<span class="number">67</span>,<span class="number">248</span>,<span class="number">226</span>,<span class="number">216</span>,<span class="number">17</span>,<span class="number">209</span>,<span class="number">32</span>,<span class="number">2</span>,<span class="number">181</span>,<span class="number">200</span>,<span class="number">171</span>,<span class="number">60</span>,<span class="number">108</span>]</div><div class="line">flag = raw_input(<span class="string">'Input your Key:'</span>).strip()</div><div class="line"><span class="keyword">if</span> len(flag) != <span class="number">17</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">'Wrong Key!!'</span></div><div class="line">    sys.exit(<span class="number">1</span>)</div><div class="line">flag = flag[::<span class="number">-1</span>]</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(flag)):</div><div class="line">    <span class="keyword">if</span> ord(flag[i]) + pwda[i] &amp; <span class="number">255</span> != lookup[i + pwdb[i]]:</div><div class="line">        <span class="keyword">print</span> <span class="string">'Wrong Key!!'</span></div><div class="line">        sys.exit(<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">'Congratulations!!'</span></div></pre></td></tr></table></figure></p>
-<p>爆破一下得到flag。<br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">lookup=[<span class="number">196</span>,<span class="number">153</span>,<span class="number">149</span>,<span class="number">206</span>,<span class="number">17</span>,<span class="number">221</span>,<span class="number">10</span>,<span class="number">217</span>,<span class="number">167</span>,<span class="number">18</span>,<span class="number">36</span>,<span class="number">135</span>,<span class="number">103</span>,<span class="number">61</span>,<span class="number">111</span>,<span class="number">31</span>,<span class="number">92</span>,<span class="number">152</span>,<span class="number">21</span>,<span class="number">228</span>,<span class="number">105</span>,<span class="number">191</span>,<span class="number">173</span>,<span class="number">41</span>,<span class="number">2</span>,<span class="number">245</span>,<span class="number">23</span>,<span class="number">144</span>,<span class="number">1</span>,<span class="number">246</span>,<span class="number">89</span>,<span class="number">178</span>,<span class="number">182</span>,<span class="number">119</span>,<span class="number">38</span>,<span class="number">85</span>,<span class="number">48</span>,<span class="number">226</span>,<span class="number">165</span>,<span class="number">241</span>,<span class="number">166</span>,<span class="number">214</span>,<span class="number">71</span>,<span class="number">90</span>,<span class="number">151</span>,<span class="number">3</span>,<span class="number">109</span>,<span class="number">169</span>,<span class="number">150</span>,<span class="number">224</span>,<span class="number">69</span>,<span class="number">156</span>,<span class="number">158</span>,<span class="number">57</span>,<span class="number">181</span>,<span class="number">29</span>,<span class="number">200</span>,<span class="number">37</span>,<span class="number">51</span>,<span class="number">252</span>,<span class="number">227</span>,<span class="number">93</span>,<span class="number">65</span>,<span class="number">82</span>,<span class="number">66</span>,<span class="number">80</span>,<span class="number">170</span>,<span class="number">77</span>,<span class="number">49</span>,<span class="number">177</span>,<span class="number">81</span>,<span class="number">94</span>,<span class="number">202</span>,<span class="number">107</span>,<span class="number">25</span>,<span class="number">73</span>,<span class="number">148</span>,<span class="number">98</span>,<span class="number">129</span>,<span class="number">231</span>,<span class="number">212</span>,<span class="number">14</span>,<span class="number">84</span>,<span class="number">121</span>,<span class="number">174</span>,<span class="number">171</span>,<span class="number">64</span>,<span class="number">180</span>,<span class="number">233</span>,<span class="number">74</span>,<span class="number">140</span>,<span class="number">242</span>,<span class="number">75</span>,<span class="number">104</span>,<span class="number">253</span>,<span class="number">44</span>,<span class="number">39</span>,<span class="number">87</span>,<span class="number">86</span>,<span class="number">27</span>,<span class="number">68</span>,<span class="number">22</span>,<span class="number">55</span>,<span class="number">76</span>,<span class="number">35</span>,<span class="number">248</span>,<span class="number">96</span>,<span class="number">5</span>,<span class="number">56</span>,<span class="number">20</span>,<span class="number">161</span>,<span class="number">213</span>,<span class="number">238</span>,<span class="number">220</span>,<span class="number">72</span>,<span class="number">100</span>,<span class="number">247</span>,<span class="number">8</span>,<span class="number">63</span>,<span class="number">249</span>,<span class="number">145</span>,<span class="number">243</span>,<span class="number">155</span>,<span class="number">222</span>,<span class="number">122</span>,<span class="number">32</span>,<span class="number">43</span>,<span class="number">186</span>,<span class="number">0</span>,<span class="number">102</span>,<span class="number">216</span>,<span class="number">126</span>,<span class="number">15</span>,<span class="number">42</span>,<span class="number">115</span>,<span class="number">138</span>,<span class="number">240</span>,<span class="number">147</span>,<span class="number">229</span>,<span class="number">204</span>,<span class="number">117</span>,<span class="number">223</span>,<span class="number">141</span>,<span class="number">159</span>,<span class="number">131</span>,<span class="number">232</span>,<span class="number">124</span>,<span class="number">254</span>,<span class="number">60</span>,<span class="number">116</span>,<span class="number">46</span>,<span class="number">113</span>,<span class="number">79</span>,<span class="number">16</span>,<span class="number">128</span>,<span class="number">6</span>,<span class="number">251</span>,<span class="number">40</span>,<span class="number">205</span>,<span class="number">137</span>,<span class="number">199</span>,<span class="number">83</span>,<span class="number">54</span>,<span class="number">188</span>,<span class="number">19</span>,<span class="number">184</span>,<span class="number">201</span>,<span class="number">110</span>,<span class="number">255</span>,<span class="number">26</span>,<span class="number">91</span>,<span class="number">211</span>,<span class="number">132</span>,<span class="number">160</span>,<span class="number">168</span>,<span class="number">154</span>,<span class="number">185</span>,<span class="number">183</span>,<span class="number">244</span>,<span class="number">78</span>,<span class="number">33</span>,<span class="number">123</span>,<span class="number">28</span>,<span class="number">59</span>,<span class="number">12</span>,<span class="number">210</span>,<span class="number">218</span>,<span class="number">47</span>,<span class="number">163</span>,<span class="number">215</span>,<span class="number">209</span>,<span class="number">108</span>,<span class="number">235</span>,<span class="number">237</span>,<span class="number">118</span>,<span class="number">101</span>,<span class="number">24</span>,<span class="number">234</span>,<span class="number">106</span>,<span class="number">143</span>,<span class="number">88</span>,<span class="number">9</span>,<span class="number">136</span>,<span class="number">95</span>,<span class="number">30</span>,<span class="number">193</span>,<span class="number">176</span>,<span class="number">225</span>,<span class="number">198</span>,<span class="number">197</span>,<span class="number">194</span>,<span class="number">239</span>,<span class="number">134</span>,<span class="number">162</span>,<span class="number">192</span>,<span class="number">11</span>,<span class="number">70</span>,<span class="number">58</span>,<span class="number">187</span>,<span class="number">50</span>,<span class="number">67</span>,<span class="number">236</span>,<span class="number">230</span>,<span class="number">13</span>,<span class="number">99</span>,<span class="number">190</span>,<span class="number">208</span>,<span class="number">207</span>,<span class="number">7</span>,<span class="number">53</span>,<span class="number">219</span>,<span class="number">203</span>,<span class="number">62</span>,<span class="number">114</span>,<span class="number">127</span>,<span class="number">125</span>,<span class="number">164</span>,<span class="number">179</span>,<span class="number">175</span>,<span class="number">112</span>,<span class="number">172</span>,<span class="number">250</span>,<span class="number">133</span>,<span class="number">130</span>,<span class="number">52</span>,<span class="number">189</span>,<span class="number">97</span>,<span class="number">146</span>,<span class="number">34</span>,<span class="number">157</span>,<span class="number">120</span>,<span class="number">195</span>,<span class="number">45</span>,<span class="number">4</span>,<span class="number">142</span>,<span class="number">139</span>]</div><div class="line">pwda = [<span class="number">188</span>,<span class="number">155</span>,<span class="number">11</span>,<span class="number">58</span>,<span class="number">251</span>,<span class="number">208</span>,<span class="number">204</span>,<span class="number">202</span>,<span class="number">150</span>,<span class="number">120</span>,<span class="number">206</span>,<span class="number">237</span>,<span class="number">114</span>,<span class="number">92</span>,<span class="number">126</span>,<span class="number">6</span>,<span class="number">42</span>]</div><div class="line">pwdb = [<span class="number">53</span>,<span class="number">222</span>,<span class="number">230</span>,<span class="number">35</span>,<span class="number">67</span>,<span class="number">248</span>,<span class="number">226</span>,<span class="number">216</span>,<span class="number">17</span>,<span class="number">209</span>,<span class="number">32</span>,<span class="number">2</span>,<span class="number">181</span>,<span class="number">200</span>,<span class="number">171</span>,<span class="number">60</span>,<span class="number">108</span>]</div><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="keyword">import</span> string </div><div class="line">x=string.printable</div><div class="line">flag=<span class="string">''</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">17</span>):</div><div class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> x:</div><div class="line">		<span class="keyword">if</span> ord(j)+pwda[i]&amp;<span class="number">255</span>==lookup[i+pwdb[i]]:</div><div class="line">			flag+=j</div><div class="line">			<span class="keyword">break</span></div><div class="line"><span class="keyword">print</span> flag[::<span class="number">-1</span>]</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/24/whctf-re-easyhook/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Limpidty He">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Limpidity">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/24/whctf-re-easyhook/" itemprop="url">WHCTF Easyhook</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-24T20:40:54+08:00">
-                2017-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>做到一半没做出来的题目，看了下writeup，发现掉进坑里了，重做了一遍。    </p>
-<p>输入长度为19，开始随便输入19位字符串进行调试,本来以为是在sub_401240处但是调试的时候发现到此函数的时候输入的字符串已经经过加密了，就往上找断点。<br><img src="http://osuzegp2h.bkt.clouddn.com/8.1.png" alt="images">    </p>
-<p>发现经过WriteFile函数之后字符串已经经过加密了，跟进去进入00401000，再跟进去就是加密算法了。<br><img src="http://osuzegp2h.bkt.clouddn.com/8.2.png" alt="images"><br>当时调试了下以为只要经过这个加密然后把加密后的字符串和sub_401240处”this_is_not_the_flag”进行比较就能得到flag，但是当时也很奇怪为啥sub_401240处的字符串是20位的，于是就去掉最后一个g去写脚本发现跑出来根本不是，就一直卡在这里，今天看了wp之后发现其实这个加密算法后面还有一个函数，当时根本没注意。<br><img src="http://osuzegp2h.bkt.clouddn.com/8.3.png" alt="images"><br>这个循环是用来检测加密之后的字符串和0040A030处的字符串是否一样，所以说其实真正要进行对比的是0040A030处的字符串而不是”this_is_not_the_fla”。所以脚本如下：    </p>
-<pre><code class="flag.py">s=&quot;ajygkFm.\x7f_~-SV{8mLn&quot;    
-flag=[&apos;&apos;for i in range(19)]    
-for i in range(18,-1,-1):
-    if i%2 !=0:
-        flag[i] = chr((ord(s[i]) ^ i) + i)
-    else:
-        if(i&gt;1):
-            flag[i] = chr(ord(s[i-2]) ^ (i-2))
-
-flag[18] = chr(ord(s[18]) ^ 0x13)
-print &apos;&apos;.join(flag)
-</code></pre>
-<p>但是还要注意的是，第一个算法是从第二位开始的，第一位就是下面0040A030数据段中的第一个字母也就是a，所以合起来得到flag。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1156,8 +1161,8 @@ print &apos;&apos;.join(flag)
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">Limpidty He</p>
-              <p class="site-description motion-element" itemprop="description"></p>
+              <p class="site-author-name" itemprop="name">洋葱</p>
+              <p class="site-description motion-element" itemprop="description">Working hard never goes wrong.</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1167,8 +1172,8 @@ print &apos;&apos;.join(flag)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
@@ -1212,13 +1217,13 @@ print &apos;&apos;.join(flag)
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Limpidty He</span>
+  <span class="author" itemprop="copyrightHolder">洋葱</span>
 
   
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -1226,7 +1231,7 @@ print &apos;&apos;.join(flag)
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
 
 
 
