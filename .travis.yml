@@ -1,0 +1,13 @@
+language: node_js
+node_js: --lts
+before_script:
+  - git config user.name "jocelyn771120"
+  - git config user.email "jocelyn771120@gmail.com"
+  - sed -i'' "s~https://github.com/jocelyn771120/jocelyn771120.github.io~https://${dd47dbc493333aaae397abaf2001064015618ebb}@github.com/jocelyn771120/jocelyn771120.github.io.git~" _config.yml
+script:
+  - hexo g
+after_success:
+  - hexo d
+branches:
+    only:
+    - master
