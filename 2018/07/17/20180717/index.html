@@ -79,22 +79,16 @@
 
 
 
-<meta name="description" content="bof.c在gets函数那行给了smash me，那肯定是从gets函数入手。gets函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。     源码里可以看到只要key==0xcafebabe就可以shell，key对于func函数来说是一个参数，而overflo">
+<meta name="description" content="0x7 07_angr_symbolic_file光从题目上来讲简单到爆炸，但是通过符号执行来做的话，我花了一天的时间去找了资料看linux文件系统，从来没仔细了解过一些底层的原理机制之类的东西（上课都花在睡觉和翘课上了），学习一下真的会对计算机再稍微了解一些。    文件概述 一切皆是文件是Unix/Linux的基本哲学之一，不仅普通的文件，目录、字符设备、块设备、套接字等在Unix/Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pwnable bof">
-<meta property="og:url" content="http://yoursite.com/2017/09/13/bof/index.html">
+<meta property="og:title" content="Angr学习（六）">
+<meta property="og:url" content="http://yoursite.com/2018/07/17/20180717/index.html">
 <meta property="og:site_name" content="洋葱">
-<meta property="og:description" content="bof.c在gets函数那行给了smash me，那肯定是从gets函数入手。gets函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。     源码里可以看到只要key==0xcafebabe就可以shell，key对于func函数来说是一个参数，而overflo">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/1.jpg">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/2.jpg">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.jpg">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/4.jpg">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/5.jpg">
-<meta property="og:updated_time" content="2017-07-10T05:08:42.000Z">
+<meta property="og:description" content="0x7 07_angr_symbolic_file光从题目上来讲简单到爆炸，但是通过符号执行来做的话，我花了一天的时间去找了资料看linux文件系统，从来没仔细了解过一些底层的原理机制之类的东西（上课都花在睡觉和翘课上了），学习一下真的会对计算机再稍微了解一些。    文件概述 一切皆是文件是Unix/Linux的基本哲学之一，不仅普通的文件，目录、字符设备、块设备、套接字等在Unix/Linux">
+<meta property="og:updated_time" content="2018-07-18T05:55:50.795Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pwnable bof">
-<meta name="twitter:description" content="bof.c在gets函数那行给了smash me，那肯定是从gets函数入手。gets函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。     源码里可以看到只要key==0xcafebabe就可以shell，key对于func函数来说是一个参数，而overflo">
-<meta name="twitter:image" content="http://osuzegp2h.bkt.clouddn.com/1.jpg">
+<meta name="twitter:title" content="Angr学习（六）">
+<meta name="twitter:description" content="0x7 07_angr_symbolic_file光从题目上来讲简单到爆炸，但是通过符号执行来做的话，我花了一天的时间去找了资料看linux文件系统，从来没仔细了解过一些底层的原理机制之类的东西（上课都花在睡觉和翘课上了），学习一下真的会对计算机再稍微了解一些。    文件概述 一切皆是文件是Unix/Linux的基本哲学之一，不仅普通的文件，目录、字符设备、块设备、套接字等在Unix/Linux">
 
 
 
@@ -124,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/13/bof/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/17/20180717/"/>
 
 
 
 
 
-  <title>Pwnable bof | 洋葱</title>
+  <title>Angr学习（六） | 洋葱</title>
   
 
 
@@ -237,7 +231,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/13/bof/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/17/20180717/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="洋葱">
@@ -254,7 +248,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Pwnable bof</h1>
+          <h1 class="post-title" itemprop="name headline">Angr学习（六）</h1>
         
 
         <div class="post-meta">
@@ -266,8 +260,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T21:45:50+08:00">
-                Sep 13 2017
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T15:26:27+08:00">
+                Jul 17 2018
               </time>
             
 
@@ -304,12 +298,27 @@
       
 
       
-        <p>bof.c<br><img src="http://osuzegp2h.bkt.clouddn.com/1.jpg" alt=""><br>在<code>gets</code>函数那行给了<code>smash me</code>，那肯定是从<code>gets</code>函数入手。<code>gets</code>函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。    </p>
-<p>源码里可以看到只要<code>key==0xcafebabe</code>就可以shell，<code>key</code>对于<code>func</code>函数来说是一个参数，而<code>overflowme</code>是一个局部变量。通过栈的结构我们可以知道，在栈上<code>key</code>比<code>overflowme</code>的地址高，所以我们通过<code>gets</code>输入的时候就可以输入一长串字符串去覆盖<code>key</code>地址上原来的东西从而执行<code>/bin/sh</code>。    </p>
-<p>所以我们需要知道<code>key</code>的位置和<code>overflowme</code>被写在哪里。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/2.jpg" alt="image"><br>可以看到<code>key</code>的地址就是<code>0xbffff070</code>。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.jpg" alt="image"><br>其实这里的<code>0x8(%ebp)</code>就是<code>key</code>的地址（因为<code>key</code>是参数，所以刚好在ebp和返回地址上面），再根据这个断点上面<code>lea -0x2c(%ebp),%eax</code>然后进入gets函数就可以判断出我们输入的<code>aaaa</code>写在<code>-0x2c(%ebp)</code>的位置。<br><img src="http://osuzegp2h.bkt.clouddn.com/4.jpg" alt="image"><br>看一下<code>eax</code>上的值就可以发现确实写在了<code>0xbffff03c</code>的位置。<br>所以就知道了两个位置，相减一下发现相差52个字节，所以需要填充的字符串长度是52个字节。也就是说我们输入的字符串的起始地址是<code>0xbffff03c</code>的位置，但是我们目标<code>key</code>的位置是<code>0xbffff070</code>，我们需要在中间填充52个字节的长度然后才能到达这个目标位置修改这个位置上的数据。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/5.jpg" alt="image"></p>
+        <h1 id="0x7-07-angr-symbolic-file"><a href="#0x7-07-angr-symbolic-file" class="headerlink" title="0x7 07_angr_symbolic_file"></a>0x7 07_angr_symbolic_file</h1><p>光从题目上来讲简单到爆炸，但是通过符号执行来做的话，我花了一天的时间去找了资料看linux文件系统，从来没仔细了解过一些底层的原理机制之类的东西（上课都花在睡觉和翘课上了），学习一下真的会对计算机再稍微了解一些。   </p>
+<h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>一切皆是文件是<code>Unix/Linux</code>的基本哲学之一，不仅普通的文件，目录、字符设备、块设备、套接字等在<code>Unix/Linux</code>中都是以文件被对待，它们虽然类型不同，但是对其提供的确实同一套操作界面。    </p>
+</blockquote>
+<ul>
+<li>所有的文件都保存在磁盘上，都需要载入内存后才能处理，所有的数据必须写入文件（磁盘）才不会丢失。</li>
+<li>数据在磁盘和内存之间传递的过程叫做文件流    </li>
+</ul>
+<h3 id="缓冲文件"><a href="#缓冲文件" class="headerlink" title="缓冲文件"></a>缓冲文件</h3><ul>
+<li>在内存开辟一个“缓冲区”，给文件使用；</li>
+<li>当执行读文件的操作时，会先从磁盘文件将数据先读入内存“缓冲区”，装满之后再从内存“缓冲区”依次读书需要的数据；</li>
+<li>当执行写文件的操作时，会先将数据写入内存“缓冲区”，等“缓冲区装满的时候”再写入文件（磁盘）    </li>
+</ul>
+<p>所以缓冲文件借助文件指针来对文件进行，通过文件指针来对文件进行访问读写等操作，<code>fopen</code>，<code>fread</code>，<code>fwrite</code>，<code>fclose</code>等。</p>
+<h3 id="非缓冲文件"><a href="#非缓冲文件" class="headerlink" title="非缓冲文件"></a>非缓冲文件</h3><p>非缓冲文件依赖于操作系统，通过操作系统的功能来对文件进行读写等操作，是系统的输入输出，<code>open</code>。<code>read</code>，<code>write</code>，<code>close</code>等。</p>
+<h3 id="文本文件和二进制文件"><a href="#文本文件和二进制文件" class="headerlink" title="文本文件和二进制文件"></a>文本文件和二进制文件</h3><p>在磁盘中文本文件和二进制文件没有区别，都是以二进制的形式存储。    </p>
+<p>文本模式和二进制模式的区别在于和一些可见字符串的转换上。文本文件在读入内存的时候，要将ASCII码转换成二进制，写入磁盘的时候，也要把二进制码转换为ASCII码，所以文本文件在读写上会花费较多的转换时间。</p>
+<h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>文件系统提供在存储介质上组织数据的一种方式方法，可以看作来管理存储单元，管理磁盘的。我们通过访问文件系统所在的磁盘，对磁盘中的数据进行读写操作（如果没有文件系统的话，就没有文件这种概念，数据就都放在磁盘里没有读写操作这种概念）。</p>
+<h3 id="07-angr-symbolic-file"><a href="#07-angr-symbolic-file" class="headerlink" title="07_angr_symbolic_file"></a>07_angr_symbolic_file</h3><p>由于把<code>buffer</code>存储在<code>WCEXPXBW.txt</code>文件中，通过<code>fread</code>将密码从文件中读出来，刚才上面也说了，只有存在文件系统，才有把数据从文件中读写出来这种操作。    </p>
+<p>如何通过符号执行来操作呢？我们需要有一个符号文件（``）</p>
+<p>参考资料：<br><a href="https://www.zfl9.com/c-io.html" target="_blank" rel="external">https://www.zfl9.com/c-io.html</a><br><a href="https://www.jianshu.com/p/5bccc0a0bbbf" target="_blank" rel="external">https://www.jianshu.com/p/5bccc0a0bbbf</a><br><a href="https://zhuanlan.zhihu.com/p/36209433" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/36209433</a></p>
 
       
     </div>
@@ -334,8 +343,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/11/flag/" rel="next" title="Pwnable flag">
-                <i class="fa fa-chevron-left"></i> Pwnable flag
+              <a href="/2018/07/16/20180716/" rel="next" title="Angr学习（五）">
+                <i class="fa fa-chevron-left"></i> Angr学习（五）
               </a>
             
           </div>
@@ -343,10 +352,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/13/checksec/" rel="prev" title="缓冲区溢出的保护机制">
-                缓冲区溢出的保护机制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -398,8 +403,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -441,6 +455,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x7-07-angr-symbolic-file"><span class="nav-number">1.</span> <span class="nav-text">0x7 07_angr_symbolic_file</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件"><span class="nav-number">1.1.</span> <span class="nav-text">文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲文件"><span class="nav-number">1.1.2.</span> <span class="nav-text">缓冲文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非缓冲文件"><span class="nav-number">1.1.3.</span> <span class="nav-text">非缓冲文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本文件和二进制文件"><span class="nav-number">1.1.4.</span> <span class="nav-text">文本文件和二进制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">1.1.5.</span> <span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#07-angr-symbolic-file"><span class="nav-number">1.1.6.</span> <span class="nav-text">07_angr_symbolic_file</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

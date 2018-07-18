@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="title: Anger学习（四）0x05 05_angr_symbolic_memoryuser_input是在.bss段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。.bss段是来放全局变量和静态变量的内存。    12345678910111213141516171819202122232425262728293031323334353637383940414243# -*-">
+<meta name="description" content="0x05 05_angr_symbolic_memoryuser_input是在.bss段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。.bss段是来放全局变量和静态变量的内存。    12345678910111213141516171819202122232425262728293031323334353637383940414243# -*- coding:UTF-8 -*- i">
 <meta property="og:type" content="article">
-<meta property="og:title" content="洋葱">
+<meta property="og:title" content="Angr学习（四）">
 <meta property="og:url" content="http://yoursite.com/2018/07/12/20180713/index.html">
 <meta property="og:site_name" content="洋葱">
-<meta property="og:description" content="title: Anger学习（四）0x05 05_angr_symbolic_memoryuser_input是在.bss段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。.bss段是来放全局变量和静态变量的内存。    12345678910111213141516171819202122232425262728293031323334353637383940414243# -*-">
-<meta property="og:updated_time" content="2018-07-16T07:35:23.413Z">
+<meta property="og:description" content="0x05 05_angr_symbolic_memoryuser_input是在.bss段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。.bss段是来放全局变量和静态变量的内存。    12345678910111213141516171819202122232425262728293031323334353637383940414243# -*- coding:UTF-8 -*- i">
+<meta property="og:updated_time" content="2018-07-17T08:07:53.026Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="洋葱">
-<meta name="twitter:description" content="title: Anger学习（四）0x05 05_angr_symbolic_memoryuser_input是在.bss段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。.bss段是来放全局变量和静态变量的内存。    12345678910111213141516171819202122232425262728293031323334353637383940414243# -*-">
+<meta name="twitter:title" content="Angr学习（四）">
+<meta name="twitter:description" content="0x05 05_angr_symbolic_memoryuser_input是在.bss段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。.bss段是来放全局变量和静态变量的内存。    12345678910111213141516171819202122232425262728293031323334353637383940414243# -*- coding:UTF-8 -*- i">
 
 
 
@@ -124,7 +124,7 @@
 
 
 
-  <title> | 洋葱</title>
+  <title>Angr学习（四） | 洋葱</title>
   
 
 
@@ -248,7 +248,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">Angr学习（四）</h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,7 @@
       
 
       
-        <hr>
-<h2 id="title-Anger学习（四）"><a href="#title-Anger学习（四）" class="headerlink" title="title: Anger学习（四）"></a>title: Anger学习（四）</h2><h1 id="0x05-05-angr-symbolic-memory"><a href="#0x05-05-angr-symbolic-memory" class="headerlink" title="0x05 05_angr_symbolic_memory"></a>0x05 05_angr_symbolic_memory</h1><p><code>user_input</code>是在<code>.bss</code>段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。<br><code>.bss</code>段是来放全局变量和静态变量的内存。   </p>
+        <h1 id="0x05-05-angr-symbolic-memory"><a href="#0x05-05-angr-symbolic-memory" class="headerlink" title="0x05 05_angr_symbolic_memory"></a>0x05 05_angr_symbolic_memory</h1><p><code>user_input</code>是在<code>.bss</code>段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。<br><code>.bss</code>段是来放全局变量和静态变量的内存。   </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:UTF-8 -*- </span></div><div class="line"><span class="keyword">import</span> angr,sys,claripy</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">	</div><div class="line">	pro=angr.Project(<span class="string">"./05_angr_symbolic_memory"</span>)</div><div class="line">	</div><div class="line">	entry_point=pro.factory.blank_state(addr=<span class="number">0x08048606</span>)</div><div class="line">	</div><div class="line">	input=claripy.BVS(<span class="string">'input'</span>,<span class="number">32</span>*<span class="number">8</span>)</div><div class="line">	entry_point.memory.store(<span class="number">0x0A29FAA0</span>,input)</div><div class="line">	</div><div class="line">	state=pro.factory.simgr(entry_point)</div><div class="line">	</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_success</span><span class="params">(state)</span>:</span></div><div class="line">		res_output=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">'Good Job'</span> <span class="keyword">in</span> res_output</div><div class="line">		</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_avoid</span><span class="params">(state)</span>:</span></div><div class="line">		res_output=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">'Try again'</span> <span class="keyword">in</span> res_output</div><div class="line">	</div><div class="line">	state=pro.factory.simgr(entry_point)</div><div class="line">	state.explore(find=is_success,avoid=is_avoid)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> state.found:</div><div class="line">		res=state.found[<span class="number">0</span>]</div><div class="line">		</div><div class="line">		<span class="comment">#cats_to：强制转换类型</span></div><div class="line">		res_input=res.se.eval(input,cast_to=str)</div><div class="line">		</div><div class="line">		input=[]</div><div class="line">		</div><div class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">33</span>):</div><div class="line">			input.append(res_input[i<span class="number">-1</span>])</div><div class="line">			<span class="keyword">if</span> i%<span class="number">8</span>==<span class="number">0</span> <span class="keyword">and</span> i!=<span class="number">0</span>:</div><div class="line">				input.append(<span class="string">' '</span>)</div><div class="line">		</div><div class="line">		<span class="keyword">print</span> <span class="string">''</span>.join(input)</div><div class="line">		</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">	main()</div></pre></td></tr></table></figure>
 
       
@@ -414,7 +413,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -451,7 +450,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#title-Anger学习（四）"><span class="nav-number">1.</span> <span class="nav-text">title: Anger学习（四）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-05-angr-symbolic-memory"><span class="nav-number"></span> <span class="nav-text">0x05 05_angr_symbolic_memory</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-05-angr-symbolic-memory"><span class="nav-number">1.</span> <span class="nav-text">0x05 05_angr_symbolic_memory</span></a></li></ol></div>
             
 
           </div>
