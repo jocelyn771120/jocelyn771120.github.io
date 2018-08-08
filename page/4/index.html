@@ -231,6 +231,125 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/09/23/cmd1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/23/cmd1/" itemprop="url">Pwnable Cmd1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-23T10:23:08+08:00">
+                Sep 23 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">filter</span><span class="params">(<span class="keyword">char</span>* cmd)</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> r=<span class="number">0</span>;</div><div class="line">	r += <span class="built_in">strstr</span>(cmd, <span class="string">"flag"</span>)!=<span class="number">0</span>;</div><div class="line">	r += <span class="built_in">strstr</span>(cmd, <span class="string">"sh"</span>)!=<span class="number">0</span>;</div><div class="line">	r += <span class="built_in">strstr</span>(cmd, <span class="string">"tmp"</span>)!=<span class="number">0</span>;</div><div class="line">	<span class="keyword">return</span> r;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[], <span class="keyword">char</span>** envp)</span></span>&#123;</div><div class="line">	putenv(<span class="string">"PATH=/fuckyouverymuch"</span>);</div><div class="line">	<span class="keyword">if</span>(filter(argv[<span class="number">1</span>])) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	system( argv[<span class="number">1</span>] );</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line">```    </div><div class="line">    </div><div class="line">源码是这样，`filter`函数中有个`<span class="built_in">strstr</span>`函数，这个函数搜索一个字符串在另一个字符串中的第一次出现，若存在，则返回子串在字符串中首次出现的位置，若不存在返回<span class="literal">NULL</span>。所以只要`argv`中不出现`flag`,`sh`,`tmp`字符串则会执行`system`,所以构造命令：</div><div class="line">```.sh</div><div class="line">./cmd1 <span class="string">"/bin/cat ?lag</span></div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/09/13/uid/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1019,131 +1138,6 @@ End of assembler dump.
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/09/13/bof/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="洋葱">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洋葱">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/13/bof/" itemprop="url">Pwnable bof</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T21:45:50+08:00">
-                Sep 13 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>bof.c<br><img src="http://osuzegp2h.bkt.clouddn.com/1.jpg" alt=""><br>在<code>gets</code>函数那行给了<code>smash me</code>，那肯定是从<code>gets</code>函数入手。<code>gets</code>函数对输入的字符串长度是不会去检查这个字符串长度是否超出缓冲区的长度的，所以当你输入的字符串长度大于缓冲区长度的时候，你输入的字符串可能会覆盖其他位置的数据，就可以利用这来解决这道题。    </p>
-<p>源码里可以看到只要<code>key==0xcafebabe</code>就可以shell，<code>key</code>对于<code>func</code>函数来说是一个参数，而<code>overflowme</code>是一个局部变量。通过栈的结构我们可以知道，在栈上<code>key</code>比<code>overflowme</code>的地址高，所以我们通过<code>gets</code>输入的时候就可以输入一长串字符串去覆盖<code>key</code>地址上原来的东西从而执行<code>/bin/sh</code>。    </p>
-<p>所以我们需要知道<code>key</code>的位置和<code>overflowme</code>被写在哪里。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/2.jpg" alt="image"><br>可以看到<code>key</code>的地址就是<code>0xbffff070</code>。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.jpg" alt="image"><br>其实这里的<code>0x8(%ebp)</code>就是<code>key</code>的地址（因为<code>key</code>是参数，所以刚好在ebp和返回地址上面），再根据这个断点上面<code>lea -0x2c(%ebp),%eax</code>然后进入gets函数就可以判断出我们输入的<code>aaaa</code>写在<code>-0x2c(%ebp)</code>的位置。<br><img src="http://osuzegp2h.bkt.clouddn.com/4.jpg" alt="image"><br>看一下<code>eax</code>上的值就可以发现确实写在了<code>0xbffff03c</code>的位置。<br>所以就知道了两个位置，相减一下发现相差52个字节，所以需要填充的字符串长度是52个字节。也就是说我们输入的字符串的起始地址是<code>0xbffff03c</code>的位置，但是我们目标<code>key</code>的位置是<code>0xbffff070</code>，我们需要在中间填充52个字节的长度然后才能到达这个目标位置修改这个位置上的数据。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/5.jpg" alt="image"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1194,7 +1188,7 @@ End of assembler dump.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
