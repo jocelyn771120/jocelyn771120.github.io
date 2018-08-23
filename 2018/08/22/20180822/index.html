@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuh56ztaovj20sw03bglk.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuh5a2tqjlj20c1042aab.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuht07qj9aj20px0llq3x.jpg">
-<meta property="og:updated_time" content="2018-08-23T00:55:56.431Z">
+<meta property="og:updated_time" content="2018-08-23T02:05:41.545Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pwnable.tw calc">
 <meta name="twitter:description" content="题目难度一下子变大了，光是看算法我就看了一天，漏洞也是看了别人的wp才找出来的，累。那就首先来分析伪代码吧。    分析calc函数里面重要的函数就是这三个：get_expr()，init_pool()，parse_expr()。get_expr()：对输入的表达式进行处理，过滤掉除了数字和加减乘除以外的字符后放入input所在的栈上，最大size可以到达0x400。init_pool()：对ar">
@@ -153,7 +153,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -306,9 +306,51 @@
 
           
           
+             <span id="/2018/08/22/20180822/" class="leancloud_visitors" data-flag-title="Pwnable.tw calc">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,425 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -327,7 +369,7 @@
 
       
         <p>题目难度一下子变大了，光是看算法我就看了一天，漏洞也是看了别人的<code>wp</code>才找出来的，累。那就首先来分析伪代码吧。   </p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p><code>calc</code>函数里面重要的函数就是这三个：<code>get_expr()</code>，<code>init_pool()</code>，<code>parse_expr()</code>。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fua896e8l5j20ou0cijru.jpg" alt=""><img src="http://ww1.sinaimg.cn/large/72105478gy1fua88kffywj20w30abq39.jpg" alt=""><code>get_expr()</code>：对输入的表达式进行处理，过滤掉除了数字和加减乘除以外的字符后放入<code>input</code>所在的栈上，最大size可以到达<code>0x400</code>。<br><code>init_pool()</code>：对<code>array</code>这个数组进行初始化，这个数组等下要放操作数。<br>至于<code>parse_expr()</code>函数：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fublzllrh3j21hc0svtaw.jpg" alt=""><img src="http://ww1.sinaimg.cn/large/72105478gy1fubm9v5i3wj21hb0mwgn5.jpg" alt="">大致逻辑如下：将输入的表达式放入一个<code>for</code>循环，如果是操作数的话就<code>continue</code>，如果说是表达式的话就进入<code>if</code>。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fubmj2se8uj20nw0f8jrx.jpg" alt="">上面截图的第一个红框和第三个红框做的操作是把每一次运算符旁边的数字放入<code>left_num</code>这个字符串中，然后再通过<code>atoi</code>函数转换为<code>int</code>类型的<code>left_number</code>；中间第二个红框做的操作是把<code>left_number</code>通通都放入<code>number</code>这个数组里，但是需要注意的是，<code>number</code>数组是从<code>number[1]</code>开始存放操作数的，<code>*number</code>（也就是<code>number[0]</code>)是在计数，计算操作数的个数。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fubmsq4kv4j20xq0j2gmq.jpg" alt="">这一段的逻辑其实就已经在把操作数和运算符弄进<code>eval</code>函数进行运算了，要注意的是，带入<code>eval</code>函数的操作符并不是当前的操作符，而是前一个，配合着<code>eval</code>函数一起看：<img src="http://ww1.sinaimg.cn/large/72105478gy1fuh338ulaij20w20f8gm6.jpg" alt="">比如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//1+2+3：当i=1的时候，这时候opr[0]=0，所以把'+'放入opr[0]中；</span></div><div class="line"><span class="comment">//当i=3的时候，运算符又为'+'，这次就执行eval(number,opr[0]);opr[0]='+'，number[2]=number[2]+number[3]</span></div><div class="line"></div><div class="line">number[<span class="number">0</span>]=<span class="number">3</span>,number[<span class="number">1</span>]=<span class="number">1</span>,number[<span class="number">2</span>]=<span class="number">2</span>,number[<span class="number">3</span>]=<span class="number">3</span>;</div><div class="line">opr[<span class="number">0</span>]=<span class="string">'+'</span>;</div><div class="line"></div><div class="line"><span class="comment">//1+2*3：当i=1的时候，这时候opr[0]=0，所以把'+'放入opr[0]中；</span></div><div class="line"><span class="comment">//当i=3的时候，运算符为'*'，这次就执行opr[1]='*'</span></div><div class="line"></div><div class="line">number[<span class="number">0</span>]=<span class="number">3</span>,number[<span class="number">1</span>]=<span class="number">1</span>,number[<span class="number">2</span>]=<span class="number">2</span>,number[<span class="number">3</span>]=<span class="number">3</span>;</div><div class="line">opr[<span class="number">0</span>]=<span class="string">'+'</span>,opr[<span class="number">1</span>]=<span class="string">'*'</span></div></pre></td></tr></table></figure></p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p><code>calc</code>函数里面重要的函数就是这三个：<code>get_expr()</code>，<code>init_pool()</code>，<code>parse_expr()</code>。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fua896e8l5j20ou0cijru.jpg" alt=""><img src="http://ww1.sinaimg.cn/large/72105478gy1fua88kffywj20w30abq39.jpg" alt=""><code>get_expr()</code>：对输入的表达式进行处理，过滤掉除了数字和加减乘除以外的字符后放入<code>input</code>所在的栈上，最大size可以到达<code>0x400</code>。<br><code>init_pool()</code>：对<code>array</code>这个数组进行初始化，这个数组等下要放操作数。<br>至于<code>parse_expr()</code>函数：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fublzllrh3j21hc0svtaw.jpg" alt=""><img src="http://ww1.sinaimg.cn/large/72105478gy1fubm9v5i3wj21hb0mwgn5.jpg" alt="">大致逻辑如下：将输入的表达式放入一个<code>for</code>循环，如果是操作数的话就<code>continue</code>，如果说是表达式的话就进入<code>if</code>。<br><a id="more"></a><br><img src="http://ww1.sinaimg.cn/large/72105478gy1fubmj2se8uj20nw0f8jrx.jpg" alt="">上面截图的第一个红框和第三个红框做的操作是把每一次运算符旁边的数字放入<code>left_num</code>这个字符串中，然后再通过<code>atoi</code>函数转换为<code>int</code>类型的<code>left_number</code>；中间第二个红框做的操作是把<code>left_number</code>通通都放入<code>number</code>这个数组里，但是需要注意的是，<code>number</code>数组是从<code>number[1]</code>开始存放操作数的，<code>*number</code>（也就是<code>number[0]</code>)是在计数，计算操作数的个数。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fubmsq4kv4j20xq0j2gmq.jpg" alt="">这一段的逻辑其实就已经在把操作数和运算符弄进<code>eval</code>函数进行运算了，要注意的是，带入<code>eval</code>函数的操作符并不是当前的操作符，而是前一个，配合着<code>eval</code>函数一起看：<img src="http://ww1.sinaimg.cn/large/72105478gy1fuh338ulaij20w20f8gm6.jpg" alt="">比如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//1+2+3：当i=1的时候，这时候opr[0]=0，所以把'+'放入opr[0]中；</span></div><div class="line"><span class="comment">//当i=3的时候，运算符又为'+'，这次就执行eval(number,opr[0]);opr[0]='+'，number[2]=number[2]+number[3]</span></div><div class="line"></div><div class="line">number[<span class="number">0</span>]=<span class="number">3</span>,number[<span class="number">1</span>]=<span class="number">1</span>,number[<span class="number">2</span>]=<span class="number">2</span>,number[<span class="number">3</span>]=<span class="number">3</span>;</div><div class="line">opr[<span class="number">0</span>]=<span class="string">'+'</span>;</div><div class="line"></div><div class="line"><span class="comment">//1+2*3：当i=1的时候，这时候opr[0]=0，所以把'+'放入opr[0]中；</span></div><div class="line"><span class="comment">//当i=3的时候，运算符为'*'，这次就执行opr[1]='*'</span></div><div class="line"></div><div class="line">number[<span class="number">0</span>]=<span class="number">3</span>,number[<span class="number">1</span>]=<span class="number">1</span>,number[<span class="number">2</span>]=<span class="number">2</span>,number[<span class="number">3</span>]=<span class="number">3</span>;</div><div class="line">opr[<span class="number">0</span>]=<span class="string">'+'</span>,opr[<span class="number">1</span>]=<span class="string">'*'</span></div></pre></td></tr></table></figure></p>
 <h3 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h3><p>分析到这里差不多了，最后还有一个<code>while</code>循环对操作数进行计算，这个函数就差不多分析完了。反正我分析到这里也没有找到洞在哪里，看了别人的<code>wp</code>才知道有洞。<br>我们假设，如果输入的表达式不是正常的呢？假设我们输入<code>+100</code>，按照程序的逻辑走一遍，第一个输入就是运算符，那么就进入循环，但是循环在这一步，是直接跳过的。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh2c3pq1ej20kf02wt8j.jpg" alt=""><br>在把<code>+</code>保存在<code>opr[]</code>之后，在后面循环的时候会把100放在<code>number[1]</code>中，此时<code>number[0]</code>等于1，在后面进入<code>eval</code>函数的时候，<code>number[0]=number[0]+number[1]</code>，然后再自减，也就是最终<code>number[0]=100</code>。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuci9l6dlcj20vh06uglx.jpg" alt="">可以看到，最终打印出来的值是<code>number[number[0]]</code>，也就是<code>number[100]</code>，我们打印出来的值就是<code>number[100]</code>，换而言之，泄露出了<code>ebp-53C</code>的值。试一下：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh3d348x0j20dc03e74x.jpg" alt="">发现并没有泄露出地址，这是因为，在刚开始的时候，我们对表达式进行清零，<code>input</code>是从<code>0x40C</code>到<code>0xC</code>，<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh40h04nbj20g901sdfn.jpg" alt=""><br>如果我们修改<code>0xC</code>的值，就会发现就该成功。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh53esm91j20bz052aai.jpg" alt=""><br>那么我们就可以修改返回地址，因为返回地址刚好在下面，也就是<code>number[357+4]</code>的位置。我们来验证一下<code>number[361]</code>的值：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh559yhq7j20cl02vt8y.jpg" alt=""><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh560magfj20b001kdg8.jpg" alt=""><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh56ztaovj20sw03bglk.jpg" alt=""><br>可以看到我们的验证是正确的，那么接下来，就是利用的问题了。</p>
 <h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p>如上所述，我们可以进行栈溢出利用了。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuh5a2tqjlj20c1042aab.jpg" alt=""><br>但是本身题目开了<code>NX</code>，无法直接在栈上写<code>shellcode</code>，也没有函数让我们直接利用，所以就要用到<code>ROP</code>来执行<code>execve(&quot;/bin/sh&quot;)</code>吧。具体关于<code>ROP</code>的复习<a href="http://yaqing.site/2018/08/03/20180803/">点这里</a>，我们要做的利用就是先泄露出地址然后修改地址。这里对于我来说比较难的地方是计算<code>addr of &quot;/bin/sh&quot;</code>的地址，看了很多<code>wp</code>后发现一个最简单的办法就是画图，通过<code>gdb</code>调试我们可以很容易的计算出<code>main</code>的基地址（<code>ebp</code>)和返回地址的差值是<code>0x1c</code>（这个差值是固定的），也就是7个字节，然后通过画图：<img src="http://ww1.sinaimg.cn/large/72105478gy1fuht07qj9aj20px0llq3x.jpg" alt="">这样就很容易的看出来<code>&quot;/bin/sh&quot;</code>的位置刚好是在基地址下面的一个栈单元上。<br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#eax:0xb</span></div><div class="line"><span class="comment">#ebx:addr of "/bin/sh"</span></div><div class="line"><span class="comment">#ecx:0</span></div><div class="line"><span class="comment">#edx:0</span></div><div class="line"><span class="comment">#stack </span></div><div class="line">pop eax,ret    (ret)</div><div class="line"><span class="number">0xb</span></div><div class="line">pop ecx ; pop ebx ; ret</div><div class="line"><span class="number">0x0</span></div><div class="line">addr of <span class="string">"/bin/sh"</span></div><div class="line">pop edx,ret</div><div class="line"><span class="number">0x0</span></div><div class="line">int <span class="number">0x80</span></div><div class="line">/bin</div><div class="line">/sh\<span class="number">0</span></div></pre></td></tr></table></figure></p>
 <p>其他的不需要注意，要注意的是<code>/bin/sh</code>的地址，由于我们是写到栈上去的，所以我们要计算出地址。</p>
@@ -340,6 +382,30 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -703,6 +769,28 @@
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -712,6 +800,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

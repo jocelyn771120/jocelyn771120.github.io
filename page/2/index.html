@@ -134,7 +134,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -276,13 +276,65 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/12/20180712/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/12/20180712/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2018/07/12/20180712/" class="leancloud_visitors" data-flag-title="Angr学习（三）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  550 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -301,8 +353,7 @@
 
       
         
-          
-            <h1 id="0x4-04-angr-symbolic-stack"><a href="#0x4-04-angr-symbolic-stack" class="headerlink" title="0x4 04_angr_symbolic_stack"></a>0x4 04_angr_symbolic_stack</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807115.jpg" alt="images">     </p>
+          <h1 id="0x4-04-angr-symbolic-stack"><a href="#0x4-04-angr-symbolic-stack" class="headerlink" title="0x4 04_angr_symbolic_stack"></a>0x4 04_angr_symbolic_stack</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807115.jpg" alt="images">     </p>
 <p>这题和03不一样的地方是把输入放在了栈上。    </p>
 <p>分析一下这栈上的变化：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">0x08048679 &lt;+0&gt;:     push   ebp</div><div class="line">0x0804867a &lt;+1&gt;:     mov    ebp,esp</div><div class="line">0x0804867c &lt;+3&gt;:     sub    esp,0x18</div><div class="line">0x0804867f &lt;+6&gt;:     sub    esp,0x4</div><div class="line">0x08048682 &lt;+9&gt;:     lea    eax,[ebp-0x10]</div><div class="line">0x08048685 &lt;+12&gt;:    push   eax</div><div class="line">0x08048686 &lt;+13&gt;:    lea    eax,[ebp-0xc]</div><div class="line">0x08048689 &lt;+16&gt;:    push   eax</div><div class="line">0x0804868a &lt;+17&gt;:    push   0x80487b3</div><div class="line">0x0804868f &lt;+22&gt;:    call   0x8048370 &lt;__isoc99_scanf@plt&gt;</div></pre></td></tr></table></figure>
@@ -310,11 +361,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0x08048694 &lt;+27&gt;:    add    esp,0x10</div></pre></td></tr></table></figure>
 <p>此时栈上的内容：<br><img src="http://osuzegp2h.bkt.clouddn.com/201807122.jpg" alt="images">   </p>
 <p>假设我们要跳过输入直接从<code>scanf</code>之后开始执行的话，我们必须保证操作的时候<code>ebp</code>和<code>esp</code>与正常程序运行的时候相同，可以看到<code>add esp,0x10</code>之后，<code>esp</code>的位置是和进入<code>handle_user</code>函数后<code>sub esp 0x18</code>（记住<code>push ebp</code>之后的0x18是给局部变量用的空间)之后的位置相同。    </p>
-<p>那么我们在写脚本的时候，在设置完程序的入口点为<code>0x08048697</code>之后，把<code>ebp</code>的值设置为此时<code>esp</code>的值，我们就还原了正常程序运行时栈上的状态，接下来要操作的数据就都可以在栈上完成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">0x08048697 &lt;+30&gt;:    mov    eax,DWORD PTR [ebp-0xc]	//[ebp-0xc]</div><div class="line">0x0804869a &lt;+33&gt;:    sub    esp,0xc</div><div class="line">0x0804869d &lt;+36&gt;:    push   eax</div><div class="line">0x0804869e &lt;+37&gt;:    call   0x80484a9 &lt;complex_function0&gt;</div><div class="line">0x080486a3 &lt;+42&gt;:    add    esp,0x10</div><div class="line">0x080486a6 &lt;+45&gt;:    mov    DWORD PTR [ebp-0xc],eax	</div><div class="line">0x080486a9 &lt;+48&gt;:    mov    eax,DWORD PTR [ebp-0x10]	//[ebp-0x10]</div><div class="line">0x080486ac &lt;+51&gt;:    sub    esp,0xc</div><div class="line">0x080486af &lt;+54&gt;:    push   eax</div><div class="line">0x080486b0 &lt;+55&gt;:    call   0x8048591 &lt;complex_function1&gt;</div><div class="line">0x080486b5 &lt;+60&gt;:    add    esp,0x10</div></pre></td></tr></table></figure>
-<p>所以接下来要考虑的事情，就是把符号变量放在栈上的哪一块。从上图我们可以看出我们输入的两个格式化字符串分别放在了<code>ebp-0xc</code>和<code>ebp-0x10</code>的位置上，所以我们在符号执行的时候就把我们的符号变量放在相同位置上就OK了。至于放数据的话，就是通过改变<code>esp</code>,因为有8个字节是需要<code>padding</code>掉的。    </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> angr,sys</div><div class="line"><span class="keyword">import</span> claripy</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">	</div><div class="line">	pro=angr.Project(<span class="string">'./04_angr_symbolic_stack'</span>)</div><div class="line">	</div><div class="line">	origin_state=pro.factory.blank_state(addr=<span class="number">0x08048697</span>)</div><div class="line">	</div><div class="line">	origin_state.regs.ebp=origin_state.regs.esp</div><div class="line">	origin_state.regs.esp-=<span class="number">8</span>	<span class="comment">#padding size</span></div><div class="line">	</div><div class="line">	input1=claripy.BVS(<span class="string">'input1'</span>,<span class="number">32</span>)</div><div class="line">	input2=claripy.BVS(<span class="string">'input2'</span>,<span class="number">32</span>)</div><div class="line">	</div><div class="line">	origin_state.stack_push(input1)</div><div class="line">	origin_state.stack_push(input2)</div><div class="line">	</div><div class="line">	state=pro.factory.simgr(origin_state)</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_success</span><span class="params">(state)</span>:</span></div><div class="line">		stdout_res=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">'Good Job.'</span> <span class="keyword">in</span> stdout_res</div><div class="line">		</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_avoid</span><span class="params">(state)</span>:</span></div><div class="line">		stdout_res=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">'Try again.'</span> <span class="keyword">in</span> stdout_res</div><div class="line">		</div><div class="line">	state.explore(find=is_success,avoid=is_avoid)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> state.found:</div><div class="line">		res=state.found[<span class="number">0</span>]</div><div class="line">		</div><div class="line">		res_input1=res.se.eval(input1)</div><div class="line">		res_input2=res.se.eval(input2)</div><div class="line">		</div><div class="line">		<span class="keyword">print</span> <span class="string">' '</span>.join(map(str,[res_input1,res_input2]))</div><div class="line">		</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">	main()</div></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/12/20180712/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -406,13 +459,65 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/10/20180710-more/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/10/20180710-more/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2018/07/10/20180710-more/" class="leancloud_visitors" data-flag-title="Angr学习之符号表达式和约束求解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  454 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -431,19 +536,18 @@
 
       
         
-          
-            <h1 id="关于约束求解"><a href="#关于约束求解" class="headerlink" title="关于约束求解"></a>关于约束求解</h1><p><strong>参考文档：<a href="https://docs.angr.io/docs/solver.html" target="_blank" rel="external">https://docs.angr.io/docs/solver.html</a></strong><br>除了可以当作模拟器，Angr还有一个东西叫做符号变量，通过它执行算术运算产生AST（百度了一下AST，是一种抽象语法树的数据结构，稍微的看了一下感觉又是在重新预习编译原理），这个抽象运算树可以成为求解器的约束。    </p>
+          <h1 id="关于约束求解"><a href="#关于约束求解" class="headerlink" title="关于约束求解"></a>关于约束求解</h1><p><strong>参考文档：<a href="https://docs.angr.io/docs/solver.html" target="_blank" rel="external">https://docs.angr.io/docs/solver.html</a></strong><br>除了可以当作模拟器，Angr还有一个东西叫做符号变量，通过它执行算术运算产生AST（百度了一下AST，是一种抽象语法树的数据结构，稍微的看了一下感觉又是在重新预习编译原理），这个抽象运算树可以成为求解器的约束。    </p>
 <p>当给你一个做了运算操作的输出结果，那么输入是什么？这个问题就可以用Angr来解决。    </p>
 <h1 id="关于Claripy"><a href="#关于Claripy" class="headerlink" title="关于Claripy"></a>关于Claripy</h1><p><strong>参考文档：<a href="https://docs.angr.io/docs/claripy.html" target="_blank" rel="external">https://docs.angr.io/docs/claripy.html</a></strong>    </p>
 <p>Claripy是angr的一个关于求解程序引擎的库，claripy ASTs提供一种联系具体值和符号表达的方式。</p>
-<p>Claripy这个库总共提供了三种类型的AST：BV,FP,Bool，支持多种类型的数据，比如说bitvector，floating-point number,布尔操作。</p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807104.jpg" alt="images">    </p>
-<h1 id="0x3-03-angr-symbolic-registers"><a href="#0x3-03-angr-symbolic-registers" class="headerlink" title="0x3 03_angr_symbolic_registers"></a>0x3 03_angr_symbolic_registers</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807111.jpg" alt="images">    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807112.jpg" alt="images">    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807113.jpg" alt="images"></p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/201807114.jpg" alt="images"></p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:UTF-8 -*-</span></div><div class="line"><span class="keyword">import</span> sys,angr</div><div class="line"><span class="keyword">import</span> claripy</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">	</div><div class="line">	pro=angr.Project(<span class="string">"./03_angr_symbolic_registers"</span>)</div><div class="line">	</div><div class="line">	<span class="comment">#start_addr:符号执行需要开始的地址</span></div><div class="line">	<span class="comment">#blank_state函数:起始运行地址由addr决定</span></div><div class="line">	<span class="comment">#entry_state函数：起始运行地址由初始运行状态决定</span></div><div class="line">	start_addr=<span class="number">0x80488d1</span></div><div class="line">	state=pro.factory.blank_state(addr=start_addr)</div><div class="line">	</div><div class="line">	<span class="comment">#BVS的作用就是创造一个符号变量</span></div><div class="line">	pwd0=claripy.BVS(<span class="string">'pwd0'</span>,<span class="number">32</span>)</div><div class="line">	pwd1=claripy.BVS(<span class="string">'pwd1'</span>,<span class="number">32</span>)</div><div class="line">	pwd2=claripy.BVS(<span class="string">'pwd2'</span>,<span class="number">32</span>)</div><div class="line">	</div><div class="line">	<span class="comment">#将模拟程序状态的Simstate对象的寄存器设置为符号变量的值,原因看上图（数据放在寄存器里)</span></div><div class="line">	state.regs.eax=pwd0</div><div class="line">	state.regs.ebx=pwd1</div><div class="line">	state.regs.edx=pwd2</div><div class="line">	</div><div class="line">	simulation=pro.factory.simgr(state)</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">if_success</span><span class="params">(state)</span>:</span></div><div class="line">		stdout_res=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">"Good Job."</span> <span class="keyword">in</span> stdout_res</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">if_fail</span><span class="params">(state)</span>:</span></div><div class="line">		stdout_res=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">"Try again."</span> <span class="keyword">in</span> stdout_res</div><div class="line">	</div><div class="line">	simulation.explore(find=if_success,avoid=if_fail)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> simulation.found:</div><div class="line">		solution=simulation.found[<span class="number">0</span>]</div><div class="line">		</div><div class="line">		solution0=solution.se.eval(pwd0)</div><div class="line">		solution1=solution.se.eval(pwd1)</div><div class="line">		solution2=solution.se.eval(pwd2)</div><div class="line">		<span class="comment">#se表示solver engine(符号执行)</span></div><div class="line">		</div><div class="line">        <span class="keyword">print</span> <span class="string">' '</span>.join(map(<span class="string">'&#123;:x&#125;'</span>.format,[solution0,solution1,solution2]))</div><div class="line">		</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-          
+<p>Claripy这个库总共提供了三种类型的AST：BV,FP,Bool，支持多种类型的数据，比如说bitvector，floating-point number,布尔操作。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/10/20180710-more/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -535,13 +639,65 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/10/20180710/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/10/20180710/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2018/07/10/20180710/" class="leancloud_visitors" data-flag-title="Angr学习 （二）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  254 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -560,47 +716,16 @@
 
       
         
-          
-            <h1 id="0x1-01-angr-avoid"><a href="#0x1-01-angr-avoid" class="headerlink" title="0x1 01_angr_avoid"></a>0x1 01_angr_avoid</h1><p>昨天做了第一题练手之后今天这题就可以照搬了。<br>刚开始可能空格出不来视图会提示太大，只要在options-&gt;general-&gt;graph中把nodes的行数往大里设置。</p>
+          <h1 id="0x1-01-angr-avoid"><a href="#0x1-01-angr-avoid" class="headerlink" title="0x1 01_angr_avoid"></a>0x1 01_angr_avoid</h1><p>昨天做了第一题练手之后今天这题就可以照搬了。<br>刚开始可能空格出不来视图会提示太大，只要在options-&gt;general-&gt;graph中把nodes的行数往大里设置。</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> angr,sys</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line"></div><div class="line">	pro=angr.Project(<span class="string">"./01_angr_avoid"</span>)</div><div class="line">	</div><div class="line">	entry_addr=pro.factory.entry_state()</div><div class="line">	</div><div class="line">	simulation=pro.factory.simgr(entry_addr)</div><div class="line">	</div><div class="line">	simulation.explore(find=<span class="number">0x080485E0</span>)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> simulation.found:</div><div class="line">		solution=simulation.found[<span class="number">0</span>]</div><div class="line">		<span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())</div><div class="line">		</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">print</span> <span class="string">"Error"</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">	</div><div class="line">	main()</div></pre></td></tr></table></figure>
 <p>跑一下就出来了，这逻辑都不用分析。    </p>
-<h1 id="0x2-02-angr-find-condition"><a href="#0x2-02-angr-find-condition" class="headerlink" title="0x2 02_angr_find_condition"></a>0x2 02_angr_find_condition</h1><p>explore()的参数相当于对到达路径起了约束作用。<br>find参数：程序会在找到对应find条件的states放在一个found list里面<br>avoid参数：与find类似，找到相应的states之后放在avoided lisit里面</p>
-<pre><code class="py"><span class="keyword">import</span> angr,sys
-
-<span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>
-
-    pro=angr.Project(<span class="string">"./02_angr_find_condition"</span>)
-
-    entry_addr=pro.factory.entry_state()
-
-    simulation=pro.factory.simgr(entry_addr)
-
-    <span class="keyword">print</span> <span class="string">"!"</span>
-
-    <span class="function"><span class="keyword">def</span> <span class="title">success</span><span class="params">(state)</span>:</span>
-        stdout_res=state.posix.dumps(sys.stdout.fileno())
-        <span class="keyword">return</span> <span class="string">'Good Job.'</span> <span class="keyword">in</span> stdout_res
-
-    <span class="function"><span class="keyword">def</span> <span class="title">fail</span><span class="params">(state)</span>:</span>
-        stdout_res=state.posix.dumps(sys.stdout.fileno())
-        <span class="keyword">return</span> <span class="string">'Try again.'</span> <span class="keyword">in</span> stdout_res
-
-    simulation.explore(find=success,avoid=fail)
-
-    <span class="keyword">if</span> simulation.found:
-        solution=simulation.found[<span class="number">0</span>]
-        <span class="keyword">print</span> <span class="string">"1"</span>
-        <span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())
-
-    <span class="keyword">else</span>:
-        <span class="keyword">print</span> <span class="string">"Error"</span>
-
-<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
-
-    main()
-</code></pre>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/10/20180710/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -692,13 +817,65 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/09/20180709/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/09/20180709/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2018/07/09/20180709/" class="leancloud_visitors" data-flag-title="Angr学习 （一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  269 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -816,13 +993,65 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/10/x-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/12/10/x-md/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2017/12/10/x-md/" class="leancloud_visitors" data-flag-title="OpenCV学习之人脸识别">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,237 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -959,13 +1188,65 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/07/CVE11882/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/12/07/CVE11882/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2017/12/07/CVE11882/" class="leancloud_visitors" data-flag-title="关于Office漏洞小技巧">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  380 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -1095,13 +1376,65 @@ output_file.write(rtf_content)
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/06/IOTsercuirty/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/12/06/IOTsercuirty/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
           
+             <span id="/2017/12/06/IOTsercuirty/" class="leancloud_visitors" data-flag-title="物联网安全现状分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,861 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -1422,6 +1755,28 @@ output_file.write(rtf_content)
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -1431,6 +1786,113 @@ output_file.write(rtf_content)
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

@@ -88,7 +88,7 @@
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807171.jpg">
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807172.jpg">
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807173.jpg">
-<meta property="og:updated_time" content="2018-07-19T01:12:58.413Z">
+<meta property="og:updated_time" content="2018-08-23T02:06:52.513Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Angr学习（六）">
 <meta name="twitter:description" content="0x7 07_angr_symbolic_file光从题目上来讲简单到爆炸，但是通过符号执行来做的话，我花了一天的时间去找了资料看linux文件系统，从来没仔细了解过一些底层的原理机制之类的东西（上课都花在睡觉和翘课上了），学习一下真的会对计算机再稍微了解一些。    文件概述 一切皆是文件是Unix/Linux的基本哲学之一，不仅普通的文件，目录、字符设备、块设备、套接字等在Unix/Linux">
@@ -139,7 +139,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -292,9 +292,51 @@
 
           
           
+             <span id="/2018/07/17/20180717/" class="leancloud_visitors" data-flag-title="Angr学习（六）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,123 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -327,6 +369,7 @@
 </ul>
 <p>所以缓冲文件借助文件指针来对文件进行，通过文件指针来对文件进行访问读写等操作，<code>fopen</code>，<code>fread</code>，<code>fwrite</code>，<code>fclose</code>等。</p>
 <h3 id="非缓冲文件"><a href="#非缓冲文件" class="headerlink" title="非缓冲文件"></a>非缓冲文件</h3><p>非缓冲文件依赖于操作系统，通过操作系统的功能来对文件进行读写等操作，是系统的输入输出，<code>open</code>。<code>read</code>，<code>write</code>，<code>close</code>等。</p>
+<a id="more"></a>
 <h3 id="文本文件和二进制文件"><a href="#文本文件和二进制文件" class="headerlink" title="文本文件和二进制文件"></a>文本文件和二进制文件</h3><p>在磁盘中文本文件和二进制文件没有区别，都是以二进制的形式存储。    </p>
 <p>文本模式和二进制模式的区别在于和一些可见字符串的转换上。文本文件在读入内存的时候，要将ASCII码转换成二进制，写入磁盘的时候，也要把二进制码转换为ASCII码，所以文本文件在读写上会花费较多的转换时间。</p>
 <h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>文件系统提供在存储介质上组织数据的一种方式方法，可以看作来管理存储单元，管理磁盘的。我们通过访问文件系统所在的磁盘，对磁盘中的数据进行读写操作（如果没有文件系统的话，就没有文件这种概念，数据就都放在磁盘里没有读写操作这种概念）。</p>
@@ -345,6 +388,30 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -712,6 +779,28 @@
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -721,6 +810,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

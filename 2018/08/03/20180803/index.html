@@ -105,7 +105,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/mw690/72105478gy1ftvfw44ewyj20je0fradl.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/mw690/72105478gy1ftvfv8or2sj20l10cxtbl.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1ftw9s946j3j20qt08kwfk.jpg">
-<meta property="og:updated_time" content="2018-08-03T02:26:01.166Z">
+<meta property="og:updated_time" content="2018-08-23T02:06:20.097Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二进制之栈溢出复习">
 <meta name="twitter:description" content="二进制常见漏洞之栈溢出栈的定义（摘自百度百科）      别人的理解：当高级语言被编译成计算机可以识别的机器码时，有一个问题就凸现出来：在CPU中，计算机没有办法知道一个函数调用需要多少个、什么样的参数，也没有硬件可以保存这些参数。也就是说，计算机不知道怎么给这个函数传递参数，传递参数的工作必须由函数调用者和函数本身来协调。为此，计算机提供了一种被称为栈的数据结构来支持参数传递。       我的">
@@ -156,7 +156,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -309,9 +309,51 @@
 
           
           
+             <span id="/2018/08/03/20180803/" class="leancloud_visitors" data-flag-title="二进制之栈溢出复习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,339 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -337,6 +379,7 @@
 <p>我们看程序的汇编语言的时候，在调用函数的时候，最先出来的两句汇编语句是(以x86为例）：    </p>
 <p><code>push ebp;mov ebp,esp</code>    </p>
 <p>懂汇编的应该能看懂这两句话吧？看不懂汇编的麻烦请先阅读<a href="https://pan.baidu.com/s/1o6ofHz0" target="_blank" rel="external">《汇编语言》</a>，此时<code>ebp</code>和<code>esp</code>应该指向的都是同一个位置，也就是<strong>此时</strong>的栈顶。     </p>
+<a id="more"></a>
 <h2 id="函数调用栈时入栈顺序"><a href="#函数调用栈时入栈顺序" class="headerlink" title="函数调用栈时入栈顺序"></a>函数调用栈时入栈顺序</h2><p>先来看一段简单的代码：     </p>
 <pre><code>#include &lt;stdio.h&gt;
 int function(int x,int y)
@@ -543,6 +586,30 @@ getshell()
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -910,6 +977,28 @@ getshell()
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -919,6 +1008,113 @@ getshell()
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

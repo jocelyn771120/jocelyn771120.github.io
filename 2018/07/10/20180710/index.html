@@ -85,7 +85,7 @@
 <meta property="og:url" content="http://yaqing.site/2018/07/10/20180710/index.html">
 <meta property="og:site_name" content="洋葱">
 <meta property="og:description" content="0x1 01_angr_avoid昨天做了第一题练手之后今天这题就可以照搬了。刚开始可能空格出不来视图会提示太大，只要在options-&amp;gt;general-&amp;gt;graph中把nodes的行数往大里设置。 12345678910111213141516171819202122import angr,sysdef main():	pro=angr.Project(&quot;./01_angr_avoi">
-<meta property="og:updated_time" content="2018-07-10T06:50:35.863Z">
+<meta property="og:updated_time" content="2018-08-23T02:08:00.198Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Angr学习 （二）">
 <meta name="twitter:description" content="0x1 01_angr_avoid昨天做了第一题练手之后今天这题就可以照搬了。刚开始可能空格出不来视图会提示太大，只要在options-&amp;gt;general-&amp;gt;graph中把nodes的行数往大里设置。 12345678910111213141516171819202122import angr,sysdef main():	pro=angr.Project(&quot;./01_angr_avoi">
@@ -135,7 +135,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -288,9 +288,51 @@
 
           
           
+             <span id="/2018/07/10/20180710/" class="leancloud_visitors" data-flag-title="Angr学习 （二）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  254 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -311,6 +353,7 @@
         <h1 id="0x1-01-angr-avoid"><a href="#0x1-01-angr-avoid" class="headerlink" title="0x1 01_angr_avoid"></a>0x1 01_angr_avoid</h1><p>昨天做了第一题练手之后今天这题就可以照搬了。<br>刚开始可能空格出不来视图会提示太大，只要在options-&gt;general-&gt;graph中把nodes的行数往大里设置。</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> angr,sys</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line"></div><div class="line">	pro=angr.Project(<span class="string">"./01_angr_avoid"</span>)</div><div class="line">	</div><div class="line">	entry_addr=pro.factory.entry_state()</div><div class="line">	</div><div class="line">	simulation=pro.factory.simgr(entry_addr)</div><div class="line">	</div><div class="line">	simulation.explore(find=<span class="number">0x080485E0</span>)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> simulation.found:</div><div class="line">		solution=simulation.found[<span class="number">0</span>]</div><div class="line">		<span class="keyword">print</span> solution.posix.dumps(sys.stdin.fileno())</div><div class="line">		</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">print</span> <span class="string">"Error"</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">	</div><div class="line">	main()</div></pre></td></tr></table></figure>
 <p>跑一下就出来了，这逻辑都不用分析。    </p>
+<a id="more"></a>
 <h1 id="0x2-02-angr-find-condition"><a href="#0x2-02-angr-find-condition" class="headerlink" title="0x2 02_angr_find_condition"></a>0x2 02_angr_find_condition</h1><p>explore()的参数相当于对到达路径起了约束作用。<br>find参数：程序会在找到对应find条件的states放在一个found list里面<br>avoid参数：与find类似，找到相应的states之后放在avoided lisit里面</p>
 <pre><code class="py"><span class="keyword">import</span> angr,sys
 
@@ -355,6 +398,30 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -722,6 +789,28 @@
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -731,6 +820,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807112.jpg">
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807113.jpg">
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807114.jpg">
-<meta property="og:updated_time" content="2018-07-11T02:48:15.253Z">
+<meta property="og:updated_time" content="2018-08-23T02:07:46.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Angr学习之符号表达式和约束求解">
 <meta name="twitter:description" content="关于约束求解参考文档：https://docs.angr.io/docs/solver.html除了可以当作模拟器，Angr还有一个东西叫做符号变量，通过它执行算术运算产生AST（百度了一下AST，是一种抽象语法树的数据结构，稍微的看了一下感觉又是在重新预习编译原理），这个抽象运算树可以成为求解器的约束。     当给你一个做了运算操作的输出结果，那么输入是什么？这个问题就可以用Angr来解决。">
@@ -141,7 +141,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -294,9 +294,51 @@
 
           
           
+             <span id="/2018/07/10/20180710-more/" class="leancloud_visitors" data-flag-title="Angr学习之符号表达式和约束求解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  454 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -318,7 +360,7 @@
 <p>当给你一个做了运算操作的输出结果，那么输入是什么？这个问题就可以用Angr来解决。    </p>
 <h1 id="关于Claripy"><a href="#关于Claripy" class="headerlink" title="关于Claripy"></a>关于Claripy</h1><p><strong>参考文档：<a href="https://docs.angr.io/docs/claripy.html" target="_blank" rel="external">https://docs.angr.io/docs/claripy.html</a></strong>    </p>
 <p>Claripy是angr的一个关于求解程序引擎的库，claripy ASTs提供一种联系具体值和符号表达的方式。</p>
-<p>Claripy这个库总共提供了三种类型的AST：BV,FP,Bool，支持多种类型的数据，比如说bitvector，floating-point number,布尔操作。</p>
+<p>Claripy这个库总共提供了三种类型的AST：BV,FP,Bool，支持多种类型的数据，比如说bitvector，floating-point number,布尔操作。<br><a id="more"></a></p>
 <p><img src="http://osuzegp2h.bkt.clouddn.com/201807104.jpg" alt="images">    </p>
 <h1 id="0x3-03-angr-symbolic-registers"><a href="#0x3-03-angr-symbolic-registers" class="headerlink" title="0x3 03_angr_symbolic_registers"></a>0x3 03_angr_symbolic_registers</h1><p><img src="http://osuzegp2h.bkt.clouddn.com/201807111.jpg" alt="images">    </p>
 <p><img src="http://osuzegp2h.bkt.clouddn.com/201807112.jpg" alt="images">    </p>
@@ -333,6 +375,30 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -700,6 +766,28 @@
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -709,6 +797,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

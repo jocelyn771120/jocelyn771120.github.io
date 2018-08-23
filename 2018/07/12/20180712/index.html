@@ -88,7 +88,7 @@
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807115.jpg">
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807121.jpg">
 <meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201807122.jpg">
-<meta property="og:updated_time" content="2018-07-12T06:54:29.894Z">
+<meta property="og:updated_time" content="2018-08-23T02:07:34.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Angr学习（三）">
 <meta name="twitter:description" content="0x4 04_angr_symbolic_stack      这题和03不一样的地方是把输入放在了栈上。     分析一下这栈上的变化： 123456789100x08048679 &amp;lt;+0&amp;gt;:     push   ebp0x0804867a &amp;lt;+1&amp;gt;:     mov    ebp,esp0x0804867c &amp;lt;+3&amp;gt;:     sub    esp,0x1">
@@ -139,7 +139,7 @@
 
 
 </head>
-
+    
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -292,9 +292,51 @@
 
           
           
+             <span id="/2018/07/12/20180712/" class="leancloud_visitors" data-flag-title="Angr学习（三）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  550 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
           
 
           
@@ -320,6 +362,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0x08048694 &lt;+27&gt;:    add    esp,0x10</div></pre></td></tr></table></figure>
 <p>此时栈上的内容：<br><img src="http://osuzegp2h.bkt.clouddn.com/201807122.jpg" alt="images">   </p>
 <p>假设我们要跳过输入直接从<code>scanf</code>之后开始执行的话，我们必须保证操作的时候<code>ebp</code>和<code>esp</code>与正常程序运行的时候相同，可以看到<code>add esp,0x10</code>之后，<code>esp</code>的位置是和进入<code>handle_user</code>函数后<code>sub esp 0x18</code>（记住<code>push ebp</code>之后的0x18是给局部变量用的空间)之后的位置相同。    </p>
+<a id="more"></a>
 <p>那么我们在写脚本的时候，在设置完程序的入口点为<code>0x08048697</code>之后，把<code>ebp</code>的值设置为此时<code>esp</code>的值，我们就还原了正常程序运行时栈上的状态，接下来要操作的数据就都可以在栈上完成。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">0x08048697 &lt;+30&gt;:    mov    eax,DWORD PTR [ebp-0xc]	//[ebp-0xc]</div><div class="line">0x0804869a &lt;+33&gt;:    sub    esp,0xc</div><div class="line">0x0804869d &lt;+36&gt;:    push   eax</div><div class="line">0x0804869e &lt;+37&gt;:    call   0x80484a9 &lt;complex_function0&gt;</div><div class="line">0x080486a3 &lt;+42&gt;:    add    esp,0x10</div><div class="line">0x080486a6 &lt;+45&gt;:    mov    DWORD PTR [ebp-0xc],eax	</div><div class="line">0x080486a9 &lt;+48&gt;:    mov    eax,DWORD PTR [ebp-0x10]	//[ebp-0x10]</div><div class="line">0x080486ac &lt;+51&gt;:    sub    esp,0xc</div><div class="line">0x080486af &lt;+54&gt;:    push   eax</div><div class="line">0x080486b0 &lt;+55&gt;:    call   0x8048591 &lt;complex_function1&gt;</div><div class="line">0x080486b5 &lt;+60&gt;:    add    esp,0x10</div></pre></td></tr></table></figure>
 <p>所以接下来要考虑的事情，就是把符号变量放在栈上的哪一块。从上图我们可以看出我们输入的两个格式化字符串分别放在了<code>ebp-0xc</code>和<code>ebp-0x10</code>的位置上，所以我们在符号执行的时候就把我们的符号变量放在相同位置上就OK了。至于放数据的话，就是通过改变<code>esp</code>,因为有8个字节是需要<code>padding</code>掉的。    </p>
@@ -332,6 +375,30 @@
 
     
 
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
     
 
     
@@ -699,6 +766,28 @@
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz',
+        appKey: 'PWvOeMRxEmYLm00qEd4YDfIW',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
 
 
   
@@ -708,6 +797,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9XbHd3aRgM0agCnx02acXyx3-gzGzoHsz", "PWvOeMRxEmYLm00qEd4YDfIW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 
