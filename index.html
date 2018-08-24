@@ -231,6 +231,185 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/08/24/20180824/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/24/20180824/" itemprop="url">C语言之指针相关的小问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T10:40:47+08:00">
+                Aug 24 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/24/20180824/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/24/20180824/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/24/20180824/" class="leancloud_visitors" data-flag-title="C语言之指针相关的小问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,899 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一直觉得自己代码能力很差，基础没有打好，所以这几天在地铁上看起了<a href="http://vdisk.weibo.com/s/d4clw8Cyes5Ek" target="_blank" rel="external">算法精解：C语言描述</a>，刚看到指针这一部分，知道指针的重要性，理解完了一部分记录下来，理解透彻了自然是有好处没有坏处的，终于把自己大一的时候不好好学的指针内容都补上了。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//a</span></div><div class="line"><span class="keyword">char</span> *sp=<span class="string">"abc"</span>,*tp;</div><div class="line">*tp=sp;</div><div class="line"></div><div class="line"><span class="comment">//b</span></div><div class="line"><span class="keyword">char</span> *sp=<span class="string">"abc"</span>,*tp;</div><div class="line">tp=sp;</div><div class="line"></div><div class="line"><span class="comment">//c</span></div><div class="line"><span class="keyword">char</span> *sp=<span class="string">"abc"</span>,*tp;</div><div class="line">*tp=*sp;</div><div class="line"></div><div class="line"><span class="comment">//d</span></div><div class="line"><span class="keyword">int</span> *ip=(<span class="keyword">int</span> *）<span class="number">10</span>;</div><div class="line">*ip=<span class="number">11</span>;</div><div class="line"></div><div class="line"><span class="comment">//e</span></div><div class="line"><span class="keyword">int</span> *ip=<span class="number">10</span>;</div><div class="line">*ip=<span class="number">11</span>;</div><div class="line"></div><div class="line"><span class="comment">//f </span></div><div class="line"><span class="keyword">int</span> *ip=(<span class="keyword">int</span> *)<span class="number">10</span>;</div><div class="line">ip=<span class="literal">NULL</span>;</div></pre></td></tr></table></figure></p>
+<p>以上这六种情况，对我来说要是真没理解透彻还真的分辨不出来哪几个是对的哪几个是错的，在分析之前，想先说几个概念上的东西。    </p>
+<h4 id="动态分配内存"><a href="#动态分配内存" class="headerlink" title="动态分配内存"></a>动态分配内存</h4><p>我以前年轻不懂事，对这个动态分配内存理解的可是相当滑稽，总认为动态分配内存这词中“动态”这两个字，指的是内存大小是有弹性的，不用提前分配大小，程序运行的时候要添加数据了用指针往这块内存上一指，删除了也这么用指针这么一指，就完事了。结果这理解一放放到前几天才纠正过来，说白了就是我这个人学习真的不上心，感觉自己总在三天打鱼两天晒网，这个学习态度还是得纠正的。说回正题，前几天某个人在刷华为的笔试，然后来问我说为啥我写的这份代码哪里错了，感觉自己写的没错。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> n;</div><div class="line">	<span class="keyword">char</span> *str;</div><div class="line">	str=(<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>));</div><div class="line">	gets(str);</div><div class="line">	n=<span class="built_in">strlen</span>(str);</div><div class="line"></div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</div><div class="line">	&#123;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"%c"</span>,str[i]);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="built_in">free</span>(str);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我看了觉得咦，很OK啊，没啥错错在哪里，<code>malloc</code>出来的内存该free也<code>free</code>了，怎么会出错呢？刚开始以为是这个<code>free</code>的原因，因为把<code>free</code>注释掉之后它就通过了。可是大家也都知道，上C语言课的时候老师都会再三强调，如果你<code>malloc</code>出一块内存，到后面你不要用的时候你就得<code>free</code>掉，不然的话就会造成内存泄漏。秉着严谨的态度，我们是一定要<code>free</code>的，可是这题奇怪了，注释掉了<code>free</code>，竟然通过了？？？？这个原因我还是重新去看动态分配内存的定义的时候才发现，哦原来在<code>malloc</code>的时候犯了一个错。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fukufcunrvj20kx090aax.jpg" alt=""><br>先看一下动态分配内存的定义：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/24/20180824/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/08/22/20180822/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1299,179 +1478,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/12/20180713/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="洋葱">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洋葱">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/12/20180713/" itemprop="url">Angr学习（四）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-12T17:14:15+08:00">
-                Jul 12 2018
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/12/20180713/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/12/20180713/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/07/12/20180713/" class="leancloud_visitors" data-flag-title="Angr学习（四）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  174 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="0x05-05-angr-symbolic-memory"><a href="#0x05-05-angr-symbolic-memory" class="headerlink" title="0x05 05_angr_symbolic_memory"></a>0x05 05_angr_symbolic_memory</h1><p><code>user_input</code>是在<code>.bss</code>段上的，所以和上两题不一样，把符号变量放到内存段上就OK了。<br><code>.bss</code>段是来放全局变量和静态变量的内存。   </p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:UTF-8 -*- </span></div><div class="line"><span class="keyword">import</span> angr,sys,claripy</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">	</div><div class="line">	pro=angr.Project(<span class="string">"./05_angr_symbolic_memory"</span>)</div><div class="line">	</div><div class="line">	entry_point=pro.factory.blank_state(addr=<span class="number">0x08048606</span>)</div><div class="line">	</div><div class="line">	input=claripy.BVS(<span class="string">'input'</span>,<span class="number">32</span>*<span class="number">8</span>)</div><div class="line">	entry_point.memory.store(<span class="number">0x0A29FAA0</span>,input)</div><div class="line">	</div><div class="line">	state=pro.factory.simgr(entry_point)</div><div class="line">	</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_success</span><span class="params">(state)</span>:</span></div><div class="line">		res_output=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">'Good Job'</span> <span class="keyword">in</span> res_output</div><div class="line">		</div><div class="line">	<span class="function"><span class="keyword">def</span> <span class="title">is_avoid</span><span class="params">(state)</span>:</span></div><div class="line">		res_output=state.posix.dumps(sys.stdout.fileno())</div><div class="line">		<span class="keyword">return</span> <span class="string">'Try again'</span> <span class="keyword">in</span> res_output</div><div class="line">	</div><div class="line">	state=pro.factory.simgr(entry_point)</div><div class="line">	state.explore(find=is_success,avoid=is_avoid)</div><div class="line">	</div><div class="line">	<span class="keyword">if</span> state.found:</div><div class="line">		res=state.found[<span class="number">0</span>]</div><div class="line">		</div><div class="line">		<span class="comment">#cats_to：强制转换类型</span></div><div class="line">		res_input=res.se.eval(input,cast_to=str)</div><div class="line">		</div><div class="line">		input=[]</div><div class="line">		</div><div class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">33</span>):</div><div class="line">			input.append(res_input[i<span class="number">-1</span>])</div><div class="line">			<span class="keyword">if</span> i%<span class="number">8</span>==<span class="number">0</span> <span class="keyword">and</span> i!=<span class="number">0</span>:</div><div class="line">				input.append(<span class="string">' '</span>)</div><div class="line">		</div><div class="line">		<span class="keyword">print</span> <span class="string">''</span>.join(input)</div><div class="line">		</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">	main()</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1522,7 +1528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
