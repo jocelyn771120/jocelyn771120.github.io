@@ -231,6 +231,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/12/10/x-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/10/x-md/" itemprop="url">OpenCV学习之人脸识别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T02:43:35+08:00">
+                Dec 10 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,237 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1、阅读国内外文献，学习OpenCV并掌握基本使用。<br>2、学习OpenCV的样本训练。<br>3、使用OpenCV实现一套简单的人脸识别系统。       </p>
+<h2 id="OepnCV是什么？"><a href="#OepnCV是什么？" class="headerlink" title="OepnCV是什么？"></a>OepnCV是什么？</h2><p>OpenCV是一个开源的计算机视觉库，提供了很多函数来实现计算机视觉算法。</p>
+<h2 id="OpenCV基本使用方法"><a href="#OpenCV基本使用方法" class="headerlink" title="OpenCV基本使用方法"></a>OpenCV基本使用方法</h2><h3 id="创建图像"><a href="#创建图像" class="headerlink" title="创建图像"></a>创建图像</h3><ul>
+<li>通过Mat构造函数</li>
+<li>通过Mat类中的create()函数</li>
+</ul>
+<p>Mat类型：用于保存图像以及其他矩阵数据的ds。    </p>
+<h4 id="构造函数创建图像"><a href="#构造函数创建图像" class="headerlink" title="构造函数创建图像"></a>构造函数创建图像</h4><p>常见的构造函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mat:：Mat()</div><div class="line">Mat::Mat(int rows,int cols,int type)</div><div class="line">//创建行数为rows，列数为col，类型为type的图像</div><div class="line">Mat::Mat(int rows,int cols,int type,const Scalar&amp;s)</div><div class="line">//创建行数为rows，烈数为col，类型为type的图像并且将所有元素初始化为值s</div></pre></td></tr></table></figure></p>
+<p>其中类型type可以是CV_8UC1,CV_16SC1等。里面的8U表示8为无符号整数，用来表示像素亮度，C后面表示通道数，e.g.C1表示1个通道的图像。<br>（其实图像在计算机中，只是一堆亮度都不一样的点。一副尺寸为M x N 的图像可以用M x N的矩阵来表示，矩阵元素表示这个位置上的像素的亮度，像素越大说明点越亮。<br>一般灰度图用2维矩阵，彩色用3维）    </p>
+<h4 id="create-函数创建图像"><a href="#create-函数创建图像" class="headerlink" title="create()函数创建图像"></a>create()函数创建图像</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mat M;</div><div class="line">M.create(3,2,CV_8UC2);</div><div class="line">//用create()函数无法设置图像像素的初始值；</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="图像的载入和显示"><a href="#图像的载入和显示" class="headerlink" title="图像的载入和显示"></a>图像的载入和显示</h3><ul>
+<li>imread()</li>
+<li>namedWindow()</li>
+<li>imshow()</li>
+</ul>
+<h4 id="imread"><a href="#imread" class="headerlink" title="imread()"></a>imread()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mat imread(const string &amp;filename,int flags=1);</div><div class="line">//filename:载入图片路径</div><div class="line">//flags:制定加载图像的颜色类型,0--&gt;灰色图像；&lt;0--&gt;包含Alpha通道的加载图像；&gt;0--&gt;彩色图像</div></pre></td></tr></table></figure>
+<h4 id="namedWindow"><a href="#namedWindow" class="headerlink" title="namedWindow()"></a>namedWindow()</h4><p>创建一个窗口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void namedWindow(const string&amp; Winname,int flags=WINDOW_AUTOSIZE);</div><div class="line">//Winname:用作窗口的标识符的窗口名称</div><div class="line">//flags:窗口的标识</div></pre></td></tr></table></figure></p>
+<h4 id="imshow"><a href="#imshow" class="headerlink" title="imshow()"></a>imshow()</h4><p>在指定的窗口显示一幅画<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">void imshow(const string&amp; winname,InputArray mat);</div><div class="line">//winname:要显示的窗口标识名称</div><div class="line">//mat：需要显示的图像</div><div class="line">//InputArray类型：简单的把它当作一个Mat类型吧</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="输出图像到文件—-imwrite"><a href="#输出图像到文件—-imwrite" class="headerlink" title="输出图像到文件—-imwrite()"></a>输出图像到文件—-imwrite()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bool imwrite(const string&amp; filename,InputArrary img,const vector&lt;int&gt;&amp; params=vector&lt;int&gt;());</div><div class="line">//filename:文件名</div><div class="line">//img:Mat类型的图像数据</div><div class="line">//params:一般不需要填写，是特定保存的参数编码有默认值</div></pre></td></tr></table></figure>
+<h2 id="OpenCV的样本训练"><a href="#OpenCV的样本训练" class="headerlink" title="OpenCV的样本训练"></a>OpenCV的样本训练</h2><h3 id="什么是样本训练？"><a href="#什么是样本训练？" class="headerlink" title="什么是样本训练？"></a>什么是样本训练？</h3><p>首先要知道数据挖掘有一个方法叫做分类。<br>分类是什么？就是把数据库中的数据映射到响应类别中。所以数据分类有两个步骤：建模和模型应用。我们通过分析来构造我们所需要的模型，比如说我们当遇到一个陌生人的时候我们要分辨是男是女，那么我们的大脑就会获取这个陌生人的特征信息，通过大脑中的模型去把这个人归类到男或者归类到女中去，所以是男（女）性所以要的特征信息所构成的数据就形成了训练集，训练集中的样本就是具备是男性的特征信息所组成的数据（我这么理解的）。<br>那么我所理解的样本训练就是：根据已经有的训练样本对一大堆未知数据进行分类，然后选出符合训练样本的样本，同时也可以预测未来数据的样本分类。<br>OpenCV样本训练：<br>OpenCV有自带创建样本的exe文件：<code>opencv_createsamples.exe</code><br>同时也有自带的训练样本的exe文件：<code>opencv_traincascade.exe</code>和<code>opencv_harrtraining.exe</code>。  </p>
+<h2 id="OpenCV人脸识别"><a href="#OpenCV人脸识别" class="headerlink" title="OpenCV人脸识别"></a>OpenCV人脸识别</h2><p>OpenCV提供了Python接口，这里在做人脸识别的时候用到的是一个opencv自带的haar特征分类器，也就是说这个分类器已经把人脸的特征信息收集成训练样本，我们在识别人脸的时候就可以直接用haar特征分类器（实际上是一个xml文件），一般存放在opencv安装目录下<code>\data\haarcascades</code>目录下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">import cv2</div><div class="line">from PIL import Image,ImageDraw</div><div class="line"></div><div class="line">#检测人脸</div><div class="line">def facedetect(image):</div><div class="line">	img=cv2.imread(image)	</div><div class="line">	face_cascade=cv2.CascadeClassifier(&apos;/home/one/opencv-2.4.13/data/haarcascades/haarcascade_frontalface_default.xml)	</div><div class="line">	#haar特征的联机分类器</div><div class="line">	gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)	</div><div class="line">	#haar分类器下必须以灰度图作为输入，所以通过cvrColor函数转换</div><div class="line">	faces=face_cascade.detectMultiScale(gray,1.5,5)</div><div class="line">	#人脸检测的函数，并且将人脸用vector保存各个人脸的坐标、大小</div><div class="line">	result=[]</div><div class="line">	for (x,y,w,h) in faces:</div><div class="line">		result.append((x,y,x+w,y+h))</div><div class="line">	#返回人脸的矩形坐标（左上和右下两个顶点）</div><div class="line">	return result</div><div class="line"></div><div class="line">#圈出人脸并且保存</div><div class="line">def findface(image):</div><div class="line">	faces=facedetect(image)</div><div class="line">	if faces:</div><div class="line">		img= Image.open(image)</div><div class="line">		find=ImageDraw.Draw(img)</div><div class="line">		for (x1,y1,x2,y2) in faces:</div><div class="line">			find.rectangle((x1,y1,x2,y2),outline=(255,0,0))</div><div class="line">		img.save(&quot;result_&quot;image)</div><div class="line">		</div><div class="line">if __name__== &apos;__main__&apos;:</div><div class="line">	findface(&apos;01.jpg&apos;)</div></pre></td></tr></table></figure></p>
+<p>参考：<br><a href="http://blog.csdn.net/poem_qianmo/article/details/20537737" target="_blank" rel="external">http://blog.csdn.net/poem_qianmo/article/details/20537737</a><br><a href="http://blog.csdn.net/u012162613/article/details/43523507" target="_blank" rel="external">http://blog.csdn.net/u012162613/article/details/43523507</a><br><a href="http://blog.csdn.net/yangbingzhou/article/details/23301081" target="_blank" rel="external">http://blog.csdn.net/yangbingzhou/article/details/23301081</a><br><a href="http://blog.csdn.net/itismelzp/article/details/50379359" target="_blank" rel="external">http://blog.csdn.net/itismelzp/article/details/50379359</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/12/07/CVE11882/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1182,163 +1356,6 @@ print sm.found[-1].posix.dumps(1)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/10/11/jarvisoj-re-softwaredecode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="洋葱">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洋葱">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/11/jarvisoj-re-softwaredecode/" itemprop="url">JarvisOJ 软件密码破解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-11T11:02:46+08:00">
-                Oct 11 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  369 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这道题用到Debug Blocker反调试，找到一篇很详细的文章介绍win32调试API的原理：<a href="http://blog.csdn.net/b2b160/article/details/4242894" target="_blank" rel="external">http://blog.csdn.net/b2b160/article/details/4242894</a>，很详细很值得一读。(另外之前没有接触过反调试，趁这次机会把《逆向工程核心原理》最后一章节的反调试阅读了一下，对了解DebugBlocker反调试很有帮助。    </p>
-<p>其实从ida中就可以看出反调试，但是那时候不知道，网上找wp的时候发现对反调试和patch都是一带而过就不知道如何patch，后来就从OD开始调试，调试到需要patch的代码这才知道怎么patch的，ida上就很容易实现patch。    </p>
-<p>ida打开sub_401180函数可以看到，通过判断这些API可以得出这是一个Debug Blocker反调试，可以看到WriteProcessMemory()API中把v22的数据写入到eip指向的地址。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.1.png" alt="images">    </p>
-<p>所以我们只要知道这个第二个参数在运行的时候的地址（ecx），就可以把v22的数据放到地址上。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.2.png" alt="images">    </p>
-<p>在WriteProcessMemory()下个断点，可以看到停下来的时候ecx的值是0x002E1145。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.3.png" alt="images">    </p>
-<p>转到0x002E1145出把v22-v25的值patch上去。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.4.png" alt="images"> </p>
-<p>创建完函数刷新一下就可以看到patch完的内容。<br><img src="http://osuzegp2h.bkt.clouddn.com/10.5.png" alt="images">    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">buffer=[0x25,0x5c,0x5c,0x2b,0x2f,0x5d,0x19,0x36,0x2c,0x64,0x72,0x76,0x80,0x66,0x4e,0x52]</div><div class="line">#print len(buffer)</div><div class="line">bytestr=[0x65,0x6c,0x63,0x6f,0x6d,0x65,0x20,0x74,0x6f,0x20,0x43,0x46,0x46,0x20,0x74,0x65]</div><div class="line">#print len(bytestr)</div><div class="line">flag=[]</div><div class="line"></div><div class="line">for i in range(16):</div><div class="line">	b=(buffer[i]-1)^bytestr[i]</div><div class="line">	flag.append(chr(b))</div><div class="line">	</div><div class="line">print &quot;&quot;.join(flag)</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1389,7 +1406,7 @@ print sm.found[-1].posix.dumps(1)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

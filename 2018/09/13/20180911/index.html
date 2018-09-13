@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在学习堆内存管理机制的时候看到阿里的一篇文章写Glibc内存管理，写的非常详细，自己也以此作为参考来学习堆并且记录之。参考资料我都放在最末尾。 brk()brk()通过改变程序间断点来定义堆的结束地址，这样就可以替进程申请内存给空间。初始化的时候,堆的起始start_brk和末尾brk都会指向同一个地址。 上图是ASLR开启的时候，random brk offset就是偏移地址，初始化的时候sta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Malloc的实现原理">
+<meta property="og:url" content="http://yaqing.site/2018/09/13/20180911/index.html">
+<meta property="og:site_name" content="洋葱">
+<meta property="og:description" content="在学习堆内存管理机制的时候看到阿里的一篇文章写Glibc内存管理，写的非常详细，自己也以此作为参考来学习堆并且记录之。参考资料我都放在最末尾。 brk()brk()通过改变程序间断点来定义堆的结束地址，这样就可以替进程申请内存给空间。初始化的时候,堆的起始start_brk和末尾brk都会指向同一个地址。 上图是ASLR开启的时候，random brk offset就是偏移地址，初始化的时候sta">
+<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201809111.png">
+<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201809112.png">
+<meta property="og:image" content="http://osuzegp2h.bkt.clouddn.com/201809113.png">
+<meta property="og:updated_time" content="2018-09-13T06:26:16.313Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Malloc的实现原理">
+<meta name="twitter:description" content="在学习堆内存管理机制的时候看到阿里的一篇文章写Glibc内存管理，写的非常详细，自己也以此作为参考来学习堆并且记录之。参考资料我都放在最末尾。 brk()brk()通过改变程序间断点来定义堆的结束地址，这样就可以替进程申请内存给空间。初始化的时候,堆的起始start_brk和末尾brk都会指向同一个地址。 上图是ASLR开启的时候，random brk offset就是偏移地址，初始化的时候sta">
+<meta name="twitter:image" content="http://osuzegp2h.bkt.clouddn.com/201809111.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yaqing.site/2018/09/13/20180911/"/>
+
+
+
+
+
+  <title>Malloc的实现原理 | 洋葱</title>
+  
+
+
+
+
+
+
+
+
+</head>
+    
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">洋葱</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">懒散的小菜鸟。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/09/13/20180911/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Malloc的实现原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T14:26:16+08:00">
+                Sep 13 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/13/20180911/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/13/20180911/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,026 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在学习堆内存管理机制的时候看到阿里的一篇文章写<code>Glibc</code>内存管理，写的非常详细，自己也以此作为参考来学习堆并且记录之。参考资料我都放在最末尾。<br><img src="http://osuzegp2h.bkt.clouddn.com/201809111.png" alt=""></p>
+<h3 id="brk"><a href="#brk" class="headerlink" title="brk()"></a>brk()</h3><p><code>brk()</code>通过改变程序间断点来定义堆的结束地址，这样就可以替进程申请内存给空间。初始化的时候,堆的起始<code>start_brk</code>和末尾<code>brk</code>都会指向同一个地址。</p>
+<p><img src="http://osuzegp2h.bkt.clouddn.com/201809112.png" alt=""><br>上图是<code>ASLR</code>开启的时候，<code>random brk offset</code>就是偏移地址，初始化的时候<code>start_brk</code>和<code>brk</code>都会指向<code>bss</code>段末尾加上偏移位置的地址。当要申请内存的时候，通过<code>brk()</code>函数<code>brk</code>指针会往高地址走，这时候堆就形成了。可以通过<code>brk()</code>来申请堆空间，再通过<code>sbrk()</code>来获取当前的结束地址。</p>
+<h3 id="mmap"><a href="#mmap" class="headerlink" title="mmap"></a>mmap</h3><p><code>malloc</code>使用<code>mmap</code>创建匿名映射段，然后在这个段里申请一块内存来使用。</p>
+<h3 id="malloc实现原理"><a href="#malloc实现原理" class="headerlink" title="malloc实现原理"></a>malloc实现原理</h3><p><code>brk</code>，<code>sbrk</code>和<code>mmap</code>都是系统调用。<br>当<code>malloc</code>要向系统申请的内存比较小的时候，可以直接通过<code>brk</code>申请；当<code>malloc</code>要申请大块内存的时候，要通过<code>mmap</code>直接从匿名映射段申请一块虚拟地址块。<br><a id="more"></a></p>
+<h4 id="chunk"><a href="#chunk" class="headerlink" title="chunk"></a>chunk</h4><p><code>malloc</code>是通过<code>chunk</code>结构体组成的链表来管理内存块。无论是哪种堆内存管理器，核心就是高效的分配回收内存，通过数据结构和算法来对此进行管理，算法和数据结构都会有一个优化改进的过程，<a href="https://www.cnblogs.com/alisecurity/p/5486458.html" target="_blank" rel="external">Linux堆内存管理深入分析</a>这篇文章挺详细的介绍了<code>glibc malloc</code>中<code>chunk</code>这种数据结构的设计和改进，我这里只把目前的这种支持多线程的<code>chunk</code>结构学习记录下来。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 正在使用的 chunk 布局</span></div><div class="line">    chunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Size of previous chunk, <span class="keyword">if</span> allocated            | |</div><div class="line">      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Size of chunk, in bytes                     |N|M|P|</div><div class="line">      mem-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             User data starts here...                          .</div><div class="line">      .                                                               .</div><div class="line">      .             (malloc_usable_size() bytes)                      .</div><div class="line">      .                                                               |</div><div class="line">nextchunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Size of chunk                                     |</div><div class="line">      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div></pre></td></tr></table></figure></p>
+<p><code>chunk</code>就是整个<code>chunk</code>开头，<code>mem</code>就是用户数据的开始，<code>Nextchunk</code>就是下一个<code>chunk</code>的开头。</p>
+<ul>
+<li><code>p</code>表示前一个<code>chunk</code>是否被分配。当我们需要知道当前<code>chunk</code>是否可以用，就只需要查询下一个<code>chunk</code>的<code>size</code>段就能得到，为什么这样要找下一个<code>chunk</code>去查询而不是直接在这一个<code>chunk</code>里查看是否被分配？优化堆内存管理产生的。我们现在了解到的<code>chunk</code>这个结构其实是经过好几代更新发展形成的。</li>
+<li><code>m</code>表示是否通过<code>mmap</code>分配。</li>
+<li><code>n</code>表示当前的<code>chunk</code>是否是<code>thread arena</code>。</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// 空闲 chunk 被存放在双向环链表</div><div class="line">    chunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Size of previous chunk                            |</div><div class="line">      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">    `head:' |             Size of chunk, in bytes                       N| |P|</div><div class="line">      mem-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Forward pointer to next chunk in list             |</div><div class="line">      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Back pointer to previous chunk in list            |</div><div class="line">      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">      |             Unused space (may be 0 bytes long)                .</div><div class="line">      .                                                               .</div><div class="line">      .                                                               |</div><div class="line">nextchunk-&gt; +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div><div class="line">    `foot:' |             Size of chunk, in bytes                           |</div><div class="line">      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</div></pre></td></tr></table></figure>
+<h4 id="bins"><a href="#bins" class="headerlink" title="bins"></a>bins</h4><p><code>free chunk</code>组成的双向链表被称为<code>bin</code>。系统针对不同大小的<code>free chunk</code>把<code>bin</code>分成4类：</p>
+<ul>
+<li>Fast bin</li>
+<li>Unsorted bin (bin 1)</li>
+<li>Small bin (bin 2-63)</li>
+<li>Large bin (bin 64-126)<br><img src="http://osuzegp2h.bkt.clouddn.com/201809113.png" alt=""></li>
+</ul>
+<h4 id="Fast-bin"><a href="#Fast-bin" class="headerlink" title="Fast bin"></a>Fast bin</h4><p>特性：</p>
+<ol>
+<li>跟其他<code>bin</code>不一样的是<code>fatsbin</code>是单链表，有10个，并且只使用<code>fd</code>指针，因为在<code>fastbin</code>中添加或移除<code>chunk</code>都是对末尾进行操作，算法用的是<code>LIFO</code>（后入先出），最后释放的<code>chunk</code>会更早的被分配。</li>
+<li>第一个<code>fastbin</code>的<code>chunk size</code>都是16B（32位），第二个为24B以此类推。</li>
+<li>对于不大于64B的<code>chunk</code>在释放后首先会被添加到<code>fastbin</code>中，并且不改变<code>p</code>（也就是把<strong>释放的内存还当作被使用的状态</strong>），当用户申请的内存大小小于64B的时候会先从<code>fastbin</code>查找相应的空闲块，如果找不到的话才会去其他<code>bins</code>里找。在某个特定的时候，<code>malloc</code>会把相邻的空闲<code>chunk</code>合并，再把合并后的<code>chunk</code>加入<code>unsorted bin</code>中。那么<code>fastbin</code>里的<code>chunk</code>大小就最大就不能超过80字节（包括<code>prev_size</code>算进去），最少就是16字节。</li>
+</ol>
+<p>剩下的之后再update。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://sploitfun.wordpress.com/2015/02/11/syscalls-used-by-malloc/" target="_blank" rel="external">Syscalls used by malloc</a><br><a href="http://luodw.cc/2016/02/17/malloc/" target="_blank" rel="external">malloc的实现原理</a><br><a href="https://www.cnblogs.com/alisecurity/p/5486458.html" target="_blank" rel="external">Linux堆内存管理深入分析（上）</a><br><a href="https://www.cnblogs.com/alisecurity/p/5520847.html" target="_blank" rel="external">Linux堆内存管理深入分析（下）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="洋葱 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/03/20180829/" rel="next" title="Pwnable.tw dubblesort">
+                <i class="fa fa-chevron-left"></i> Pwnable.tw dubblesort
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">洋葱</p>
+              <p class="site-description motion-element" itemprop="description">想学做菜或者化妆的话请关注我的微信公众号：REup5hare。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#brk"><span class="nav-number">1.</span> <span class="nav-text">brk()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mmap"><span class="nav-number">2.</span> <span class="nav-text">mmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#malloc实现原理"><span class="nav-number">3.</span> <span class="nav-text">malloc实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#chunk"><span class="nav-number">3.1.</span> <span class="nav-text">chunk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bins"><span class="nav-number">3.2.</span> <span class="nav-text">bins</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fast-bin"><span class="nav-number">3.3.</span> <span class="nav-text">Fast bin</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number"></span> <span class="nav-text">参考资料</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">洋葱</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'jocelyn771120',
+            repo: 'BlogComments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '69ac6d02b51c77bd8b195113b8ce774d8c8329ca',
+            
+                client_id: 'eedfad4bcba4b4601384'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

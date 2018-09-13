@@ -231,6 +231,175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/17/20180717/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="洋葱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="洋葱">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/17/20180717/" itemprop="url">Angr学习（六）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T15:26:27+08:00">
+                Jul 17 2018
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,123 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="0x7-07-angr-symbolic-file"><a href="#0x7-07-angr-symbolic-file" class="headerlink" title="0x7 07_angr_symbolic_file"></a>0x7 07_angr_symbolic_file</h1><p>光从题目上来讲简单到爆炸，但是通过符号执行来做的话，我花了一天的时间去找了资料看linux文件系统，从来没仔细了解过一些底层的原理机制之类的东西（上课都花在睡觉和翘课上了），学习一下真的会对计算机再稍微了解一些。   </p>
+<h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
+<p>一切皆是文件是<code>Unix/Linux</code>的基本哲学之一，不仅普通的文件，目录、字符设备、块设备、套接字等在<code>Unix/Linux</code>中都是以文件被对待，它们虽然类型不同，但是对其提供的确实同一套操作界面。    </p>
+</blockquote>
+<ul>
+<li>所有的文件都保存在磁盘上，都需要载入内存后才能处理，所有的数据必须写入文件（磁盘）才不会丢失。</li>
+<li>数据在磁盘和内存之间传递的过程叫做文件流    </li>
+</ul>
+<h3 id="缓冲文件"><a href="#缓冲文件" class="headerlink" title="缓冲文件"></a>缓冲文件</h3><ul>
+<li>在内存开辟一个“缓冲区”，给文件使用；</li>
+<li>当执行读文件的操作时，会先从磁盘文件将数据先读入内存“缓冲区”，装满之后再从内存“缓冲区”依次读书需要的数据；</li>
+<li>当执行写文件的操作时，会先将数据写入内存“缓冲区”，等“缓冲区装满的时候”再写入文件（磁盘）    </li>
+</ul>
+<p>所以缓冲文件借助文件指针来对文件进行，通过文件指针来对文件进行访问读写等操作，<code>fopen</code>，<code>fread</code>，<code>fwrite</code>，<code>fclose</code>等。</p>
+<h3 id="非缓冲文件"><a href="#非缓冲文件" class="headerlink" title="非缓冲文件"></a>非缓冲文件</h3><p>非缓冲文件依赖于操作系统，通过操作系统的功能来对文件进行读写等操作，是系统的输入输出，<code>open</code>。<code>read</code>，<code>write</code>，<code>close</code>等。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/17/20180717/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yaqing.site/2018/07/16/20180716/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1154,180 +1323,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/12/10/x-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="洋葱">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="洋葱">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/10/x-md/" itemprop="url">OpenCV学习之人脸识别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T02:43:35+08:00">
-                Dec 10 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,237 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  5 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1、阅读国内外文献，学习OpenCV并掌握基本使用。<br>2、学习OpenCV的样本训练。<br>3、使用OpenCV实现一套简单的人脸识别系统。       </p>
-<h2 id="OepnCV是什么？"><a href="#OepnCV是什么？" class="headerlink" title="OepnCV是什么？"></a>OepnCV是什么？</h2><p>OpenCV是一个开源的计算机视觉库，提供了很多函数来实现计算机视觉算法。</p>
-<h2 id="OpenCV基本使用方法"><a href="#OpenCV基本使用方法" class="headerlink" title="OpenCV基本使用方法"></a>OpenCV基本使用方法</h2><h3 id="创建图像"><a href="#创建图像" class="headerlink" title="创建图像"></a>创建图像</h3><ul>
-<li>通过Mat构造函数</li>
-<li>通过Mat类中的create()函数</li>
-</ul>
-<p>Mat类型：用于保存图像以及其他矩阵数据的ds。    </p>
-<h4 id="构造函数创建图像"><a href="#构造函数创建图像" class="headerlink" title="构造函数创建图像"></a>构造函数创建图像</h4><p>常见的构造函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mat:：Mat()</div><div class="line">Mat::Mat(int rows,int cols,int type)</div><div class="line">//创建行数为rows，列数为col，类型为type的图像</div><div class="line">Mat::Mat(int rows,int cols,int type,const Scalar&amp;s)</div><div class="line">//创建行数为rows，烈数为col，类型为type的图像并且将所有元素初始化为值s</div></pre></td></tr></table></figure></p>
-<p>其中类型type可以是CV_8UC1,CV_16SC1等。里面的8U表示8为无符号整数，用来表示像素亮度，C后面表示通道数，e.g.C1表示1个通道的图像。<br>（其实图像在计算机中，只是一堆亮度都不一样的点。一副尺寸为M x N 的图像可以用M x N的矩阵来表示，矩阵元素表示这个位置上的像素的亮度，像素越大说明点越亮。<br>一般灰度图用2维矩阵，彩色用3维）    </p>
-<h4 id="create-函数创建图像"><a href="#create-函数创建图像" class="headerlink" title="create()函数创建图像"></a>create()函数创建图像</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mat M;</div><div class="line">M.create(3,2,CV_8UC2);</div><div class="line">//用create()函数无法设置图像像素的初始值；</div></pre></td></tr></table></figure>
-<hr>
-<h3 id="图像的载入和显示"><a href="#图像的载入和显示" class="headerlink" title="图像的载入和显示"></a>图像的载入和显示</h3><ul>
-<li>imread()</li>
-<li>namedWindow()</li>
-<li>imshow()</li>
-</ul>
-<h4 id="imread"><a href="#imread" class="headerlink" title="imread()"></a>imread()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Mat imread(const string &amp;filename,int flags=1);</div><div class="line">//filename:载入图片路径</div><div class="line">//flags:制定加载图像的颜色类型,0--&gt;灰色图像；&lt;0--&gt;包含Alpha通道的加载图像；&gt;0--&gt;彩色图像</div></pre></td></tr></table></figure>
-<h4 id="namedWindow"><a href="#namedWindow" class="headerlink" title="namedWindow()"></a>namedWindow()</h4><p>创建一个窗口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void namedWindow(const string&amp; Winname,int flags=WINDOW_AUTOSIZE);</div><div class="line">//Winname:用作窗口的标识符的窗口名称</div><div class="line">//flags:窗口的标识</div></pre></td></tr></table></figure></p>
-<h4 id="imshow"><a href="#imshow" class="headerlink" title="imshow()"></a>imshow()</h4><p>在指定的窗口显示一幅画<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">void imshow(const string&amp; winname,InputArray mat);</div><div class="line">//winname:要显示的窗口标识名称</div><div class="line">//mat：需要显示的图像</div><div class="line">//InputArray类型：简单的把它当作一个Mat类型吧</div></pre></td></tr></table></figure></p>
-<hr>
-<h3 id="输出图像到文件—-imwrite"><a href="#输出图像到文件—-imwrite" class="headerlink" title="输出图像到文件—-imwrite()"></a>输出图像到文件—-imwrite()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bool imwrite(const string&amp; filename,InputArrary img,const vector&lt;int&gt;&amp; params=vector&lt;int&gt;());</div><div class="line">//filename:文件名</div><div class="line">//img:Mat类型的图像数据</div><div class="line">//params:一般不需要填写，是特定保存的参数编码有默认值</div></pre></td></tr></table></figure>
-<h2 id="OpenCV的样本训练"><a href="#OpenCV的样本训练" class="headerlink" title="OpenCV的样本训练"></a>OpenCV的样本训练</h2><h3 id="什么是样本训练？"><a href="#什么是样本训练？" class="headerlink" title="什么是样本训练？"></a>什么是样本训练？</h3><p>首先要知道数据挖掘有一个方法叫做分类。<br>分类是什么？就是把数据库中的数据映射到响应类别中。所以数据分类有两个步骤：建模和模型应用。我们通过分析来构造我们所需要的模型，比如说我们当遇到一个陌生人的时候我们要分辨是男是女，那么我们的大脑就会获取这个陌生人的特征信息，通过大脑中的模型去把这个人归类到男或者归类到女中去，所以是男（女）性所以要的特征信息所构成的数据就形成了训练集，训练集中的样本就是具备是男性的特征信息所组成的数据（我这么理解的）。<br>那么我所理解的样本训练就是：根据已经有的训练样本对一大堆未知数据进行分类，然后选出符合训练样本的样本，同时也可以预测未来数据的样本分类。<br>OpenCV样本训练：<br>OpenCV有自带创建样本的exe文件：<code>opencv_createsamples.exe</code><br>同时也有自带的训练样本的exe文件：<code>opencv_traincascade.exe</code>和<code>opencv_harrtraining.exe</code>。  </p>
-<h2 id="OpenCV人脸识别"><a href="#OpenCV人脸识别" class="headerlink" title="OpenCV人脸识别"></a>OpenCV人脸识别</h2><p>OpenCV提供了Python接口，这里在做人脸识别的时候用到的是一个opencv自带的haar特征分类器，也就是说这个分类器已经把人脸的特征信息收集成训练样本，我们在识别人脸的时候就可以直接用haar特征分类器（实际上是一个xml文件），一般存放在opencv安装目录下<code>\data\haarcascades</code>目录下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">import cv2</div><div class="line">from PIL import Image,ImageDraw</div><div class="line"></div><div class="line">#检测人脸</div><div class="line">def facedetect(image):</div><div class="line">	img=cv2.imread(image)	</div><div class="line">	face_cascade=cv2.CascadeClassifier(&apos;/home/one/opencv-2.4.13/data/haarcascades/haarcascade_frontalface_default.xml)	</div><div class="line">	#haar特征的联机分类器</div><div class="line">	gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)	</div><div class="line">	#haar分类器下必须以灰度图作为输入，所以通过cvrColor函数转换</div><div class="line">	faces=face_cascade.detectMultiScale(gray,1.5,5)</div><div class="line">	#人脸检测的函数，并且将人脸用vector保存各个人脸的坐标、大小</div><div class="line">	result=[]</div><div class="line">	for (x,y,w,h) in faces:</div><div class="line">		result.append((x,y,x+w,y+h))</div><div class="line">	#返回人脸的矩形坐标（左上和右下两个顶点）</div><div class="line">	return result</div><div class="line"></div><div class="line">#圈出人脸并且保存</div><div class="line">def findface(image):</div><div class="line">	faces=facedetect(image)</div><div class="line">	if faces:</div><div class="line">		img= Image.open(image)</div><div class="line">		find=ImageDraw.Draw(img)</div><div class="line">		for (x1,y1,x2,y2) in faces:</div><div class="line">			find.rectangle((x1,y1,x2,y2),outline=(255,0,0))</div><div class="line">		img.save(&quot;result_&quot;image)</div><div class="line">		</div><div class="line">if __name__== &apos;__main__&apos;:</div><div class="line">	findface(&apos;01.jpg&apos;)</div></pre></td></tr></table></figure></p>
-<p>参考：<br><a href="http://blog.csdn.net/poem_qianmo/article/details/20537737" target="_blank" rel="external">http://blog.csdn.net/poem_qianmo/article/details/20537737</a><br><a href="http://blog.csdn.net/u012162613/article/details/43523507" target="_blank" rel="external">http://blog.csdn.net/u012162613/article/details/43523507</a><br><a href="http://blog.csdn.net/yangbingzhou/article/details/23301081" target="_blank" rel="external">http://blog.csdn.net/yangbingzhou/article/details/23301081</a><br><a href="http://blog.csdn.net/itismelzp/article/details/50379359" target="_blank" rel="external">http://blog.csdn.net/itismelzp/article/details/50379359</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1378,7 +1373,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
