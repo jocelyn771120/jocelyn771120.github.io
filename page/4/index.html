@@ -231,6 +231,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/10/24/install-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YAQING">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YAQING">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/24/install-docker/" itemprop="url">关于Win10下安装docker遇到的问题解决</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-24T20:52:21+08:00">
+                Oct 24 2017
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/24/install-docker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/10/24/install-docker/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/10/24/install-docker/" class="leancloud_visitors" data-flag-title="关于Win10下安装docker遇到的问题解决">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  386 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>2017/10/24 20:55:32<br>直到刚才顺利在win10上安装了docker，之前遇到了一系列困难。从大二的时候就想安装docker因为下载一系列镜像太麻烦了但是失败了。不知道为啥就是各种失败，安装了好久都没有成功就给弃了。换了新电脑之后看到小伙伴说安装完docker去把虚拟机环境都删了贼爽又想要重新在新电脑上安装，但是还是很慌怕安装不成功，安装了两天终于把问题解决了。（但是都没有截图所以都网上找了一下图和链接）    </p>
+<h3 id="Q1：安装完之后打开boot2docker闪退"><a href="#Q1：安装完之后打开boot2docker闪退" class="headerlink" title="Q1：安装完之后打开boot2docker闪退"></a>Q1：安装完之后打开boot2docker闪退</h3><p>照理说下载完安装包之后直接运行boot2docker Start就可以进行配置，配置成功就可以正常ssh连接。但是我安装成功之后打开boot2docker Start直接给我闪退出来。<br><img src="http://osuzegp2h.bkt.clouddn.com/13.1.jpg" alt="images">    </p>
+<p>我的解决方案：把virtualbox卸载去官网下载最新版本的。<br>官网：<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="external">https://www.virtualbox.org/wiki/Downloads</a>    </p>
+<h3 id="Q2：Error-exit-status-255"><a href="#Q2：Error-exit-status-255" class="headerlink" title="Q2：Error:exit status 255"></a>Q2：Error:exit status 255</h3><p>上个问题解决了之后又有了新的问题，Boot2Docker Start点开之后加载了很久很久都没有加载成功，感觉半个世纪都过去了还没开始，就用了<code>docker up</code>发现提示了这个错误。于是就参考了<a href="http://cnodejs.org/topic/55a24267419f1e8a23a64367" target="_blank" rel="external">http://cnodejs.org/topic/55a24267419f1e8a23a64367</a>把当前的boot2docker vm删了又重装，成功了。（这篇文章就写的很详细基本解决了我所有问题但是真的找了好久啊）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/10/22/rctf-babyflash/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -275,6 +450,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/22/rctf-babyflash/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/10/22/rctf-babyflash/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -442,6 +627,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/11/jarvisoj-re-softwaredecode/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/10/11/jarvisoj-re-softwaredecode/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -611,6 +806,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/30/Jarvisoj-re-findkey/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/09/30/Jarvisoj-re-findkey/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -774,6 +979,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/24/whctf-re-easyhook/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/09/24/whctf-re-easyhook/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -952,6 +1167,16 @@ print &apos;&apos;.join(flag)
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/24/wifi/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/09/24/wifi/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -1118,6 +1343,16 @@ print &apos;&apos;.join(flag)
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/23/cmd1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/09/23/cmd1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -1221,180 +1456,11 @@ print &apos;&apos;.join(flag)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yaqing.site/2017/09/13/uid/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="YAQING">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YAQING">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/13/uid/" itemprop="url">关于Uid,Euid,Gid,Egid的理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T21:45:50+08:00">
-                Sep 13 2017
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/09/13/uid/" class="leancloud_visitors" data-flag-title="关于Uid,Euid,Gid,Egid的理解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  307 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="http://osuzegp2h.bkt.clouddn.com/4.1.jpg" alt="images">     </p>
-<h4 id="关于uid-gid"><a href="#关于uid-gid" class="headerlink" title="关于uid,gid"></a>关于uid,gid</h4><p>uid就是文件所有者的用户ID，gid就是文件所有者的组ID。<br>上图中的文件夹们的所有者的用户ID是one，组ID是one。    </p>
-<h4 id="关于euid-egid"><a href="#关于euid-egid" class="headerlink" title="关于euid,egid"></a>关于euid,egid</h4><p>文件一定有一个所有者，但拥有打开这个文件的权限并不仅仅只有拥有者，只要是有效的uid或者是有效的gid就可以打开这个文件。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/4.2.jpg" alt="images">    </p>
-<h4 id="关于suid，sgid"><a href="#关于suid，sgid" class="headerlink" title="关于suid，sgid"></a>关于suid，sgid</h4><p>suid==set uid==set user id，sgid同理。这两个的作用就是设置有效的uid和gid。    </p>
-<p>栗子：<br><img src="http://osuzegp2h.bkt.clouddn.com/4.3.jpg" alt="images"><br>用户one试图打开limpidity用户的test.txt文件，但是权限不够，用ls -l查看发现test.txt只能被limpidity用户读写。此时uid=limpidity，gid=limpidity。    </p>
-<p><img src="http://osuzegp2h.bkt.clouddn.com/4.4.jpg" alt="images"><br>通过sgid后把权限改了，可以看到此时只要是同组的都可以访问此文件，此时egid=limpidity（那是因为我把one用户和limpidity用户都放到了limpidity组里面去，如果你换一个组的话只要是同组的仍然都是egid），所以one仍然可以访问此文件。    </p>
-<p>通过这个栗子我想说的是，文件的拥有者并不是文件的唯一访问者，只要通过设置uid和gid，其他用户还是可以访问该文件的。    </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1440,7 +1506,7 @@ print &apos;&apos;.join(flag)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1469,7 +1535,7 @@ print &apos;&apos;.join(flag)
               <ul class="links-of-blogroll-list">
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://example.com/" title="Yangteng" target="_blank">Yangteng</a>
+                    <a href="https://blog.yangteng.me" title="Yangteng" target="_blank">Yangteng</a>
                   </li>
                 
               </ul>
@@ -1657,21 +1723,30 @@ print &apos;&apos;.join(flag)
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-
-    
 
 
 
-
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'Ax5VBhmBx9LqhwFvqh4d0bV6-gzGzoHsz',
+        appKey: 'aUUCfN3UOPX9QzswmnXwJCNe',
+        placeholder: '快来评论一个吧~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 

@@ -282,7 +282,7 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2018/07/16/20180716/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/16/20180716/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/16/20180716/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -365,7 +365,7 @@
     
       <div>
         <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div></div>
+  <div>觉得不错，就打赏鼓励一下吧!</div>
   <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
     <span>打赏</span>
   </button>
@@ -373,7 +373,7 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://osuzegp2h.bkt.clouddn.com/wechatpay.jpg" alt="YAQING 微信支付"/>
+        <img id="wechat_qr" src="http://ww1.sinaimg.cn/large/72105478gy1ghq28jr6s4j20ip0icq4p.jpg" alt="YAQING 微信支付"/>
         <p>微信支付</p>
       </div>
     
@@ -444,11 +444,7 @@
 
   
     <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
     </div>
-
   
 
 
@@ -497,7 +493,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -526,7 +522,7 @@
               <ul class="links-of-blogroll-list">
                 
                   <li class="links-of-blogroll-item">
-                    <a href="http://example.com/" title="Yangteng" target="_blank">Yangteng</a>
+                    <a href="https://blog.yangteng.me" title="Yangteng" target="_blank">Yangteng</a>
                   </li>
                 
               </ul>
@@ -734,45 +730,30 @@
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'jocelyn771120',
-            repo: 'BlogComments',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '69ac6d02b51c77bd8b195113b8ce774d8c8329ca',
-            
-                client_id: 'eedfad4bcba4b4601384'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
-
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'Ax5VBhmBx9LqhwFvqh4d0bV6-gzGzoHsz',
+        appKey: 'aUUCfN3UOPX9QzswmnXwJCNe',
+        placeholder: '快来评论一个吧~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 
